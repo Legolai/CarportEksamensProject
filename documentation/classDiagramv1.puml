@@ -1,0 +1,246 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+package annotations {
+    annotation Entity
+    annotation Table {
+        String name()
+    }
+    annotation Id
+    annotation Column {
+        String name()
+    }
+    annotation GeneratedValue
+}
+
+interface FunctionWithThrows<T,R> {
+    R apply(T entity)
+}
+
+class EntityData<T> {
+    - Class<T> entityClass
+    - Field idField
+    - List<Field> fields
+    - Class<?>[] constructorParamTypes
+}
+
+class ResultData<T> {
+    - T entity
+    - ResultSet resultSet
+    - int rowsAffected
+}
+
+class DatabaseException extends Exception
+
+class ConnectionPool {
+    - HikariDataSource ds
+    - {static} String USER
+    - {static} String PASSWORD
+    - {static} String URL
+    + Connection getConnection()
+    + void close()
+}
+
+interface IEntityManager<T> {
+    + {abstract} T insert(T entity)
+    + {abstract} List<T> getAll()
+    + {abstract} boolean update(T entity)
+    + {abstract} T find(object primaryKey)
+    + {abstract} T find(map<String, object> properties)
+    + {abstract} T createEntity(ResultSet rs)
+}
+class EntityManager<T> implements IEntityManager{
+    - ConnectionPool conn
+    - EntityData entityData
+}
+
+interface IAccountMapper {
+    + {abstract} AccountDTO login(String email, String password)
+    + {abstract} AccountDTO registeretAccount(AccountDTO account)
+    + {abstract} List<AccountDTO> getAll()
+}
+
+class AccountMapper implements IAccountMapper{
+    - IEntityManager entityManager
+}
+
+interface IProductMapper {
+    + {abstract} ProductDTO find(map<String, Object> properties)
+    + {abstract} ProductDTO find(int id)
+    + {abstract} List<Product> getAll()
+}
+
+class ProductMapper implements IProductMapper{
+    - IEntityManager entityManager
+}
+
+interface IOrderMapper {
+    + {abstract} OrderDTO findOrder(int id)
+    + {abstract} OrderDTO createOrder(OrderDTO account)
+    + {abstract} List<OrderDTO> getAll()
+}
+class OrderMapper implements IOrderMapper {
+    - IEntityManager entityManager
+}
+
+
+class OrderDTO {
+    - Order order
+    - List<OrderLineItemDTO> lineItems
+}
+
+class OrderLineItemDTO {
+    - OrderLineItem lineInfo
+    - ProductDTO product
+}
+
+class AccountDTO {
+    - Account account
+    - AddressDTO address
+}
+
+class AddressDTO {
+    - Address address
+    - City city
+}
+
+class ProductDTO {
+    Product product
+    Size size
+}
+
+
+class Inquiry {
+    - Carport carport
+    - String name
+    - String email
+    - AddressDTO address
+    - String phoneNumber
+    - String comment
+}
+
+class Carport {
+    - int width
+    - int length
+    - int height
+    - Roof roof
+    - Shack shack
+}
+
+
+class Shack {
+    - int width
+    - int length
+    - boolean isLeftAligned
+    - ProductDTO facing
+    - ProductDTO flooring
+}
+
+class Roof {
+    RoofType roofType
+    ProductDTO material
+}
+
+enum RoofType {
+    FLAT
+    SLOPE
+}
+
+class Cart {
+    - List<CartLineItem> items
+}
+
+class CartLineItem {
+    - Object product
+    - int amount
+}
+
+class Order
+class OrderLineItem
+class Product
+class Size
+
+class Account {
+    - int id
+    - String forename
+    - String surname
+    - String password
+    - String email
+    - String phoneNumber
+    - Role role
+}
+
+enum Role {
+    COSTUMER
+    EMPLOYEE
+    ADMIN
+}
+
+class Address {
+    - int id
+    - String number
+    - String StreetName
+    - String floor
+}
+
+class City {
+    - String zipcode
+    - String name
+}
+
+interface Command {
+    {abstract} execute(HttpServletRequest request, HttpServletResponse response, ConnectionPool conn)
+}
+
+class CommandController {
+    - {static} CommandController INSTANCE
+    - Map<String, Command> commands
+    + CommandController getInstance()
+    + Command extractCommand(HttpServletRequest request)
+}
+
+class UnknownCommand implements Command
+class PageCommand implements Command
+class ProtectedPageCommand extends PageCommand {
+    - Role role
+}
+
+ProtectedPageCommand::role *-- Role
+CommandController::commands *-- Command
+
+ProductMapper::entityManager *-- EntityManager
+OrderMapper::entityManager *-- EntityManager
+AccountMapper::entityManager *-- EntityManager
+EntityManager::entityData *-- EntityData
+EntityManager::conn *-- ConnectionPool
+
+
+Cart *-- CartLineItem
+
+
+Roof::material *-- ProductDTO
+Roof::roofType *-- RoofType
+Shack::flooring *-- ProductDTO
+Shack::facing *-- ProductDTO
+Carport::roof *-- Roof
+Carport::shack *-- Shack
+
+Inquiry::address *-- AddressDTO
+Inquiry::carport *-- Carport
+
+Account::role *-- Role
+AddressDTO::Address *-- Address
+AddressDTO::City *-- City
+AccountDTO::account *-- Account
+AccountDTO::address *-- AddressDTO
+
+ProductDTO::product *-- Product
+ProductDTO::size *-- Size
+
+OrderLineItemDTO::product *-- ProductDTO
+OrderLineItemDTO::lineInfo *-- OrderLineItem
+OrderDTO::order *-- Order
+OrderDTO::lineItems *-- OrderLineItemDTO
+
+
+@enduml

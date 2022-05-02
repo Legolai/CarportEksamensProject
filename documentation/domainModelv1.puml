@@ -1,0 +1,29 @@
+@startuml
+'https://plantuml.com/object-diagram
+
+object Cart
+object CartLineItem
+object Order
+object OrderLineItem
+object Product
+object Size
+
+object Inquiry
+
+object Account
+object Role
+object Address
+object City
+
+
+Product *-- Size
+Cart *-- CartLineItem
+Order *-- OrderLineItem
+CartLineItem *-- Product
+OrderLineItem *-- Product
+Account *-- Role
+Address *-- City
+Account *-- Address
+
+
+@enduml
