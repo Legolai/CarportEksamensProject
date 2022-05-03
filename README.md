@@ -1,69 +1,37 @@
-# default-web-applikation
+## Logbog
+Se 'Scrum_Meetings' i 'documentation'.
 
-## Startkode på 2. semester forår 2022
+## Baggrund
+Semester project for CPH Business Datamatikker linjen, hvor opgaven er at lave en online hjemmeside med databasen for virksomheden Fog.
 
-Dette repository er lavet i forbindelse med 2. semester på
-Datamatikeruddannelsen i Lyngby og på Bornholm forår 2022.
+## Userstories (funktionelle krav)
+US-1: Som kunde kan jeg oprette mig som bruger på websiden.  
+**Givet** at jeg går til registrer siden og indtaster relevant info (navn, email, password), **når** jeg så klikker opret, **så** vil jeg automatisk blive logget ind og samtidigt også blive oprettet som bruger i databasen.<br/>
+Estimat: medium
 
-Denne udgave af startkoden er implementeret med et command-pattern og en front-controller.
+US-2: Som kunde kan jeg lave en forspørgelse om en skryddersyet carport uden at have en bruger konto.  
+**Givet** at jeg går til siden for skryddersyet carporte, **så** skal jeg kunne indtaste mine krav (bredde, længde, højde, med eller uden skur, kommentarer mm.). 
+**Når** jeg så er færdig med kravene skal jeg blot indtaste personlig oplysninger (navn, email, adresse, telefon), **så** vil jeg være i stand til at trykke på send og en forspørgelse sendes til Fog/systemet.  
+Estimat: medium
 
-## Java version
-I pom.xml er diverse dependencies valgt, så projektet kan bygges og køres i Java 8. Nyere versioner af 
-Java vil formentlig også fungere, men vi har kun testet med version 8 og 11.
+US-3: US-2 men jeg, som kunde, er nu logget på min bruger konto og vil være i stand til at se forspørgelsen efter at have indsent den.  
+**Givet** at jeg først logger på hjemmesiden med min bruger konto, så vil jeg være i stand til at gøre det samme som i US-2, 
+**men** denne gang ikke behøve at indtaste mine personlige oplysninger, og jeg vil efter at have sendt forspørgelsen være i stand til at se den ved at gå til min bruger side.  
+Estimat: medium
 
-## Tomcat
-Brug version 9.
+US-4: Som kunde, sælger/arbejder og administrator skal jeg kunne logge på systemet med et email og kodeord. Når jeg er logget på kan jeg gå til min bruger side.  
+**Givet** at jeg går til login siden og indtaster min email og password, **så** skal systemet logge mig på,
+og jeg kan så gå til min bruger side.  
+Estimat: medium
 
-## Deployment på Droplet
-T.B.D.
+US-5: Som kunde, sælger og admin kan jeg se og ændre på mine personlige oplysinger på min bruger side (når jeg er logget ind).  
+**Givet** at jeg logger ind, så kan jeg gå til min bruger side, hvor jeg kan se mine personlige oplysninger (navn, email, adresse mm.), heraf kan jeg vælge at ændre på dem (trykke på opdater knappen, indtaste på formular, og trykke på bekræft).  
+Estimat: medium
 
-## Du skal gøre følgende for at få webapplikationen i luften:
+US-6: Som sælger eller administrator kan jeg se alle forspørgelser i systemet (og deres status), og være i stand til at gå ind på specifikke forspørgelser for f.eks. at svare kunder eller lukke forspørgelserne (dvs. ændre deres status).  
+**Givet** at jeg er sælger eller administrator, kan jeg efter at have logget ind, gå til en side hvor jeg kan se alle forspørgelser der er blevet lavet. **Heraf** kan jeg så gå ind på disse forspørgelser og skrive bare til kunden eller f.eks. at lukke forspørgelsen hvis kunden ikke vælger at købe eller har betalt.  
+Estimat: large
 
-1. Først skal du clone projektet eller downloade en zip-fil med projektet til din arbejdsstation.
-   1. Clone: git clone git@github.com:jonbertelsen/startcode_2sem_2022.git ditprojektnavn
-   2. Slet .git folderen, så du kan gøre projektet til dit eget git-projekt
-      1. > rm -rf .git/
-   3. Opret dit eget git repository:
-      1. > git init
-2. Beslut dig for hvad projektets database skal hedde. Det skal du bruge i næste punkt.
-3. Åbn Workbench og kør en tilpasset (med dit databasenavn i stedet for `startcode`) version af sql-filen `startcode.sql`, som ligger i mappen `resources`. Den opretter en database med en user-tabel og en test-database.
-4. Du skal evt. ændre kodeord til databasen i projektet. Det gøres i filerne: `/persistence/ConnectionPool` i linie 14 og 15. Du skal også ændre i UserMapperTest.
-5. Refactor `startcode` til dit eget projekt alle de steder, hvor det er relevant. Fx her:
-   1. I projektroden
-   2. I pom.xml (`artifactId`og `name` elementerne)
-   3. Den package som ligger lige under `dat`
-6. Til sidst skal du lave en Tomcat konfiguration. Dvs, 
-   1. klik på "Add Configuration ..."
-   2. Klik på "+" og vælg "Tomcat Server Local".
-   3. Klik på "Fix knappen"
-   4. Vælg war-exploded som deployment type
-   5. Nu kan du klikke på den grønne play-knap for at bygge og køre projektet.
-7. Lav et repo på GitHub
-
-## Bemærkninger
-
-Startkoden indeholder følgende:
-
-- Strukturering i passende packages for overblik (MVC). Noget af strukturen er også givet af Maven, og kan ikke laves om. F.eks. opdelingen i `/java` og `/webapp`.
-- Javaservlets
-- JSP sider. Læg dem i WEB-INF som kun skal tilgås via en servlet.
-- En super skrabet css-fil til styling
-- Datamapper for user-tabellen, som anvender en connection pool.
-- En UserFacadefor at afkoble UserMapper klassen.
-- Fejlhåndtering med exceptions for databaseoperationer.
-- Integrationstest af datamapperen for User.
-
-Funktionelt kan applikationen:
-
-- Vise en forside med links til undersider, som endnu ikke er lavet (bortset fra "About")
-- Logge en user på. Der findes to brugere i databasen.
-    1. `user` med password: `1234` (rolle: `user`)
-    2. `admin` med password: `1234` (rolle: `admin`)
-- Man kan se på index.jsp hvordan man kan udnytte om en user er logget på eller ej.
-- Hvis man indtaster ugyldige data under indlogning, bliver man sendt til en en fejlside.
-- Logge en bruger af
-- Begyndelsen på en metode til at tjekke om en given bruger har adgang ligger i `services`
-
-## MVC arkitektur med front-controller
-
-![](documentation/frontcontroller.jpg)
+US-7: Som sælger eller admin, vil jeg automatisk få en generet SVG og stykliste når jeg går ind på en kundes forspørgelse, heraf kan jeg tjekke og lave ændringer på dem.
+**Givet** at jeg er sælger eller admin og er logget på, så når jeg har valgt at gå ind på en forspørgelse, **vil** jeg nå hen på en side hvor jeg kan se en automatisk SVG og stykliste for kundens krav og jeg kan også ændre på både SVG'en og styklisten.  
+Estimat: large
