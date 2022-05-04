@@ -3,10 +3,6 @@
 Tsrc/main/java/dk/cphbusiness/dat/carporteksamensproject/control/FrontController.java,f/0/f0d40c83701966bbef54038fe4b1c3cd6f0841fd
 {
 Ksrc/main/java/dk/cphbusiness/dat/carporteksamensproject/control/Logout.java,d/8/d8e268a2bf1f0bbae520b35d9d61ad81b88e2a8f
-ä
-Zsrc/main/java/dk/cphbusiness/dat/carporteksamensproject/model/persistence/IUserMapper.java,1/7/1710bec3f0e271994df761e56e6bdf40afadd802
-â
-Ysrc/main/java/dk/cphbusiness/dat/carporteksamensproject/model/persistence/UserMapper.java,0/9/099b7fca8168cee7c8b94345813f59d2b4599d36
 z
 Jsrc/main/java/dk/cphbusiness/dat/carporteksamensproject/control/About.java,2/6/269edd4a2043dadec53351b918daa09097c36593
 É
@@ -44,7 +40,5 @@ $.idea/codeStyles/codeStyleConfig.xml,d/d/dd7b3350c29c49497756c7f32c69a3bed18b1
 Psrc/main/java/dk/cphbusiness/dat/carporteksamensproject/model/entities/User.java,7/0/7067f72f0de990812f6e473c3a7afe2617145f35
 è
 _src/main/java/dk/cphbusiness/dat/carporteksamensproject/model/exceptions/DatabaseException.java,6/5/6593914cf85bc15840ca1d7119f9f740eb731576
-Ü
-Vsrc/main/java/dk/cphbusiness/dat/carporteksamensproject/model/services/UserFacade.java,7/8/78459713609103c9b175de976c87b7648c77a169
 ä
 Zsrc/main/java/dk/cphbusiness/dat/carporteksamensproject/model/services/Authentication.java,f/7/f7df1b4223cd855a0d15a3e2c6397d26b32213c2

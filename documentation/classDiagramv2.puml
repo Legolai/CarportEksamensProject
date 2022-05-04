@@ -1,0 +1,401 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+package annotations {
+    annotation Entity
+    annotation Table {
+        String name()
+    }
+    annotation Id
+    annotation Column {
+        String name()
+    }
+    annotation GeneratedValue
+}
+
+interface FunctionWithThrows<T,R> {
+    R apply(T entity)
+}
+
+class EntityData<T> {
+    - Class<T> entityClass
+    - Field idField
+    - List<Field> fields
+    - Class<?>[] constructorParamTypes
+}
+
+class ResultData<T> {
+    - T entity
+    - ResultSet resultSet
+    - int rowsAffected
+}
+
+class DatabaseException extends Exception
+
+class ConnectionPool {
+    - HikariDataSource ds
+    - {static} String USER
+    - {static} String PASSWORD
+    - {static} String URL
+    + Connection getConnection()
+    + void close()
+}
+
+interface IEntityManager<T> {
+    + {abstract} T insert(T entity)
+    + {abstract} List<T> getAll()
+    + {abstract} boolean update(T entity)
+    + {abstract} T find(object primaryKey)
+    + {abstract} T find(map<String, object> properties)
+    + {abstract} T createEntity(ResultSet rs)
+}
+
+class EntityManager<T> implements IEntityManager{
+    - ConnectionPool conn
+    - EntityData entityData
+}
+
+interface IAccountMapper {
+    + {abstract} AccountDTO login(String email, String password)
+    + {abstract} AccountDTO registeretAccount(AccountDTO account)
+    + {abstract} List<AccountDTO> getAll()
+}
+
+class AccountMapper implements IAccountMapper{
+    - IEntityManager entityManager
+}
+
+interface IPersonMapper {
+    + {abstract} PersonDTO find(int id)
+    + {abstract} PersonDTO registeretPerson(PersonDTO person)
+    + {abstract} List<PersonDTO> getAll()
+}
+
+class PersonMapper implements IPersonMapper{
+    - IEntityManager entityManager
+}
+
+interface IInquiryMapper {
+    + {abstract} InquiryDTO find(int personId)
+    + {abstract} InquiryDTO registeretInquiry(InquiryDTO inquiry)
+    + {abstract} List<InquiryDTO> getAll()
+}
+
+class InquiryMapper implements IInquiryMapper{
+    - IEntityManager entityManager
+}
+
+interface IProductMapper {
+    + {abstract} ProductVariantDTO find(map<String, Object> properties)
+    + {abstract} ProductVariantDTO find(int id)
+    + {abstract} List<ProductVariantDTO> getAll()
+}
+
+class ProductMapper implements IProductMapper{
+    - IEntityManager entityManager
+}
+
+interface IOrderMapper {
+    + {abstract} OrderDTO findOrder(int id)
+    + {abstract} OrderDTO createOrder(OrderDTO account)
+    + {abstract} List<OrderDTO> getAll()
+}
+
+class OrderMapper implements IOrderMapper {
+    - IEntityManager entityManager
+}
+
+class OrderDTO {
+    - Order info
+    - InquiryDTO inquiry
+    - PersonDTO person
+    - AddressDTO address
+}
+
+class AccountDTO {
+    - Account account
+    - PersonDTO person
+}
+
+class AddressDTO {
+    - Address address
+    - City city
+}
+
+class ProductVariantDTO {
+    - ProductVariant info
+    - ProductVariantDTO product
+    - Size size
+}
+
+
+class ProductVariant {
+    - int id
+    - int productId
+    - int sizeId
+    - boolean deleted
+}
+
+class ProductDTO {
+    Product product
+    ProductType type
+}
+
+
+class BillOfMaterial {
+    - int id
+    - LocalDateTime updated
+    - LocalDateTime created
+}
+
+class BillOfMaterialLineItem {
+    - int id
+    - int billOfMaterialId
+    - int amount
+    - String comment
+    - int productId
+}
+
+class BillOfMaterialLineItemDTO {
+    - BillOfMaterialLineItem info
+    - ProductDTO product
+}
+
+class BillOfMaterialDTO {
+    - BillOfMaterial info
+    - List<BillOfMaterialLineItemDTO> lineItems
+}
+
+class ProductType {
+    - int id
+    - int name
+}
+
+class Inquiry {
+    - int id
+    - InquiryStatus status
+    - String comment
+    - int personId
+    - int billOfMaterialId
+    - LocalDateTime created
+    - LocalDateTime updated
+}
+
+enum InquiryStatus {
+    OPEN
+    REVIEW
+    CANCELED
+    ORDERED
+}
+
+class InquiryDTO {
+    - Inquiry info
+    - BillOfMaterialDTO bom
+    - CarportDTO carport
+}
+
+
+class CarportDTO {
+    - Carport info
+    - ProductVariantDTO roofMaterial
+    - Optional<ShackDTO> shack
+}
+
+class Carport {
+    - int id
+    - int width
+    - int length
+    - int height
+    - RoofType roofType
+    - int roofMaterialId
+    - LocalDateTime updated
+    - int inquiryId
+}
+
+
+class Shack {
+    - int id
+    - int width
+    - int length
+    - boolean isLeftAligned
+    - int facingId
+    - int flooringId
+    - int carportId
+}
+
+class ShackDTO {
+    Shack info
+    ProductVariantDTO flooring
+    ProductVariantDTO facing
+}
+
+enum RoofType {
+    FLAT
+    SLOPE
+}
+
+class Cart {
+    - List<CartLineItem> items
+}
+
+class CartLineItem {
+    - Object product
+    - int amount
+}
+
+class Order {
+    - int id
+    - LocalDateTime created
+    - LocalDateTime shipped
+    - boolean deleted
+    - int personId
+    - int inquiryId
+    - int addressId
+}
+
+
+
+class Product {
+    - int id
+    - String description
+    - int unitPrice
+    - Unit unit
+    - AmountUnit amountUnit
+    - int productTypeId
+    - boolean deleted
+}
+
+enum AmountUnit {
+    PIECE
+    PACK
+    ROLL
+    SET
+}
+
+enum Unit {
+    METER
+    PIECE
+}
+
+class Size {
+    - int id
+    - int length
+    - boolean deleted
+}
+
+class Person {
+    - int id
+    - String forename
+    - String surname
+    - String email
+    - String phoneNumber
+    - int addressId
+}
+
+class PersonDTO {
+    - Person person
+    - AddressDTO address
+}
+
+class Account {
+    - int id
+    - LocalDateTime created
+    - LocalDateTime updated
+    - int personId
+    - String password
+    - Role role
+}
+
+enum Role {
+    COSTUMER
+    EMPLOYEE
+    ADMIN
+}
+
+class Address {
+    - int id
+    - String number
+    - String StreetName
+    - String floor
+}
+
+class City {
+    - String zipcode
+    - String name
+}
+
+interface Command {
+    {abstract} execute(HttpServletRequest request, HttpServletResponse response, ConnectionPool conn)
+}
+
+class CommandController {
+    - {static} CommandController INSTANCE
+    - Map<String, Command> commands
+    + CommandController getInstance()
+    + Command extractCommand(HttpServletRequest request)
+}
+
+class UnknownCommand implements Command
+class PageCommand implements Command
+class ProtectedPageCommand extends PageCommand {
+    - Role role
+}
+
+ProtectedPageCommand::role *-- Role
+CommandController::commands *-- Command
+
+ProductMapper::entityManager *-- EntityManager
+PersonMapper::entityManager *-- EntityManager
+OrderMapper::entityManager *-- EntityManager
+AccountMapper::entityManager *-- EntityManager
+InquiryMapper::entityManager *-- EntityManager
+EntityManager::entityData *-- EntityData
+EntityManager::conn *-- ConnectionPool
+
+Cart *-- CartLineItem
+
+ShackDTO::info *-- Shack
+ShackDTO::flooring *-- ProductVariantDTO
+ShackDTO::facing *-- ProductVariantDTO
+Carport::roofType *-- RoofType
+
+Inquiry::status *-- InquiryStatus
+
+CarportDTO::info *-- Carport
+CarportDTO::shack *-- ShackDTO
+CarportDTO::roofMaterial *-- ProductVariantDTO
+
+InquiryDTO::info *-- Inquiry
+InquiryDTO::bom *-- BillOfMaterialDTO
+InquiryDTO::carport *-- CarportDTO
+
+Account::role *-- Role
+AddressDTO::Address *-- Address
+AddressDTO::City *-- City
+PersonDTO::person *-- Person
+PersonDTO::address *-- AddressDTO
+AccountDTO::account *-- Account
+AccountDTO::person *-- PersonDTO
+
+Product::unit *-- Unit
+Product::amountUnit *-- AmountUnit
+ProductDTO::type *-- ProductType
+ProductDTO::info *-- Product
+
+ProductVariantDTO::info *-- ProductVariant
+ProductVariantDTO::product *-- ProductDTO
+ProductVariantDTO::size *-- Size
+
+OrderDTO::info *-- Order
+OrderDTO::address *-- AddressDTO
+OrderDTO::person *-- PersonDTO
+OrderDTO::inquiry *-- InquiryDTO
+
+BillOfMaterialLineItemDTO::info *-- BillOfMaterialLineItem
+BillOfMaterialLineItemDTO::product *-- ProductVariantDTO
+
+BillOfMaterialDTO::info *-- BillOfMaterial
+BillOfMaterialDTO::lineItems *-- BillOfMaterialLineItemDTO
+
+
+@enduml
