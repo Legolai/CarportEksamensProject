@@ -1,0 +1,66 @@
+@startuml
+'https://plantuml.com/activity-diagram-beta
+
+
+Title Fog hjemmeside forspørgelse om skryddersyet carport, as is
+|#White|Kunde|
+    start
+    :Går til Fog's hjemmeside;
+
+|#LightBlue|Webside|
+    :Går til trælast & byggecenter;
+    :Have og fritid;
+    :Byg-selv produkter;
+    :Vælg en Carport;
+    :Vælg carport efter egne mål;
+    if (Valg) then (Flad tag)
+        :Udfyld formular;
+    else (Tag med rejsning)
+        :Udfyld formular;
+    endif
+    :Send formular;
+
+|#Tan|Fog/Sælger|
+    :Ser kunde forspørgelse;
+    :Åbner m3 quickbyg;
+
+|#LightPink|m3 quickbyg|
+    :Indtaster kundens mål/krav;
+    :Generer SVG og stykliste;
+    :Rediger på SVG og stykliste;
+    :Vælger pris;
+    :Exporter til PDF;
+
+|#Tan|Fog/Sælger|
+    :Sender mail til kunde;
+
+|#White|Kunde|
+    :Modtager mail;
+    -[#green,dashed]-> Der vil nok være
+    noget frem og
+    tilbage med sælger
+     om carporten;
+    :Accepter tilbud;
+
+|#Tan|Fog/Sælger|
+    :Sender kvittering til kunden;
+
+|#White|Kunde|
+    :Betaler;
+
+    fork
+    |#White|Kunde|
+        :Venter på vare;
+    fork again
+    |#Tan|Fog/Sælger|
+        :Sender vare og stykliste til kunden;
+    end fork
+
+
+|#White|Kunde|
+    :Modtager stykliste og vare;
+
+
+stop
+
+@enduml

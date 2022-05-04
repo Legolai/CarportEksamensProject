@@ -19,3 +19,14 @@ TODO:
 - Opsætning af Kanban Board
 - Heraf definitioner (tshirt størrelser)
 
+Dag 3 (5/4 onsdag)
+Opsamling:
+- Vi have lavet TODO for dag 2
+  TODO:
+- Time med nikolaj
+- Finpudse EER
+- Aktivitets diagram
+- Navigation diagram
+- Og mulig opdatering af klasse diagram og domæne model
+- Måske en smule kodning
+

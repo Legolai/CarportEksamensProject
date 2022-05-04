@@ -1,0 +1,70 @@
+@startuml
+'https://plantuml.com/state-diagram
+
+Title Olsker Cupcake website
+
+
+
+State index.jsp
+State login.jsp
+State register.jsp
+State navigationbar
+
+
+[*] --> index.jsp
+index.jsp --> navigationbar
+index.jsp --> carportFlatRoof.jsp
+index.jsp --> carportSlopeRoof.jsp
+carportFlatRoof.jsp --> index.jsp
+carportSlopeRoof.jsp --> index.jsp
+carportFlatRoof.jsp --> carportSlopeRoof.jsp
+carportSlopeRoof.jsp --> carportFlatRoof.jsp
+navigationbar --> index.jsp
+
+index.jsp --> login.jsp
+note on link
+    login.jsp and register.jsp
+    also have access to the navigationbar
+    No arrows, because too messy
+end note
+index.jsp --> register.jsp
+
+login.jsp --> login.jsp: Log på [fejl]
+login.jsp --> LoggedOn: Log på [ok]
+register.jsp --> register.jsp: Registrer [fejl]
+register.jsp --> LoggedOn: Registrer [ok]
+
+navigationbar --> LoggedOnAsEmployeeOrAdmin
+LoggedOnAsEmployeeOrAdmin --> navigationbar
+
+
+State LoggedOn {
+    State account.jsp
+    [*] --> index.jsp: Bruger går til index når der logges ind
+    navigationbar --> account.jsp
+    account.jsp --> navigationbar
+
+    note bottom of account.jsp
+        This jsp is reachable
+        ONLY if the user has logged in
+    end note
+}
+
+note top of LoggedOnAsEmployeeOrAdmin
+    This state is reachable
+    ONLY if the user has logged in
+    AND has the role Admin or Employee
+end note
+
+State LoggedOnAsEmployeeOrAdmin {
+    State admin.jsp
+    [*] --> admin.jsp
+    note bottom of admin.jsp
+            Seller views and processes
+            inquiries here
+    end note
+}
+
+
+
+@enduml
