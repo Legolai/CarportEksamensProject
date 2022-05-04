@@ -1,5 +1,6 @@
 package dk.cphbusiness.dat.carporteksamensproject.model.entities;
 
+<<<<<<< HEAD
 import dk.cphbusiness.dat.carporteksamensproject.model.annotations.*;
 
 import java.time.LocalDateTime;
