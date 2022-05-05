@@ -1,16 +1,30 @@
 package dk.cphbusiness.dat.carporteksamensproject.model.entities;
 
+import dk.cphbusiness.dat.carporteksamensproject.model.annotations.*;
+
+@Entity
+@Table("Address")
 public class Address {
+    @Id
+    @GeneratedValue(strategy = 1)
+    @Column("address_ID")
     private int id;
+    @Column("address_number")
     private String number;
-    private String StreetName;
+
+    @Column("address_street")
+    private String streetName;
+
+    @Column("address_floor")
     private String floor;
+
+    @Column("city_zipcode")
     private String zipcode;
 
     public Address(int id, String number, String streetName, String floor, String zipcode) {
         this.id = id;
         this.number = number;
-        StreetName = streetName;
+        this.streetName = streetName;
         this.floor = floor;
         this.zipcode = zipcode;
     }
@@ -24,7 +38,7 @@ public class Address {
     }
 
     public String getStreetName() {
-        return StreetName;
+        return streetName;
     }
 
     public String getFloor() {
