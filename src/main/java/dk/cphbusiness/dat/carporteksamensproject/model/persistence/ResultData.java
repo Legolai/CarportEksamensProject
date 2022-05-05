@@ -6,10 +6,10 @@ public class ResultData<T> {
 
     private final int rowsAffected;
     private final ResultSet resultSet;
-    private final EntityData<T> entityData;
+    private final EntityData<?> entityData;
     private final T entity;
 
-    public ResultData(int rowsAffected, ResultSet resultSet, EntityData<T> entityData, T entity) {
+    public ResultData(int rowsAffected, ResultSet resultSet, EntityData<?> entityData, T entity) {
         this.rowsAffected = rowsAffected;
         this.resultSet = resultSet;
         this.entityData = entityData;
@@ -24,7 +24,7 @@ public class ResultData<T> {
         return resultSet;
     }
 
-    public EntityData<T> getEntityData() {
+    public EntityData<?> getEntityData() {
         return entityData;
     }
 
