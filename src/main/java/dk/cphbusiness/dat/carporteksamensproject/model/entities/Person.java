@@ -58,4 +58,28 @@ public class Person {
     public int getAddressId() {
         return addressId;
     }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setForename(String forename) {
+        this.forename = forename;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public void setAddressId(int addressId) {
+        this.addressId = addressId;
+    }
 }

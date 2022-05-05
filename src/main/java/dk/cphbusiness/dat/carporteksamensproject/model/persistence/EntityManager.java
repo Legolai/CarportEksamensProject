@@ -1,13 +1,11 @@
 package dk.cphbusiness.dat.carporteksamensproject.model.persistence;
 
 import dk.cphbusiness.dat.carporteksamensproject.interfaces.FunctionWithThrows;
-import dk.cphbusiness.dat.carporteksamensproject.interfaces.RecursiveBiConsumerWithThrows;
 import dk.cphbusiness.dat.carporteksamensproject.model.annotations.Column;
 import dk.cphbusiness.dat.carporteksamensproject.model.annotations.Entity;
 import dk.cphbusiness.dat.carporteksamensproject.model.annotations.GeneratedValue;
 import dk.cphbusiness.dat.carporteksamensproject.model.annotations.JoinedEntities;
 import dk.cphbusiness.dat.carporteksamensproject.model.exceptions.DatabaseException;
-import dk.cphbusiness.dat.carporteksamensproject.model.services.Clone;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -32,7 +30,7 @@ public class EntityManager {
         }
     }
 
-    private <T, R> R newQueryUpdate(Connection connection, String sql, EntityData<T> entityData, T entity, FunctionWithThrows<ResultData<T>, R> queryHandler) throws DatabaseException {
+    private <T, R> R newQueryUpdate(Connection connection, String sql, EntityData<?> entityData, T entity, FunctionWithThrows<ResultData<T>, R> queryHandler) throws DatabaseException {
         try (PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             List<Field> fields = entityData.getFields();
             for (int i = 1; i <= fields.size(); ++i) {
@@ -82,8 +80,34 @@ public class EntityManager {
     }
 
     public <T> T insert(Class<T> entityClass, T entity) throws DatabaseException {
-        EntityData<T> entityData = new EntityData<>(entityClass);
+        if (entityClass.isAnnotationPresent(Entity.class)) {
+            EntityData<T> entityData = new EntityData<>(entityClass);
+            return insertEntity(entityData, entity);
+        } else if (entityClass.isAnnotationPresent(JoinedEntities.class)) {
+            JoinedEntityData<T> joinedEntityData = new JoinedEntityData<>(entityClass);
+            return insertJoinedEntity(joinedEntityData, entity);
+        }
+        throw new DatabaseException("Class was not annotated as an entity or joinedEntity!");
+    }
 
+    private <T> T insertJoinedEntity(JoinedEntityData<?> joinedEntityData, T entity) throws DatabaseException {
+        try {
+            for (Field field : joinedEntityData.getFields()) {
+                Object fieldEntity = joinedEntityData.getEntityClass().getDeclaredMethod(field.getName()).invoke(entity);
+                if (field.getType().isAnnotationPresent(JoinedEntities.class)) {
+                    insertJoinedEntity(new JoinedEntityData<>(field.getType()), fieldEntity);
+                } else {
+                    insertEntity(new EntityData<>(field.getType()), fieldEntity);
+                }
+            }
+            return entity;
+        }
+        catch (InvocationTargetException | DatabaseException | IllegalAccessException | NoSuchMethodException ex) {
+            throw new DatabaseException(ex.getMessage());
+        }
+    }
+
+    private <T> T insertEntity(EntityData<?> entityData, T entity) throws DatabaseException {
         if (entityData.getFieldForId().isAnnotationPresent(GeneratedValue.class)) {
             entityData.getFields().remove(entityData.getFieldForId());
         }
@@ -93,8 +117,22 @@ public class EntityManager {
 
         String sql = "INSERT INTO " + entityData.getTableName() + " (" + sqlColumns + ") VALUES (" + options + ")";
 
+        Map<String, Object> properties = entityData.getFields().stream().collect(Collectors.toMap(Field::getName, field -> {
+            try {
+                return entityData.getEntityClass().getMethod("get" + field.getName().substring(0, 1).toUpperCase() + field.getName().substring(1)).invoke(entity);
+            }
+            catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+                throw new RuntimeException(e);
+            }
+        }));
+        String findSqlColumns = String.join(" AND ", properties.keySet());
+        String findOptions = sqlColumns.replaceAll("\\b(?!AND\\b)\\w+", "$0 LIKE ?");
+        String findSql = "SELECT EXITS(SELECT * FROM " + entityData.getTableName() + " WHERE " + options + ") LIMIT 1";
+
         FunctionWithThrows<ResultData<T>, T> handler = this::extractIdFromQueryUpdate;
-        return makeConnection(conn -> newQueryUpdate(conn, sql, entityData, entity, handler));
+        return makeConnection(conn ->
+
+                newQueryUpdate(conn, sql, entityData, entity, handler));
     }
 
     public <T> List<T> getAll(Class<T> entityClass) throws DatabaseException {
@@ -153,7 +191,34 @@ public class EntityManager {
         return Optional.of(makeConnection(connection -> newQuery(connection, sql, handler, primaryKey)));
     }
 
-    public <T> Optional<T> find(Class<T> entityClass, Map<String, Object> properties) throws DatabaseException {
+    public <T> Optional<List<T>> findAll(Class<T> entityClass, Map<String, Object> properties) throws DatabaseException {
+        if (entityClass.isAnnotationPresent(Entity.class)) {
+            return findEntities(entityClass, properties);
+        } else if (entityClass.isAnnotationPresent(JoinedEntities.class)) {
+            return findJoinedEntities(entityClass, properties);
+        }
+        throw new DatabaseException("Class was not annotated as an entity or joinedEntity!");
+    }
+
+    private <T> Optional<List<T>> findJoinedEntities(Class<T> entityClass, Map<String, Object> properties) throws DatabaseException {
+        JoinedEntityData<T> joinedEntityData = new JoinedEntityData<>(entityClass);
+
+        String sqlColumns = String.join(" AND ", properties.keySet());
+        String options = sqlColumns.replaceAll("\\b(?!AND\\b)\\w+", "$0 = ?");
+        String join = joinedEntityData.getJoinMap().entrySet().stream().reduce("", (curr, entry) -> curr + String.format(" INNER JOIN %s USING(%s)", entry.getKey(), entry.getValue()), String::concat);
+
+        String sql = "SELECT * FROM " + joinedEntityData.getMainTable() + join + " WHERE " + options;
+        System.out.println(sql);
+        FunctionWithThrows<ResultSet, List<T>> handler = resultSet -> {
+            List<T> list = new ArrayList<>();
+            while (resultSet.next())
+                list.add(createJoinedEntity(resultSet, joinedEntityData));
+            return list;
+        };
+        return Optional.of(makeConnection(connection -> newQuery(connection, sql, handler, properties.values().toArray())));
+    }
+
+    private <T> Optional<List<T>> findEntities(Class<T> entityClass, Map<String, Object> properties) throws DatabaseException {
         EntityData<T> entityData = new EntityData<>(entityClass);
 
         String sqlColumns = String.join(" AND ", properties.keySet());
@@ -161,16 +226,18 @@ public class EntityManager {
 
         String sql = "SELECT * FROM " + entityData.getTableName() + " WHERE " + options;
 
-        FunctionWithThrows<ResultSet, T> handler = resultSet -> {
-            if (resultSet.next()) return createEntity(resultSet, entityData);
-            return null;
+        FunctionWithThrows<ResultSet, List<T>> handler = resultSet -> {
+            List<T> list = new ArrayList<>();
+            while (resultSet.next())
+                list.add(createEntity(resultSet, entityData));
+            return list;
         };
         return Optional.of(makeConnection(connection -> newQuery(connection, sql, handler, properties.values().toArray())));
     }
 
     private <T> T extractIdFromQueryUpdate(ResultData<T> managerResult) throws DatabaseException {
         Field fieldForId = managerResult.getEntityData().getFieldForId();
-        T newEntity = Clone.apply(managerResult.getEntityData().getEntityClass(), managerResult.getEntity());
+        T newEntity = managerResult.getEntity();
         try {
             if (managerResult.getRowsAffected() == 1 && fieldForId.isAnnotationPresent(GeneratedValue.class)) {
                 managerResult.getResultSet().next();

@@ -3,6 +3,7 @@ package dk.cphbusiness.dat.carporteksamensproject.model.persistence;
 import dk.cphbusiness.dat.carporteksamensproject.model.dtos.AddressDTO;
 import dk.cphbusiness.dat.carporteksamensproject.model.dtos.PersonDTO;
 import dk.cphbusiness.dat.carporteksamensproject.model.entities.Address;
+import dk.cphbusiness.dat.carporteksamensproject.model.entities.City;
 import dk.cphbusiness.dat.carporteksamensproject.model.entities.Person;
 import dk.cphbusiness.dat.carporteksamensproject.model.exceptions.DatabaseException;
 import org.junit.jupiter.api.BeforeAll;
@@ -13,6 +14,8 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -97,6 +100,24 @@ class EntityManagerTest {
         List<Person> list = entityManager.getAll(Person.class);
         System.out.println(list);
         assertFalse(list.isEmpty());
+    }
+
+    @Test
+    void testFindPersonDTOs() throws DatabaseException {
+        EntityManager entityManager = new EntityManager(connectionPool);
+        Optional<List<PersonDTO>> list = entityManager.findAll(PersonDTO.class, Map.of("person_forename", "Nicolai"));
+        System.out.println(list);
+        assertFalse(list.isEmpty());
+        assertEquals(1,list.get().size());
+    }
+
+    @Test
+    void testInsertPersonDTOs() throws DatabaseException {
+        EntityManager entityManager = new EntityManager(connectionPool);
+        PersonDTO expected = new PersonDTO(new Person(4, "Peter", "Jensen", "pet@gmail.com", "12345679",4), new AddressDTO(new Address(4, "40", "Ny Øvej", null, "3550"), new City("3550", "Slangerup")));
+        PersonDTO person = new PersonDTO(new Person(0, "Peter", "Jensen", "pet@gmail.com", "12345679",0), new AddressDTO(new Address(0, "40", "Ny Øvej", null, "3550"), new City("3550", "Slangerup")));
+        PersonDTO actual = entityManager.insert(PersonDTO.class, person);
+        assertEquals(expected, actual);
     }
 
 

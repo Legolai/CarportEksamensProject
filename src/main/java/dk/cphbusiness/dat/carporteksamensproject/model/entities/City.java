@@ -28,4 +28,12 @@ public class City {
     public String getName() {
         return name;
     }
+
+    public void setZipcode(String zipcode) {
+        this.zipcode = zipcode;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

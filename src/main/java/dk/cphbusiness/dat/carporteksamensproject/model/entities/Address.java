@@ -48,4 +48,24 @@ public class Address {
     public String getZipcode() {
         return zipcode;
     }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
+    }
+
+    public void setStreetName(String streetName) {
+        this.streetName = streetName;
+    }
+
+    public void setFloor(String floor) {
+        this.floor = floor;
+    }
+
+    public void setZipcode(String zipcode) {
+        this.zipcode = zipcode;
+    }
 }
