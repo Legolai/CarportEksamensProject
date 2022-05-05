@@ -1,49 +1,12 @@
 
-Ñ
-Tsrc/main/java/dk/cphbusiness/dat/carporteksamensproject/control/FrontController.java,f/0/f0d40c83701966bbef54038fe4b1c3cd6f0841fd
-{
-Ksrc/main/java/dk/cphbusiness/dat/carporteksamensproject/control/Logout.java,d/8/d8e268a2bf1f0bbae520b35d9d61ad81b88e2a8f
-z
-Jsrc/main/java/dk/cphbusiness/dat/carporteksamensproject/control/About.java,2/6/269edd4a2043dadec53351b918daa09097c36593
-É
-Ssrc/main/java/dk/cphbusiness/dat/carporteksamensproject/control/UnknownCommand.java,c/0/c054adbf62334d464a6a0c3a544c81c075488bf6
-:
-
-.gitignore,a/5/a5cc2925ca8258af241be7e5b0381edf30266302
-I
-src/main/webapp/error.jsp,c/b/cba3df22242d379bdb72d00919d2e8d49101d1bf
-I
-src/main/webapp/login.jsp,8/5/85ee523d01e5e19376db640e846c91bbcb0a1c22
-I
-src/main/webapp/index.jsp,8/e/8e6d3b70c9f5b02570779b0441540d45eceb0ded
-M
-src/main/webapp/css/style.css,2/c/2c1f525046eaa5ad3e39cc3d3b2f4c4fab4ff318
-Q
-!src/main/webapp/WEB-INF/about.jsp,0/6/06984e3a6d31f89c64703f2123d72fa6e45ff2ce
-]
--src/main/webapp/WEB-INF/tags/pagetemplate.tag,1/7/17918a5675a8e4c47a3d9e44be9f870a33d0ef70
 g
 7.idea/artifacts/CarportEksamensProject_war_exploded.xml,2/7/27fe0349aea09346d62517b9f7734810cb92969e
 ^
 ..idea/artifacts/CarportEksamensProject_war.xml,c/8/c80032c72f66f0eb85ec42a71c4f2d0d07830326
-O
-src/main/webapp/WEB-INF/web.xml,2/e/2e22b6edd746fa3dc40ad7276c87c8d87d72a392
 L
 .idea/codeStyles/Project.xml,6/e/6ecd6000a7b6f4a2884412ff19f74193ed089648
 T
 $.idea/codeStyles/codeStyleConfig.xml,d/d/dd7b3350c29c49497756c7f32c69a3bed18b1cba
-Ä
-Psrc/main/java/dk/cphbusiness/dat/carporteksamensproject/model/entities/User.java,7/0/7067f72f0de990812f6e473c3a7afe2617145f35
-è
-_src/main/java/dk/cphbusiness/dat/carporteksamensproject/model/exceptions/DatabaseException.java,6/5/6593914cf85bc15840ca1d7119f9f740eb731576
-ä
-Zsrc/main/java/dk/cphbusiness/dat/carporteksamensproject/model/services/Authentication.java,f/7/f7df1b4223cd855a0d15a3e2c6397d26b32213c2
-ä
-Zsrc/main/java/dk/cphbusiness/dat/carporteksamensproject/model/config/ApplicationStart.java,d/2/d2dd34c71b110564ed86f6689b97813e57c93e1e
-ç
-]src/main/java/dk/cphbusiness/dat/carporteksamensproject/model/persistence/ConnectionPool.java,6/4/64b26f08febcbe97ba81b7afdf628e97fbd47e76
-|
-Lsrc/main/java/dk/cphbusiness/dat/carporteksamensproject/control/Command.java,e/3/e323854d236bd9d7588554bd540d417e6d4c4a94
 w
 G.idea/sonarlint/issuestore/c/8/c80032c72f66f0eb85ec42a71c4f2d0d07830326,1/5/158816fdc9d04d03f43083490fc962382b607386
 w
@@ -76,18 +39,6 @@ w
 G.idea/sonarlint/issuestore/d/8/d8e268a2bf1f0bbae520b35d9d61ad81b88e2a8f,b/5/b5ef15df2bebc1504b2bfe21b2c999445d18c90d
 w
 G.idea/sonarlint/issuestore/d/d/dd7b3350c29c49497756c7f32c69a3bed18b1cba,9/d/9db44714da783e82392884aeea0d83f0125570ed
-U
-%documentation/NotesToCustomerRequests,8/d/8d9c6da895601ed8a66c7b38b2aff3dc8afd082f
-9
-	README.md,8/e/8ec9a00bfd09b3190ac6b22251dbb1aa95a0579d
-ä
-Zsrc/main/java/dk/cphbusiness/dat/carporteksamensproject/model/persistence/IUserMapper.java,1/7/1710bec3f0e271994df761e56e6bdf40afadd802
-P
- documentation/domainModelV1.puml,d/a/da1ef2c6fba3505a8b054cc10b93d6664fbcdeda
-O
-documentation/domainModev2.puml,d/3/d3c097a70396c062ce0654afdbffffa3c23fac15
-O
-documentation/Scrum_Meetings.md,8/e/8efd00e9cdb548a7c607914c7f16a055560a0f14
 í
 bsrc/main/java/dk/cphbusiness/dat/carporteksamensproject/model/entities/dtos/BillOfMaterialDTO.java,d/0/d0623d8bf13994034f22f33b522ebbc90a520dfc
 ö
@@ -110,5 +61,3 @@ bsrc/main/java/dk/cphbusiness/dat/carporteksamensproject/model/entities/dtos/Pro
 Ysrc/main/java/dk/cphbusiness/dat/carporteksamensproject/model/entities/dtos/OrderDTO.java,9/c/9ce5e56e91aeb7f9442e8a5a42183970baf691ea
 ã
 [src/main/java/dk/cphbusiness/dat/carporteksamensproject/model/entities/dtos/CarportDTO.java,7/7/77e45e9da4e50fc7cbb78a641598dbdb5fcb5ac8
-Q
-!documentation/classDiagramV1.puml,1/9/194036e98e9f1179cc78add523e2bcc53fb3cc4c
