@@ -1,7 +1,5 @@
 package dk.cphbusiness.dat.carporteksamensproject.model.persistence;
 
-import dk.cphbusiness.dat.carporteksamensproject.model.dtos.AddressDTO;
-import dk.cphbusiness.dat.carporteksamensproject.model.entities.Address;
 import dk.cphbusiness.dat.carporteksamensproject.model.exceptions.DatabaseException;
 
 import java.util.List;
