@@ -1,6 +1,5 @@
 package dk.cphbusiness.dat.carporteksamensproject.model.persistence;
 
-import dk.cphbusiness.dat.carporteksamensproject.model.dtos.AddressDTO;
 import dk.cphbusiness.dat.carporteksamensproject.model.dtos.PersonDTO;
 import dk.cphbusiness.dat.carporteksamensproject.model.entities.Address;
 import dk.cphbusiness.dat.carporteksamensproject.model.entities.City;
@@ -73,7 +72,7 @@ class EntityManagerTest {
     @Test
     void testGetAllAddressDTOs() throws DatabaseException {
         EntityManager entityManager = new EntityManager(connectionPool);
-        List<AddressDTO> list = entityManager.getAll(AddressDTO.class);
+        List<Address> list = entityManager.getAll(Address.class);
         System.out.println(list);
         assertFalse(list.isEmpty());
     }
@@ -114,8 +113,8 @@ class EntityManagerTest {
     @Test
     void testInsertPersonDTOs() throws DatabaseException {
         EntityManager entityManager = new EntityManager(connectionPool);
-        PersonDTO expected = new PersonDTO(new Person(4, "Peter", "Jensen", "pet@gmail.com", "12345679",4), new AddressDTO(new Address(4, "40", "Ny Øvej", null, "3550"), new City("3550", "Slangerup")));
-        PersonDTO person = new PersonDTO(new Person(0, "Peter", "Jensen", "pet@gmail.com", "12345679",0), new AddressDTO(new Address(0, "40", "Ny Øvej", null, "3550"), new City("3550", "Slangerup")));
+        PersonDTO expected = new PersonDTO(new Person(4, "Peter", "Jensen", "pet@gmail.com", "12345679",4), new Address(4, "40", "Ny Øvej", null, "3550", "Slangerup"));
+        PersonDTO person = new PersonDTO(new Person(0, "Peter", "Jensen", "pet@gmail.com", "12345679",0), new Address(0, "40", "Ny Øvej", null, "3550", "Slangerup"));
         PersonDTO actual = entityManager.insert(PersonDTO.class, person);
         assertEquals(expected, actual);
     }

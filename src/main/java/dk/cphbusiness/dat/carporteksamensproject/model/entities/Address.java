@@ -18,15 +18,19 @@ public class Address {
     @Column("address_floor")
     private String floor;
 
-    @Column("city_zipcode")
+    @Column("address_zipcode")
     private String zipcode;
 
-    public Address(int id, String number, String streetName, String floor, String zipcode) {
+    @Column("address_cityName")
+    private String cityName;
+
+    public Address(int id, String number, String streetName, String floor, String zipcode, String cityName) {
         this.id = id;
         this.number = number;
         this.streetName = streetName;
         this.floor = floor;
         this.zipcode = zipcode;
+        this.cityName = cityName;
     }
 
     public int getId() {
@@ -49,6 +53,10 @@ public class Address {
         return zipcode;
     }
 
+    public String getCityName() {
+        return cityName;
+    }
+
     public void setId(int id) {
         this.id = id;
     }
@@ -67,5 +75,9 @@ public class Address {
 
     public void setZipcode(String zipcode) {
         this.zipcode = zipcode;
+    }
+
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
     }
 }
