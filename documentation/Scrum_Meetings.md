@@ -30,13 +30,23 @@ Opsamling:
 - Og mulig opdatering af klasse diagram og domæne model
 - Måske en smule kodning
 
-Dag 4 (5/4 torsdag)
+Dag 4 (5/5 torsdag)
 Opsamling:
 - Vi have lavet TODO for dag 3
   TODO:
 - Noget rapport skrivning
 - Kodning (nicolaj klasser og database)
 - Kodning (michael initial/skeleton website)
+
+Dag 5 (5/6 fredag)
+Opsamling:
+- Vi have lavet TODO for dag 4
+  TODO:
+- Møde med lærer
+- Mere diskussion om EER diagram
+- Mere kodning
+
+
 
 
 
