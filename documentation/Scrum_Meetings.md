@@ -47,6 +47,14 @@ Opsamling:
 - Mere kodning
 
 
+UGE 2
+
+Dag 6 (5/9 mandag)
+Opsamling:
+- Vi have lavet TODO for dag 5
+  TODO:
+- Mere kodning
+
 
 
 
