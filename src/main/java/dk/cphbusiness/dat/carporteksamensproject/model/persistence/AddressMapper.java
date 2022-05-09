@@ -1,5 +1,6 @@
 package dk.cphbusiness.dat.carporteksamensproject.model.persistence;
 
+import dk.cphbusiness.dat.carporteksamensproject.model.entities.Address;
 import dk.cphbusiness.dat.carporteksamensproject.model.exceptions.DatabaseException;
 
 import java.util.List;
@@ -13,11 +14,11 @@ public class AddressMapper {
         this.manager = manager;
     }
 
-    public List<AddressDTO> getAll() throws DatabaseException {
-        return manager.getAll(AddressDTO.class);
+    public List<Address> getAll() throws DatabaseException {
+        return manager.getAll(Address.class);
     }
 
-    public Optional<AddressDTO> find(Map<String, Object> properties) throws DatabaseException {
-        return manager.find(AddressDTO.class, properties);
+    public Optional<Address> find(Map<String, Object> properties) throws DatabaseException {
+        return manager.find(Address.class, properties);
     }
 }

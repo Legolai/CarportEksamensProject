@@ -2,27 +2,26 @@ package dk.cphbusiness.dat.carporteksamensproject.model.persistence;
 
 import dk.cphbusiness.dat.carporteksamensproject.model.annotations.Entity;
 import dk.cphbusiness.dat.carporteksamensproject.model.annotations.Id;
-import dk.cphbusiness.dat.carporteksamensproject.model.annotations.JoinedEntities;
+import dk.cphbusiness.dat.carporteksamensproject.model.annotations.JoinedEntity;
 import dk.cphbusiness.dat.carporteksamensproject.model.annotations.Table;
 import dk.cphbusiness.dat.carporteksamensproject.model.exceptions.DatabaseException;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.LinkedList;
-import java.util.List;
 
 
 public class EntityData<T> {
 
     private final String tableName;
-    private final List<Field> fields;
+    private final LinkedList<Field> fields;
     private final Field fieldForId;
     private final Class<?>[] constructorEmp;
     private final Class<T> entityClass;
 
 
     public EntityData(Class<T> entityClass) throws DatabaseException {
-        if (!entityClass.isAnnotationPresent(Entity.class) || entityClass.isAnnotationPresent(JoinedEntities.class))
+        if (!entityClass.isAnnotationPresent(Entity.class) || entityClass.isAnnotationPresent(JoinedEntity.class))
             throw new DatabaseException("Object is not annotated as Entity!");
 
         this.tableName = entityClass.getAnnotation(Table.class).value();
@@ -40,7 +39,7 @@ public class EntityData<T> {
         return tableName;
     }
 
-    public List<Field> getFields() {
+    public LinkedList<Field> getFields() {
         return fields;
     }
 

@@ -1,5 +1,7 @@
 package dk.cphbusiness.dat.carporteksamensproject.model.entities;
 
+import java.util.Objects;
+
 public class ProductVariant {
     private int id;
     private int productId;
@@ -27,5 +29,33 @@ public class ProductVariant {
 
     public boolean isDeleted() {
         return deleted;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setProductId(int productId) {
+        this.productId = productId;
+    }
+
+    public void setSizeId(int sizeId) {
+        this.sizeId = sizeId;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ProductVariant that)) return false;
+        return getId() == that.getId() && getProductId() == that.getProductId() && getSizeId() == that.getSizeId() && isDeleted() == that.isDeleted();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getProductId(), getSizeId(), isDeleted());
     }
 }

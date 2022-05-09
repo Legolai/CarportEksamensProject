@@ -1,7 +1,7 @@
 package dk.cphbusiness.dat.carporteksamensproject.model.persistence;
 
 import dk.cphbusiness.dat.carporteksamensproject.model.annotations.Join;
-import dk.cphbusiness.dat.carporteksamensproject.model.annotations.JoinedEntities;
+import dk.cphbusiness.dat.carporteksamensproject.model.annotations.JoinedEntity;
 import dk.cphbusiness.dat.carporteksamensproject.model.annotations.Table;
 
 import java.lang.reflect.Field;
@@ -13,7 +13,7 @@ public class JoinedEntityData<T> {
     private String mainTable;
     private Map<String, String> joinMap;
 
-    private List<Field> fields;
+    private LinkedList<Field> fields;
     private Class<?>[] constructorEmp;
     private Class<T> entityClass;
 
@@ -30,7 +30,7 @@ public class JoinedEntityData<T> {
     }
 
     private void findJoinedEntity(Field classField, List<Class<?>> list, List<Class<?>> listDTOs){
-        if(!classField.getType().isAnnotationPresent(JoinedEntities.class)) {
+        if(!classField.getType().isAnnotationPresent(JoinedEntity.class)) {
             list.add(classField.getType());
             return;
         }
@@ -40,7 +40,7 @@ public class JoinedEntityData<T> {
         }
     }
 
-    public List<Field> getFields() {
+    public LinkedList<Field> getFields() {
         return fields;
     }
 
