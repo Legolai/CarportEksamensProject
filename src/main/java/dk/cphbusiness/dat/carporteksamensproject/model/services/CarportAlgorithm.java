@@ -5,16 +5,11 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 public class CarportAlgorithm {
+    int height = 210; // this changeable for customers?
 
 
 
     public LinkedHashMap<String,Object> flatRoofAlgo(int width, int length, boolean shack, int shackwidth, int shacklength) {
-            //These are temporary
-//        boolean shack = false;
-//        int shackwidth = 270;
-//        int shacklength = 270;
-//        int width = 300;
-//        int length = 300;
 
         LinkedHashMap<String,Object> list = new LinkedHashMap<>();
 
@@ -34,47 +29,19 @@ public class CarportAlgorithm {
 
         carportShack(list, width, length, shack, shackwidth, shacklength);
 
-
-
-        list.put("--------------------Fittings and screws", "--------------------");
-
-        int plastmoskruer200stk = (int) list.get("tagpladeAmounts")/2; // /2 again if length > 600
-        int hulbaand = 2; // just always 2
-        int universalRight = (int) list.get("rafterAmounts");
-        int universalLeft = (int) list.get("rafterAmounts");
-        int skruer45x60 = 1; // always just 1 pack
-        int beslagskruer4x50 = (int) Math.ceil((int) list.get("rafterAmounts")/5); // 3 for 15, 2 for 10
-        int boltForRemOnPosts = (int) Math.ceil((int) list.get("postAmounts")*1.8); // if we add 1 extra post, then -1 first
-        int skiverForRemOnPosts = (int) list.get("postAmounts")+2; // if we add 1 extra, then only +1
-        int skruerYderBeklaedning400 = (int) list.get("skackBeklaedning") / 100; // with 200 braedt for skur beklaedning
-                                                            // 800 skuer is needed, 1 pack is 400
-        int skuerInnerBeklaedning300 = skruerYderBeklaedning400; // 300 a pack
-        int vinkelBeslag = ((int) list.get("loestholterSides") + (int) list.get("loestholterGavler")) * 2;
+        carportFittingsNScrews(list, width, length, shack, shackwidth, shacklength);
 
 
 
-
-        list.put("plastmoskruer200stk",plastmoskruer200stk);
-        list.put("hulbaand",hulbaand);
-        list.put("universalRight",universalRight);
-        list.put("universalLeft",universalLeft);
-        list.put("skruer45x60",skruer45x60);
-        list.put("beslagskruer4x50",beslagskruer4x50);
-        list.put("boltForRemOnPosts",boltForRemOnPosts);
-        list.put("skiverForRemOnPosts",skiverForRemOnPosts);
-        list.put("skruerYderBeklaedning400",skruerYderBeklaedning400);
-        list.put("skuerInnerBeklaedning300",skuerInnerBeklaedning300);
-        list.put("vinkelBeslag",vinkelBeslag);
-
-        //printListOfObject(list);
         for( String key : list.keySet() ){
             System.out.println(key+": "+list.get(key));
         }
         return list;
     }
 
+
     public LinkedHashMap<String,Object> carportBase(LinkedHashMap<String,Object> list, int width, int length, boolean shack, int shackwidth, int shacklength) {
-        int height = 210; // this changeable for customers?
+        //int height = 210; // this changeable for customers?
 
         list.put("--------------------CarportBase", "--------------------");
 
@@ -186,26 +153,66 @@ public class CarportAlgorithm {
         list.put("--------------------Shack if it exists", "--------------------");
 
         int loestholterSides = (int) Math.ceil(shacklength/270.0) * 4;
-        // length would be shacklength / ((int) Math.ceil(shacklength/270))
+        int loestholterSidesLength = shacklength + 30;
         int loestholterGavler = (int) Math.ceil(shackwidth/270.0) * 6;
-        // length would be shacklength / ((int) Math.ceil(shackwidth/270))
+        int loestholterGavlerLength = ((int) list.get("shackRemLength"))/2*((int) list.get("shackRems")) + 30;
         int shackTotalLength = (shacklength * 2 + shackwidth * 2)/10;
         int skackBeklaedning = (int) ((shackTotalLength * 1.56) - (shackTotalLength * 1.56)%30);
+        int skackBeklaedningLength = height;    //210
 
-        int laengteForDoor = 1;     // for the z on door, amount can be adjusted directly?
-        int doergreb = laengteForDoor;  // maybe people can choose how many doors they want?
-        int doerHaengsel = laengteForDoor*2;
+        int laegteForDoor = 1;     // for the z on door, amount can be adjusted directly?
+        int laegteForDoorLength = 420; // I think this is just constant
+        int doergreb = laegteForDoor;  // maybe people can choose how many doors they want?
+        int doerHaengsel = laegteForDoor*2;
 
 
 
         list.put("loestholterSides",loestholterSides);
+        list.put("loestholterSidesLength",loestholterSidesLength);
         list.put("loestholterGavler",loestholterGavler);
-        list.put("shackTotalLength",shackTotalLength);
+        list.put("loestholterGavlerLength",loestholterGavlerLength);
+        list.put("this is not included in 'stykliste' shackTotalLength",shackTotalLength);
         list.put("skackBeklaedning",skackBeklaedning);
+        list.put("skackBeklaedningLength",skackBeklaedningLength);
 
-        list.put("laengteForDoor",laengteForDoor);
+        list.put("laegteForDoor",laegteForDoor);
+        list.put("laegteForDoorLength",laegteForDoorLength);
         list.put("doergreb",doergreb);
         list.put("doerHaengsel",doerHaengsel);
+
+        return list;
+    }
+
+    public LinkedHashMap<String,Object> carportFittingsNScrews(LinkedHashMap<String,Object> list, int width, int length, boolean shack, int shackwidth, int shacklength) {
+        list.put("--------------------Fittings and screws", "--------------------");
+
+        int plastmoskruer200stk = (int) list.get("tagpladeAmounts")/2; // /2 again if length > 600
+        int hulbaand = 2; // just always 2
+        int universalRight = (int) list.get("rafterAmounts");
+        int universalLeft = (int) list.get("rafterAmounts");
+        int skruer45x60 = 1; // always just 1 pack
+        int beslagskruer4x50 = (int) Math.ceil((int) list.get("rafterAmounts")/5); // 3 for 15, 2 for 10
+        int boltForRemOnPosts = (int) Math.ceil((int) list.get("postAmounts")*1.8); // if we add 1 extra post, then -1 first
+        int skiverForRemOnPosts = (int) list.get("postAmounts")+2; // if we add 1 extra, then only +1
+        int skruerYderBeklaedning400 = (int) list.get("skackBeklaedning") / 100; // with 200 braedt for skur beklaedning
+        // 800 skuer is needed, 1 pack is 400
+        int skuerInnerBeklaedning300 = skruerYderBeklaedning400; // 300 a pack
+        int vinkelBeslag = ((int) list.get("loestholterSides") + (int) list.get("loestholterGavler")) * 2;
+
+
+
+
+        list.put("plastmoskruer200stk",plastmoskruer200stk);
+        list.put("hulbaand",hulbaand);
+        list.put("universalRight",universalRight);
+        list.put("universalLeft",universalLeft);
+        list.put("skruer45x60",skruer45x60);
+        list.put("beslagskruer4x50",beslagskruer4x50);
+        list.put("boltForRemOnPosts",boltForRemOnPosts);
+        list.put("skiverForRemOnPosts",skiverForRemOnPosts);
+        list.put("skruerYderBeklaedning400",skruerYderBeklaedning400);
+        list.put("skuerInnerBeklaedning300",skuerInnerBeklaedning300);
+        list.put("vinkelBeslag",vinkelBeslag);
 
         return list;
     }
