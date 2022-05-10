@@ -8,7 +8,6 @@ import dk.cphbusiness.dat.carporteksamensproject.model.entities.Product;
 import dk.cphbusiness.dat.carporteksamensproject.model.entities.ProductType;
 import dk.cphbusiness.dat.carporteksamensproject.model.entities.ProductVariant;
 import dk.cphbusiness.dat.carporteksamensproject.model.entities.Size;
-import dk.cphbusiness.dat.carporteksamensproject.model.exceptions.DatabaseException;
 import dk.cphbusiness.dat.carporteksamensproject.model.interfaces.IForeignKey;
 
 import java.util.List;
@@ -18,7 +17,7 @@ import java.util.List;
 @Join(main = BillOfMaterialLineItem.class, join = {ProductVariant.class, Product.class, Size.class, ProductType.class})
 public record BillOfMaterialDTO(List<BillOfMaterialLineItemDTO> lineItems) implements IForeignKey {
     @Override
-    public void updateForeignKey(Object entity) throws DatabaseException {
+    public void updateForeignKey(Object entity) {
         if (entity instanceof Inquiry foreignKey) {
             lineItems.forEach(lineItem -> lineItem.lineItem().setInquiryId(foreignKey.getId()));
         }

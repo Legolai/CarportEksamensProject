@@ -2,6 +2,8 @@ package dk.cphbusiness.dat.carporteksamensproject.model.entities;
 
 import dk.cphbusiness.dat.carporteksamensproject.model.annotations.*;
 
+import java.util.Objects;
+
 @Entity
 @Table("Person")
 public class Person {
@@ -81,5 +83,17 @@ public class Person {
 
     public void setAddressId(int addressId) {
         this.addressId = addressId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Person person)) return false;
+        return getId() == person.getId() && getAddressId() == person.getAddressId() && Objects.equals(getForename(), person.getForename()) && Objects.equals(getSurname(), person.getSurname()) && Objects.equals(getEmail(), person.getEmail()) && Objects.equals(getPhoneNumber(), person.getPhoneNumber());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getForename(), getSurname(), getEmail(), getPhoneNumber(), getAddressId());
     }
 }

@@ -1,9 +1,10 @@
 package dk.cphbusiness.dat.carporteksamensproject.model.entities;
 
-<<<<<<< HEAD
+
 import dk.cphbusiness.dat.carporteksamensproject.model.annotations.*;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 @Table("Account")
@@ -60,5 +61,41 @@ public class Account {
 
     public Role getRole() {
         return role;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setCreated(LocalDateTime created) {
+        this.created = created;
+    }
+
+    public void setUpdated(LocalDateTime updated) {
+        this.updated = updated;
+    }
+
+    public void setPersonId(int personId) {
+        this.personId = personId;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Account account)) return false;
+        return getId() == account.getId() && getPersonId() == account.getPersonId() && Objects.equals(getCreated(), account.getCreated()) && Objects.equals(getUpdated(), account.getUpdated()) && Objects.equals(getPassword(), account.getPassword()) && getRole() == account.getRole();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getCreated(), getUpdated(), getPersonId(), getPassword(), getRole());
     }
 }
