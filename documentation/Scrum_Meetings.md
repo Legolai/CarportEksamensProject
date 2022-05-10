@@ -55,6 +55,14 @@ Opsamling:
   TODO:
 - Mere kodning
 
+Dag 7 (5/9 tirsdag)
+Opsamling:
+- Vi have lavet TODO for dag 6
+  TODO:
+- Mere kodning
+- Start algoritme
+- Login page
+
 
 
 
