@@ -26,9 +26,8 @@ public class Carport {
     private int roofMaterialId;
     @Column("carport_updated")
     private LocalDateTime updated;
-    private int inquiryId;
 
-    public Carport(int id, int width, int length, int height, RoofType roofType, int roofMaterialId, LocalDateTime updated, int inquiryId) {
+    public Carport(int id, int width, int length, int height, RoofType roofType, int roofMaterialId, LocalDateTime updated) {
         this.id = id;
         this.width = width;
         this.length = length;
@@ -36,7 +35,6 @@ public class Carport {
         this.roofType = roofType;
         this.roofMaterialId = roofMaterialId;
         this.updated = updated;
-        this.inquiryId = inquiryId;
     }
 
     public int getId() {
@@ -67,9 +65,6 @@ public class Carport {
         return updated;
     }
 
-    public int getInquiryId() {
-        return inquiryId;
-    }
 
     public void setId(int id) {
         this.id = id;
@@ -99,19 +94,16 @@ public class Carport {
         this.updated = updated;
     }
 
-    public void setInquiryId(int inquiryId) {
-        this.inquiryId = inquiryId;
-    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Carport carport)) return false;
-        return getId() == carport.getId() && getWidth() == carport.getWidth() && getLength() == carport.getLength() && getHeight() == carport.getHeight() && getRoofMaterialId() == carport.getRoofMaterialId() && getInquiryId() == carport.getInquiryId() && getRoofType() == carport.getRoofType() && Objects.equals(getUpdated(), carport.getUpdated());
+        return getId() == carport.getId() && getWidth() == carport.getWidth() && getLength() == carport.getLength() && getHeight() == carport.getHeight() && getRoofMaterialId() == carport.getRoofMaterialId() && getRoofType() == carport.getRoofType() && Objects.equals(getUpdated(), carport.getUpdated());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getWidth(), getLength(), getHeight(), getRoofType(), getRoofMaterialId(), getUpdated(), getInquiryId());
+        return Objects.hash(getId(), getWidth(), getLength(), getHeight(), getRoofType(), getRoofMaterialId(), getUpdated());
     }
 }

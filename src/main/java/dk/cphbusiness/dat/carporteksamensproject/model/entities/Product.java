@@ -1,15 +1,21 @@
 package dk.cphbusiness.dat.carporteksamensproject.model.entities;
 
 import dk.cphbusiness.dat.carporteksamensproject.model.annotations.Column;
+import dk.cphbusiness.dat.carporteksamensproject.model.annotations.Entity;
+import dk.cphbusiness.dat.carporteksamensproject.model.annotations.Table;
 
 import java.util.Objects;
 
+
+@Entity
+@Table("Product")
 public class Product {
     private int id;
     @Column("product_description")
     private String description;
     @Column("product_unit_price")
     private int unitPrice;
+
     @Column("product_unit")
     private Unit unit;
 
