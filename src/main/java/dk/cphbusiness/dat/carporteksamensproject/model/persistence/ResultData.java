@@ -6,14 +6,20 @@ public class ResultData<T> {
 
     private final int rowsAffected;
     private final ResultSet resultSet;
-    private final EntityData<?> entityData;
-    private final T entity;
+    private final EntityData<T> entityData;
+    private T entity;
 
-    public ResultData(int rowsAffected, ResultSet resultSet, EntityData<?> entityData, T entity) {
+    public ResultData(int rowsAffected, ResultSet resultSet, EntityData<T> entityData, T entity) {
         this.rowsAffected = rowsAffected;
         this.resultSet = resultSet;
         this.entityData = entityData;
         this.entity = entity;
+    }
+
+    public ResultData(int rowsAffected, ResultSet resultSet, EntityData<T> entityData) {
+        this.rowsAffected = rowsAffected;
+        this.resultSet = resultSet;
+        this.entityData = entityData;
     }
 
     public int getRowsAffected() {
@@ -24,11 +30,15 @@ public class ResultData<T> {
         return resultSet;
     }
 
-    public EntityData<?> getEntityData() {
+    public EntityData<T> getEntityData() {
         return entityData;
     }
 
     public T getEntity() {
         return entity;
+    }
+
+    public void setEntity(T entity) {
+        this.entity = entity;
     }
 }

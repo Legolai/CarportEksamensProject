@@ -2,11 +2,21 @@ package dk.cphbusiness.dat.carporteksamensproject.model.entities;
 
 public class Product {
     private int id;
+    @Column("product_description")
     private String description;
+    @Column("product_unit_price")
     private int unitPrice;
+
+    @Column("product_unit")
     private Unit unit;
+
+    @Column("product_amount_unit")
     private AmountUnit amountUnit;
+
+    @Column("product_type_ID")
     private int productTypeId;
+
+    @Column("product_deleted")
     private boolean deleted;
 
     public Product(int id, String description, int unitPrice, Unit unit, AmountUnit amountUnit, int productTypeId, boolean deleted) {
