@@ -1,17 +1,28 @@
 package dk.cphbusiness.dat.carporteksamensproject.model.entities;
 
+import dk.cphbusiness.dat.carporteksamensproject.model.annotations.*;
+
 import java.util.Objects;
 
+@Entity
+@Table("Bill_of_material_line_item")
 public class BillOfMaterialLineItem {
+    @Id
+    @GeneratedValue(strategy = 1)
+    @Column("bill_of_material_line_item_ID")
     private int id;
-    private int billOfMaterialId;
+    @Column("inquiry_ID")
+    private int inquiryId;
+    @Column("bill_of_material_line_item_amount")
     private int amount;
+    @Column("bill_of_material_line_item_comment")
     private String comment;
+    @Column("product_variant_ID")
     private int productId;
 
-    public BillOfMaterialLineItem(int id, int billOfMaterialId, int amount, String comment, int productId) {
+    public BillOfMaterialLineItem(int id, int inquiryId, int amount, String comment, int productId) {
         this.id = id;
-        this.billOfMaterialId = billOfMaterialId;
+        this.inquiryId = inquiryId;
         this.amount = amount;
         this.comment = comment;
         this.productId = productId;
@@ -21,8 +32,8 @@ public class BillOfMaterialLineItem {
         return id;
     }
 
-    public int getBillOfMaterialId() {
-        return billOfMaterialId;
+    public int getInquiryId() {
+        return inquiryId;
     }
 
     public int getAmount() {
@@ -41,8 +52,8 @@ public class BillOfMaterialLineItem {
         this.id = id;
     }
 
-    public void setBillOfMaterialId(int billOfMaterialId) {
-        this.billOfMaterialId = billOfMaterialId;
+    public void setInquiryId(int inquiryId) {
+        this.inquiryId = inquiryId;
     }
 
     public void setAmount(int amount) {
@@ -61,11 +72,11 @@ public class BillOfMaterialLineItem {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof BillOfMaterialLineItem that)) return false;
-        return getId() == that.getId() && getBillOfMaterialId() == that.getBillOfMaterialId() && getAmount() == that.getAmount() && getProductId() == that.getProductId() && Objects.equals(getComment(), that.getComment());
+        return getId() == that.getId() && getInquiryId() == that.getInquiryId() && getAmount() == that.getAmount() && getProductId() == that.getProductId() && Objects.equals(getComment(), that.getComment());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getBillOfMaterialId(), getAmount(), getComment(), getProductId());
+        return Objects.hash(getId(), getInquiryId(), getAmount(), getComment(), getProductId());
     }
 }

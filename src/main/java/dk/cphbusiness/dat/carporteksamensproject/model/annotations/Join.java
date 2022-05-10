@@ -9,6 +9,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(value = {ElementType.TYPE})
 public @interface Join {
-    String[] joins();
-    String[] tables();
+    Class<?> main();
+    Class<?>[] join() default {};
+
 }

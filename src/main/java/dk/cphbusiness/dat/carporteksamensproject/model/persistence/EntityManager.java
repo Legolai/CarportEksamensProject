@@ -28,7 +28,7 @@ public class EntityManager {
         }
     }
 
-    private <T, R> R newQueryUpdate(Connection connection, String sql, EntityData<?> entityData, T entity, FunctionWithThrows<ResultData<T>, R> queryHandler) throws DatabaseException {
+    private <T, R> R newQueryUpdate(Connection connection, String sql, EntityData<T> entityData, T entity, FunctionWithThrows<ResultData<T>, R> queryHandler) throws DatabaseException {
         try (PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             List<Field> fields = entityData.getFields();
             for (int i = 1; i <= fields.size(); ++i) {
@@ -92,17 +92,19 @@ public class EntityManager {
             for (Iterator<Field> it = joinedEntityData.getFields().descendingIterator(); it.hasNext(); ) {
                 Field field = it.next();
                 Object fieldEntity = joinedEntityData.getEntityClass().getDeclaredMethod(field.getName()).invoke(entity);
+                Object baseEntity;
                 if (field.getType().isAnnotationPresent(JoinedEntity.class)) {
-                    constArgs.add(insertJoinedEntity(new JoinedEntityData<>(field.getType()), fieldEntity));
-                } else if (fieldEntity instanceof List<?> batch) {
-                    constArgs.add(insertBatch(batch));
+                    baseEntity = insertJoinedEntity(new JoinedEntityData<>(field.getType()), fieldEntity);
+                } else if (fieldEntity instanceof List batch) {
+                    baseEntity = insertBatch(batch.get(0).getClass(), batch);
                 } else {
-                    Object baseEntity = insertCheckedEntity(new EntityData<>(field.getType()), fieldEntity);
-                    if (entity instanceof IForeignKey updater) {
-                        updater.updateForeignKey(baseEntity);
-                    }
-                    constArgs.add(baseEntity);
+                    baseEntity = insertCheckedEntity(new EntityData<>(field.getType()), fieldEntity);
                 }
+                if (entity instanceof IForeignKey updater) {
+                    updater.updateForeignKey(baseEntity);
+                }
+                constArgs.add(baseEntity);
+
             }
             Collections.reverse(constArgs);
             return joinedEntityData.getEntityClass().getConstructor(joinedEntityData.getConstructorEmp()).newInstance(constArgs.toArray());
@@ -113,95 +115,122 @@ public class EntityManager {
         }
     }
 
-    private <T> List<T> insertBatch(Class<T> entityClass, List<T> batch) throws DatabaseException {
-        FunctionWithThrows<Connection, List<T>> handler = connection -> {
-            try (PreparedStatement ps = connection.prepareStatement("", Statement.RETURN_GENERATED_KEYS)) {
-                insertEntityBatch(ps, batch);
-            }
-            catch (SQLException ex) {
-                throw new DatabaseException(ex.getMessage());
-            }
-            return null;
-        };
-
+    public <T> List<T> insertBatch(Class<T> entityClass, List<T> batch) throws DatabaseException {
         if (entityClass.isAnnotationPresent(JoinedEntity.class)) {
-            List<Object> subList = new ArrayList<>();
-            for (T o : batch) {
-                try {
-                    Field field = o.getClass().getFields()[0];
-                    String methodName = "get" + field.getName().substring(0,1).toUpperCase() + field.getName().substring(1);
-                    subList.add(o.getClass().getMethod(methodName).invoke(o));
-                }
-                catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException ex) {
-                    throw new DatabaseException(ex.getMessage());
-                }
-            }
-            return insertJoinedEntityBatch(new JoinedEntityData<>(batch.get(0).getClass()), subList);
+            return insertJoinedEntityBatch(new JoinedEntityData<>(entityClass), batch);
         } else if (entityClass.isAnnotationPresent(Entity.class)) {
-            return makeConnection(handler);
+            return insertEntityBatch(new EntityData<>(entityClass), batch);
         } else {
             throw new DatabaseException("Batch was not a list of joined entities or entities!");
         }
     }
 
-    private <T> List<T> insertJoinedEntityBatch(JoinedEntityData<T> joinedEntityData, List<Object> batch) throws DatabaseException {
-        subList = insertBatch(subList);
-        List<T> list = new ArrayList<>();
+    private <T> List<T> insertJoinedEntityBatch(JoinedEntityData<T> joinedEntityData, List<T> batch) throws DatabaseException {
+        if (batch.isEmpty()) throw new DatabaseException("Batch is empty!");
 
-        if (batch.size() != subList.size()){
+        List subList = new ArrayList<>();
+
+        for (T o : batch) {
+            try {
+                Field[] fields = o.getClass().getDeclaredFields();
+                Field field = fields[0];
+                Object baseEntity = o.getClass().getMethod(field.getName()).invoke(o);
+                subList.add(baseEntity);
+            }
+            catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException ex) {
+                throw new DatabaseException(ex.getMessage());
+            }
+        }
+        Class unSafe = subList.get(0).getClass();
+        subList = insertEntityBatch(new EntityData<>(unSafe), subList);
+
+
+        if (batch.size() != subList.size()) {
             throw new DatabaseException("Batch size does not match insert batch size!");
         }
-
-
+        List<T> list = new ArrayList<>();
+        List<Object> constArgs = new ArrayList<>();
         for (int i = 0; i < batch.size(); i++) {
             T t = batch.get(i);
-            JoinedEntityData<T> entityData = new JoinedEntityData<>(t.getClass());
             Object info = subList.get(i);
-
+            constArgs.add(info);
+            for (Field field : joinedEntityData.getFields().subList(1, joinedEntityData.getFields().size()-1)) {
+                try {
+                    constArgs.add(t.getClass().getMethod(field.getName()).invoke(t));
+                }
+                catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+                    throw new DatabaseException(e.getMessage());
+                }
+            }
+            try {
+                list.add(joinedEntityData.getEntityClass().getConstructor(joinedEntityData.getConstructorEmp()).newInstance(constArgs.toArray()));
+                constArgs.clear();
+            } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException ex) {
+                throw new DatabaseException(ex.getMessage());
+            }
         }
-
-
         return list;
     }
 
-    private <T> void insertEntityBatch(PreparedStatement ps, List<T> batch) throws DatabaseException, SQLException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    private <T> List<T> insertEntityBatch(EntityData<T> entityData, List<T> batch) throws DatabaseException {
         if (batch.isEmpty()) throw new DatabaseException("batch is empty!");
 
-        EntityData<?> entityData = new EntityData<>(batch.get(0).getClass());
-        List<T> list = new ArrayList<>(batch.size());
-        Field[] fields;
-        final int batchSize = 1000;
-        int count = 0;
-        for (T t : batch) {
-            fields = t.getClass().getDeclaredFields();
-            for (int i = 1; i <= fields.length; ++i) {
-                String fieldName = fields[i - 1].getName();
-                String methodName = "get" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
-                Object value = t.getClass().getDeclaredMethod(methodName).invoke(t);
-                if (fields[i - 1].getType().isEnum()) {
-                    value = ((Enum<?>) value).name();
-                }
-                ps.setObject(i, value);
+        FunctionWithThrows<Connection, List<T>> handler = connection -> {
+            if (entityData.getFieldForId().isAnnotationPresent(GeneratedValue.class)) {
+                entityData.getFields().remove(entityData.getFieldForId());
             }
-            ps.addBatch();
-            if (++count % batchSize == 0) {
+
+            String sqlColumns = entityData.getFields().stream().map(f -> f.getAnnotation(Column.class).value())
+                    .collect(Collectors.joining(", "));
+            String options = "?".repeat(entityData.getFields().size()).replaceAll(".(?=.)", "$0, ");
+
+            String sql = "INSERT INTO " + entityData.getTableName() + " (" + sqlColumns + ") VALUES (" + options + ")";
+
+            try (PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+                List<T> list = new ArrayList<>(batch.size());
+                final int batchSize = 1000;
+                int count = 0;
+                for (Object t : batch) {
+                    List<Field> fields = entityData.getFields();
+                    for (int i = 1; i <= fields.size(); ++i) {
+                        String fieldName = fields.get(i - 1).getName();
+                        String methodName = "get" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
+                        Object value = t.getClass().getDeclaredMethod(methodName).invoke(t);
+                        if (fields.get(i - 1).getType().isEnum()) {
+                            value = ((Enum<?>) value).name();
+                        }
+                        ps.setObject(i, value);
+                    }
+                    ps.addBatch();
+                    if (++count % batchSize == 0) {
+                        int[] rowStatus = ps.executeBatch();
+                        int rowStatusCount = 0;
+                        ResultSet resultSet = ps.getGeneratedKeys();
+                        ResultData<T> resultData = new ResultData<>(1, resultSet, entityData);
+                        while (resultSet.next() && rowStatus[rowStatusCount] >= Statement.SUCCESS_NO_INFO) {
+                            resultData.setEntity(batch.get(list.size()));
+                            list.add(extractIdFromQueryUpdate(resultData));
+                            ++rowStatusCount;
+                        }
+                    }
+                }
                 int[] rowStatus = ps.executeBatch();
                 int rowStatusCount = 0;
                 ResultSet resultSet = ps.getGeneratedKeys();
-                while (resultSet.next() && rowStatus[rowStatusCount] >= Statement.SUCCESS_NO_INFO) {
-                    list.add(extractIdFromQueryUpdate(new ResultData<>(1, resultSet, entityData, batch.get(list.size() - 1))));
+                ResultData<T> resultData = new ResultData<>(1, resultSet, entityData);
+                while (rowStatus.length > rowStatusCount && rowStatus[rowStatusCount] >= Statement.SUCCESS_NO_INFO) {
+                    resultData.setEntity(batch.get(list.size()));
+                    list.add(extractIdFromQueryUpdate(resultData));
+                    ++rowStatusCount;
                 }
+                return list;
             }
-        }
-        int[] rowStatus = ps.executeBatch();
-        int rowStatusCount = 0;
-        ResultSet resultSet = ps.getGeneratedKeys();
-        while (resultSet.next() && rowStatus[rowStatusCount] >= Statement.SUCCESS_NO_INFO) {
-            list.add(extractIdFromQueryUpdate(new ResultData<>(1, resultSet, entityData, batch.get(list.size() - 1))));
-        }
-
+            catch (SQLException ex) {
+                throw new DatabaseException(ex.getMessage());
+            }
+        };
+        return makeConnection(handler);
     }
-
 
     private <T> T insertCheckedEntity(EntityData<T> entityData, Object entity) throws DatabaseException {
         Map<String, Object> properties = new LinkedHashMap<>();
@@ -225,7 +254,7 @@ public class EntityManager {
         return insertEntity(entityData, entityData.getEntityClass().cast(entity));
     }
 
-    private <T> T insertEntity(EntityData<?> entityData, T entity) throws DatabaseException {
+    private <T> T insertEntity(EntityData<T> entityData, T entity) throws DatabaseException {
         if (entityData.getFieldForId().isAnnotationPresent(GeneratedValue.class)) {
             entityData.getFields().remove(entityData.getFieldForId());
         }
@@ -252,7 +281,9 @@ public class EntityManager {
     private <T> List<T> getAllJoinedEntities(Class<T> entityClass) throws DatabaseException {
         JoinedEntityData<T> joinedEntityData = new JoinedEntityData<>(entityClass);
 
-        String join = joinedEntityData.getJoinMap().entrySet().stream().reduce("", (curr, entry) -> curr + String.format(" INNER JOIN %s USING(%s)", entry.getKey(), entry.getValue()), String::concat);
+        String join = Arrays.stream(joinedEntityData.getJoin()).reduce("", (curr, clazz) -> curr + String.format(" INNER JOIN %s USING(%s)", clazz.getAnnotation(Table.class).value(),
+                Arrays.stream(clazz.getDeclaredFields()).filter(field -> field.isAnnotationPresent(Id.class)).findFirst().orElseThrow().getAnnotation(Column.class).value()), String::concat);
+
 
         String sql = "SELECT * FROM " + joinedEntityData.getMainTable() + join;
 
@@ -296,6 +327,22 @@ public class EntityManager {
         return Optional.ofNullable(makeConnection(connection -> newQuery(connection, sql, handler, primaryKey)));
     }
 
+    public <T> Optional<T> find(Class<T> entityClass ,Map<String, Object> properties) throws DatabaseException {
+        EntityData<T> entityData = new EntityData<>(entityClass);
+
+        String sqlColumns = String.join(" AND ", properties.keySet());
+        String options = sqlColumns.replaceAll("\\b(?!AND\\b)\\w+", "$0 = ?");
+
+        String sql = "SELECT * FROM " + entityData.getTableName() + " WHERE " + options + " LIMIT 1";
+
+        FunctionWithThrows<ResultSet, T> handler = resultSet -> {
+            if (resultSet.next())
+                return createEntity(resultSet, entityData);
+            return null;
+        };
+        return Optional.ofNullable(makeConnection(connection -> newQuery(connection, sql, handler, properties.values().toArray())));
+    }
+
     public <T> Optional<List<T>> findAll(Class<T> entityClass, Map<String, Object> properties) throws DatabaseException {
         if (entityClass.isAnnotationPresent(Entity.class)) {
             return findEntities(entityClass, properties);
@@ -310,9 +357,10 @@ public class EntityManager {
 
         String sqlColumns = String.join(" AND ", properties.keySet());
         String options = sqlColumns.replaceAll("\\b(?!AND\\b)\\w+", "$0 = ?");
-        String join = joinedEntityData.getJoinMap().entrySet().stream().reduce("", (curr, entry) -> curr + String.format(" INNER JOIN %s USING(%s)", entry.getKey(), entry.getValue()), String::concat);
+        String join = Arrays.stream(joinedEntityData.getJoin()).reduce("", (curr, clazz) -> curr + String.format(" INNER JOIN %s USING(%s)", clazz.getAnnotation(Table.class).value(),
+                Arrays.stream(clazz.getDeclaredFields()).filter(field -> field.isAnnotationPresent(Id.class)).findFirst().orElseThrow().getAnnotation(Column.class).value()), String::concat);
 
-        String sql = "SELECT * FROM " + joinedEntityData.getMainTable() + join + " WHERE " + options;
+        String sql = "SELECT * FROM " + joinedEntityData.getMainTable().getAnnotation(Table.class).value() + join + " WHERE " + options;
 
         FunctionWithThrows<ResultSet, List<T>> handler = resultSet -> {
             List<T> list = new ArrayList<>();

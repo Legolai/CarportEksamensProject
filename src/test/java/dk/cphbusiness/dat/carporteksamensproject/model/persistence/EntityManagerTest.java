@@ -1,8 +1,10 @@
 package dk.cphbusiness.dat.carporteksamensproject.model.persistence;
 
+import dk.cphbusiness.dat.carporteksamensproject.model.dtos.BillOfMaterialDTO;
+import dk.cphbusiness.dat.carporteksamensproject.model.dtos.BillOfMaterialLineItemDTO;
 import dk.cphbusiness.dat.carporteksamensproject.model.dtos.PersonDTO;
-import dk.cphbusiness.dat.carporteksamensproject.model.entities.Address;
-import dk.cphbusiness.dat.carporteksamensproject.model.entities.Person;
+import dk.cphbusiness.dat.carporteksamensproject.model.dtos.ProductVariantDTO;
+import dk.cphbusiness.dat.carporteksamensproject.model.entities.*;
 import dk.cphbusiness.dat.carporteksamensproject.model.exceptions.DatabaseException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,6 +13,8 @@ import org.junit.jupiter.api.Test;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -109,12 +113,12 @@ class EntityManagerTest {
     void testInsertPersonDTOs() throws DatabaseException {
         EntityManager entityManager = new EntityManager(connectionPool);
         PersonDTO expected = new PersonDTO(new Person(4, "Peter", "Jensen", "pet@gmail.com", "12345679",4), new Address(4, "40", "Ny Øvej", null, "3550", "Slangerup"));
-
         Address address = new Address(0, "40", "Ny Øvej", null, "3550", "Slangerup");
-        PersonDTO person = new PersonDTO(new Person(0, "Peter", "Jensen", "pet@gmail.com", "12345679", address.getId()), address);
+        PersonDTO person = new PersonDTO(new Person(0, "Peter", "Jensen", "pet@gmail.com", "12345679", 0), address);
         PersonDTO actual = entityManager.insert(PersonDTO.class, person);
         assertEquals(expected, actual);
     }
+
 
 
 }

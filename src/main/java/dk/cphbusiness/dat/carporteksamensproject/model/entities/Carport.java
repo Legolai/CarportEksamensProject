@@ -1,15 +1,30 @@
 package dk.cphbusiness.dat.carporteksamensproject.model.entities;
 
+import dk.cphbusiness.dat.carporteksamensproject.model.annotations.*;
+
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+
+@Entity
+@Table("Carport")
 public class Carport {
+
+    @Id
+    @GeneratedValue(strategy = 1)
+    @Column("carport_ID")
     private int id;
+    @Column("carport_width")
     private int width;
+    @Column("carport_length")
     private int length;
+    @Column("carport_height")
     private int height;
+    @Column("carport_roof_type")
     private RoofType roofType;
+    @Column("carport_roof_material")
     private int roofMaterialId;
+    @Column("carport_updated")
     private LocalDateTime updated;
 
     public Carport(int id, int width, int length, int height, RoofType roofType, int roofMaterialId, LocalDateTime updated) {

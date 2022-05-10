@@ -1,10 +1,19 @@
 package dk.cphbusiness.dat.carporteksamensproject.model.entities;
 
+import dk.cphbusiness.dat.carporteksamensproject.model.annotations.*;
+
 import java.util.Objects;
 
+@Entity
+@Table("Product_type")
 public class ProductType {
 
+    @Id
+    @GeneratedValue(strategy = 1)
+    @Column("product_type_ID")
     private int id;
+
+    @Column("product_type_name")
     private String type;
 
     public ProductType(int id, String type) {

@@ -1,11 +1,25 @@
 package dk.cphbusiness.dat.carporteksamensproject.model.entities;
 
+import dk.cphbusiness.dat.carporteksamensproject.model.annotations.*;
+
 import java.util.Objects;
 
+@Entity
+@Table("Product_variant")
 public class ProductVariant {
+
+    @Id
+    @GeneratedValue(strategy = 1)
+    @Column("product_variant_ID")
     private int id;
+
+    @Column("product_ID")
     private int productId;
+
+    @Column("size_ID")
     private int sizeId;
+
+    @Column("product_variant_deleted")
     private boolean deleted;
 
     public ProductVariant(int id, int productId, int sizeId, boolean deleted) {

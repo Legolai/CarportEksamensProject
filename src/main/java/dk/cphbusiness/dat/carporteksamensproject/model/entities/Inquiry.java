@@ -1,25 +1,37 @@
 package dk.cphbusiness.dat.carporteksamensproject.model.entities;
 
+import dk.cphbusiness.dat.carporteksamensproject.model.annotations.*;
+
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+@Entity
+@Table("Inquiry")
 public class Inquiry {
+    @Id
+    @GeneratedValue(strategy = 1)
+    @Column("inquiry_ID")
     private int id;
+    @Column("inquiry_status")
     private InquiryStatus inquiryStatus;
+    @Column("inquiry_comment")
     private String comment;
+    @Column("person_ID")
     private int personId;
+    @Column("carport_ID")
     private int carportId;
-    private int billOfMaterialId;
+    @Column("inquiry_created")
     private LocalDateTime created;
+
+    @Column("inquiry_updated")
     private LocalDateTime updated;
 
-    public Inquiry(int id, InquiryStatus inquiryStatus, String comment, int personId, int carportId, int billOfMaterialId, LocalDateTime created, LocalDateTime updated) {
+    public Inquiry(int id, InquiryStatus inquiryStatus, String comment, int personId, int carportId, LocalDateTime created, LocalDateTime updated) {
         this.id = id;
         this.inquiryStatus = inquiryStatus;
         this.comment = comment;
         this.personId = personId;
         this.carportId = carportId;
-        this.billOfMaterialId = billOfMaterialId;
         this.created = created;
         this.updated = updated;
     }
@@ -64,14 +76,6 @@ public class Inquiry {
         this.carportId = carportId;
     }
 
-    public int getBillOfMaterialId() {
-        return billOfMaterialId;
-    }
-
-    public void setBillOfMaterialId(int billOfMaterialId) {
-        this.billOfMaterialId = billOfMaterialId;
-    }
-
     public LocalDateTime getCreated() {
         return created;
     }
@@ -92,11 +96,11 @@ public class Inquiry {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Inquiry inquiry)) return false;
-        return getId() == inquiry.getId() && getPersonId() == inquiry.getPersonId() && getCarportId() == inquiry.getCarportId() && getBillOfMaterialId() == inquiry.getBillOfMaterialId() && getInquiryStatus() == inquiry.getInquiryStatus() && Objects.equals(getComment(), inquiry.getComment()) && Objects.equals(getCreated(), inquiry.getCreated()) && Objects.equals(getUpdated(), inquiry.getUpdated());
+        return getId() == inquiry.getId() && getPersonId() == inquiry.getPersonId() && getCarportId() == inquiry.getCarportId() && getInquiryStatus() == inquiry.getInquiryStatus() && Objects.equals(getComment(), inquiry.getComment()) && Objects.equals(getCreated(), inquiry.getCreated()) && Objects.equals(getUpdated(), inquiry.getUpdated());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getInquiryStatus(), getComment(), getPersonId(), getCarportId(), getBillOfMaterialId(), getCreated(), getUpdated());
+        return Objects.hash(getId(), getInquiryStatus(), getComment(), getPersonId(), getCarportId(), getCreated(), getUpdated());
     }
 }

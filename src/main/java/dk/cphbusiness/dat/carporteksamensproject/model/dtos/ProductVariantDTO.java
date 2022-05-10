@@ -2,7 +2,8 @@ package dk.cphbusiness.dat.carporteksamensproject.model.dtos;
 
 import dk.cphbusiness.dat.carporteksamensproject.model.annotations.Join;
 import dk.cphbusiness.dat.carporteksamensproject.model.annotations.JoinedEntity;
-import dk.cphbusiness.dat.carporteksamensproject.model.annotations.Table;
+import dk.cphbusiness.dat.carporteksamensproject.model.entities.Product;
+import dk.cphbusiness.dat.carporteksamensproject.model.entities.ProductType;
 import dk.cphbusiness.dat.carporteksamensproject.model.entities.ProductVariant;
 import dk.cphbusiness.dat.carporteksamensproject.model.entities.Size;
 import dk.cphbusiness.dat.carporteksamensproject.model.exceptions.DatabaseException;
@@ -10,8 +11,7 @@ import dk.cphbusiness.dat.carporteksamensproject.model.interfaces.IForeignKey;
 
 
 @JoinedEntity
-@Table("Product_variant")
-@Join(tables = {"Product","Size","Product_type"} , joins = {"product_ID","size_ID","product_type_ID"})
+@Join(main = ProductVariant.class, join = {Product.class, ProductType.class, Size.class})
 public record ProductVariantDTO(ProductVariant variant, ProductDTO product, Size size) implements IForeignKey {
     @Override
     public void updateForeignKey(Object entity) throws DatabaseException {
@@ -20,7 +20,5 @@ public record ProductVariantDTO(ProductVariant variant, ProductDTO product, Size
         } else if (entity instanceof Size foreignKey) {
             variant.setSizeId(foreignKey.getId());
         }
-
-        ;
     }
 }
