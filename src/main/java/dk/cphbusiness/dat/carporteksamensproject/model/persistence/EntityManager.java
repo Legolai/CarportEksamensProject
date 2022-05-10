@@ -265,18 +265,6 @@ public class EntityManager {
 
         String sql = "INSERT INTO " + entityData.getTableName() + " (" + sqlColumns + ") VALUES (" + options + ")";
 
-        Map<String, Object> properties = entityData.getFields().stream().collect(Collectors.toMap(Field::getName, field -> {
-            try {
-                return entityData.getEntityClass().getMethod("get" + field.getName().substring(0, 1).toUpperCase() + field.getName().substring(1)).invoke(entity);
-            }
-            catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
-                throw new RuntimeException(e);
-            }
-        }));
-        String findSqlColumns = String.join(" AND ", properties.keySet());
-        String findOptions = sqlColumns.replaceAll("\\b(?!AND\\b)\\w+", "$0 LIKE ?");
-        String findSql = "SELECT EXITS(SELECT * FROM " + entityData.getTableName() + " WHERE " + options + ") LIMIT 1";
-
         FunctionWithThrows<ResultData<T>, T> handler = this::extractIdFromQueryUpdate;
         return makeConnection(conn -> newQueryUpdate(conn, sql, entityData, entity, handler));
     }
@@ -297,7 +285,7 @@ public class EntityManager {
                 Arrays.stream(clazz.getDeclaredFields()).filter(field -> field.isAnnotationPresent(Id.class)).findFirst().orElseThrow().getAnnotation(Column.class).value()), String::concat);
 
 
-        String sql = "SELECT * FROM " + joinedEntityData.getMainTable() + join;
+        String sql = "SELECT * FROM " + joinedEntityData.getMainTable().getAnnotation(Table.class).value() + join;
 
         FunctionWithThrows<ResultSet, List<T>> handler = (resultSet -> {
             List<T> list = new ArrayList<>();

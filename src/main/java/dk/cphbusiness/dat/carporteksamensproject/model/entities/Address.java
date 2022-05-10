@@ -23,7 +23,7 @@ public class Address {
     @Column("address_zipcode")
     private String zipcode;
 
-    @Column("address_cityName")
+    @Column("address_city_name")
     private String cityName;
 
     public Address(int id, String number, String streetName, String floor, String zipcode, String cityName) {
