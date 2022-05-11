@@ -1,7 +1,7 @@
 package dk.cphbusiness.dat.carporteksamensproject.model.services;
 
 import dk.cphbusiness.dat.carporteksamensproject.model.exceptions.DatabaseException;
-import dk.cphbusiness.dat.carporteksamensproject.model.persistence.EntityData;
+import dk.cphbusiness.dat.carporteksamensproject.model.persistence.manager.EntityData;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;

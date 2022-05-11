@@ -1,9 +1,10 @@
-package dk.cphbusiness.dat.carporteksamensproject.model.persistence;
+package dk.cphbusiness.dat.carporteksamensproject.model.persistence.manager;
 
 import dk.cphbusiness.dat.carporteksamensproject.model.interfaces.FunctionWithThrows;
 import dk.cphbusiness.dat.carporteksamensproject.model.interfaces.IForeignKey;
 import dk.cphbusiness.dat.carporteksamensproject.model.annotations.*;
 import dk.cphbusiness.dat.carporteksamensproject.model.exceptions.DatabaseException;
+import dk.cphbusiness.dat.carporteksamensproject.model.persistence.ConnectionPool;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -327,7 +328,7 @@ public class EntityManager {
         return Optional.ofNullable(makeConnection(connection -> newQuery(connection, sql, handler, primaryKey)));
     }
 
-    public <T> Optional<T> find(Class<T> entityClass ,Map<String, Object> properties) throws DatabaseException {
+    public <T> Optional<T> find(Class<T> entityClass, Map<String, Object> properties) throws DatabaseException {
         EntityData<T> entityData = new EntityData<>(entityClass);
 
         String sqlColumns = String.join(" AND ", properties.keySet());
@@ -451,4 +452,7 @@ public class EntityManager {
         }
     }
 
+    public <T> boolean delete(Class<T> entityClass, T entity) {
+        return false;
+    }
 }

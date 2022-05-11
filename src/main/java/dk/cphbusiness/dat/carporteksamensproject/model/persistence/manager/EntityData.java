@@ -1,4 +1,4 @@
-package dk.cphbusiness.dat.carporteksamensproject.model.persistence;
+package dk.cphbusiness.dat.carporteksamensproject.model.persistence.manager;
 
 import dk.cphbusiness.dat.carporteksamensproject.model.annotations.Entity;
 import dk.cphbusiness.dat.carporteksamensproject.model.annotations.Id;

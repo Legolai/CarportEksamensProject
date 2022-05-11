@@ -1,11 +1,9 @@
 package dk.cphbusiness.dat.carporteksamensproject.model.persistence;
 
-import dk.cphbusiness.dat.carporteksamensproject.model.dtos.BillOfMaterialDTO;
-import dk.cphbusiness.dat.carporteksamensproject.model.dtos.BillOfMaterialLineItemDTO;
 import dk.cphbusiness.dat.carporteksamensproject.model.dtos.PersonDTO;
-import dk.cphbusiness.dat.carporteksamensproject.model.dtos.ProductVariantDTO;
 import dk.cphbusiness.dat.carporteksamensproject.model.entities.*;
 import dk.cphbusiness.dat.carporteksamensproject.model.exceptions.DatabaseException;
+import dk.cphbusiness.dat.carporteksamensproject.model.persistence.manager.EntityManager;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,8 +11,6 @@ import org.junit.jupiter.api.Test;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
