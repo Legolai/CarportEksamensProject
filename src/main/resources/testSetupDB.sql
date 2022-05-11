@@ -31,5 +31,60 @@ CREATE TABLE Shack LIKE CarportProjectDB.Shack;
 
 
 
+INSERT INTO Product_type (product_type_name) values ('Stolpe'), ('Spærtræ'), ('Brædt'), ('Træ'),
+                                                    ('Lægte'), ('Tagplade'), ('Skrue'), ('Bolte'),
+                                                    ('Skive'), ('Bånd'), ('Universal'), ('Dørgreb'),
+                                                    ('Hængsel'), ('Beslag');
+
+INSERT INTO Product (product_description, product_unit_price, product_unit, product_type_ID, product_amount_unit)
+values ('97x97 mm. trykimp. Stolpe', 50, 'METER', 1, 'PIECE'),
+('45x195 mm. Spærtræ ubh.', 50, 'METER', 2, 'PIECE'),
+('25x200 mm. trykimp. Brædt', 40, 'METER', 3, 'PIECE'),
+('25x125 mm. trykimp. Brædt', 30, 'METER', 3, 'PIECE'),
+('19x100 mm. trykimp. Brædt', 20, 'METER', 3, 'PIECE'),
+('45x95 mm. regular ub.', 30, 'METER', 4, 'PIECE'),
+('38x73 mm. Lægte ubh.', 10, 'METER', 5, 'PIECE'),
+('Plastmo Ecolite blåtonet', 15, 'METER', 6, 'PIECE'),
+
+('Plastmo bundskruer 200 stk.', 5, 'PIECE', 7, 'PACK'),
+('4,0x50 mm. Beslagskruer 250 stk.', 5, 'PIECE', 7, 'PACK'),
+('4,5x50 mm. Skruer	300	stk.', 5, 'PIECE', 7, 'PACK'),
+('4,5x60 mm. Skruer 200 stk.', 5, 'PIECE', 7, 'PACK'),
+('4,5x70 mm. Skruer 400 stk.', 5, 'PIECE', 7, 'PACK'),
+('Bræddebolt 10x120 mm.', 10, 'PIECE', 8, 'PIECE'),
+('Firkantskiver 40x40x11 mm.', 15, 'PIECE', 9, 'PIECE'),
+('Hulbånd 1x20 mm. 10 mtr', 5, 'METER', 10, 'ROLL'),
+('Universal 190 mm. højre', 10, 'PIECE', 11, 'PIECE'),
+('Universal 190 mm. venstre', 10, 'PIECE', 11, 'PIECE'),
+('Stalddørsgreb 50x75', 35, 'PIECE', 12, 'SET'),
+('T hængsel 390 mm.', 15, 'PIECE', 13, 'PIECE'),
+('Vinkelbeslag 35', 15, 'PIECE', 14, 'PIECE');
+
+INSERT INTO Size (size_detail, size_type)
+values (210, 'LENGTH'), (240, 'LENGTH'), (270, 'LENGTH'),
+(300, 'LENGTH'), (330, 'LENGTH'), (360, 'LENGTH'),
+(390, 'LENGTH'), (420, 'LENGTH'), (450, 'LENGTH'),
+(480, 'LENGTH'), (510, 'LENGTH'), (540, 'LENGTH'),
+(570, 'LENGTH'), (600, 'LENGTH'),
+(100, 'PIECES'), (150, 'PIECES'), (200, 'PIECES'),
+(250, 'PIECES'), (300, 'PIECES'), (350, 'PIECES'), (400, 'PIECES');
+
+INSERT INTO Product_variant (product_ID, size_ID)
+values (1, 4), (1, 5),
+       (2, 1), (2, 2), (2, 3), (2, 4), (2, 5), (2, 6), (2, 7), (2, 8), (2, 9), (2, 10),
+       (2, 11), (2, 12), (2, 13), (2, 14),
+       (3, 4), (3, 6), (3, 8), (3, 10), (3, 12), (3, 14),
+       (4, 4), (4, 6), (4, 8), (4, 10), (4, 12), (4, 14),
+       (5, 4), (5, 6), (5, 8), (5, 10), (5, 12), (5, 14),
+       (6, 1), (6, 2), (6, 3), (6, 4),
+       (7, 8),
+       (8, 2), (8, 6), (8, 10), (8, 14),
+       (9, 17),
+       (10, 18),
+       (11, 17), (10, 19), (10, 21),
+       (12, 17), (12, 19), (12, 21),
+       (13, 17), (12, 19), (12, 21);
+
+
 
 
