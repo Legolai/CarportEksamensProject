@@ -327,7 +327,7 @@ public class EntityManager {
         return Optional.ofNullable(makeConnection(connection -> newQuery(connection, sql, handler, primaryKey)));
     }
 
-    public <T> Optional<T> find(Class<T> entityClass ,Map<String, Object> properties) throws DatabaseException {
+    public <T> Optional<T> find(Class<T> entityClass, Map<String, Object> properties) throws DatabaseException {
         EntityData<T> entityData = new EntityData<>(entityClass);
 
         String sqlColumns = String.join(" AND ", properties.keySet());

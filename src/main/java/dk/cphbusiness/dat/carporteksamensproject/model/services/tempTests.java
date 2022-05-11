@@ -7,7 +7,7 @@ public class tempTests {
 
         CarportAlgorithm algo = new CarportAlgorithm();
 
-        algo.flatRoofAlgo(600, 780, true, 530, 210);
+        algo.flatRoofAlgo(600, 600, true, 530, 210);
 
 
     }
