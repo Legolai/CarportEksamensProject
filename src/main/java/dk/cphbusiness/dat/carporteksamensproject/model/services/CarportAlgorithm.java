@@ -136,7 +136,7 @@ public class CarportAlgorithm {
         list.put("waterBoardSides",waterBoardSides);
         list.put("waterBoardSidesLength",overSternBoardsSidesLength);
 
-
+        //TODO: MOVE TO calcRoof
         int tagpladeAmounts = (int) Math.ceil(width/100);
         if (length > 600) {
 
@@ -165,6 +165,7 @@ public class CarportAlgorithm {
         int doergreb = laegteForDoor;  // maybe people can choose how many doors they want?
         int doerHaengsel = laegteForDoor*2;
 
+        int vinkelBeslag = ((int) list.get("loestholterSides") + (int) list.get("loestholterGavler")) * 2;
 
 
         list.put("loestholterSides",loestholterSides);
@@ -179,6 +180,7 @@ public class CarportAlgorithm {
         list.put("laegteForDoorLength",laegteForDoorLength);
         list.put("doergreb",doergreb);
         list.put("doerHaengsel",doerHaengsel);
+        list.put("vinkelBeslag",vinkelBeslag);
 
         return list;
     }
@@ -197,8 +199,6 @@ public class CarportAlgorithm {
         int skruerYderBeklaedning400 = (int) list.get("skackBeklaedning") / 100; // with 200 braedt for skur beklaedning
         // 800 skuer is needed, 1 pack is 400
         int skuerInnerBeklaedning300 = skruerYderBeklaedning400; // 300 a pack
-        int vinkelBeslag = ((int) list.get("loestholterSides") + (int) list.get("loestholterGavler")) * 2;
-
 
 
 
@@ -212,7 +212,6 @@ public class CarportAlgorithm {
         list.put("skiverForRemOnPosts",skiverForRemOnPosts);
         list.put("skruerYderBeklaedning400",skruerYderBeklaedning400);
         list.put("skuerInnerBeklaedning300",skuerInnerBeklaedning300);
-        list.put("vinkelBeslag",vinkelBeslag);
 
         return list;
     }
