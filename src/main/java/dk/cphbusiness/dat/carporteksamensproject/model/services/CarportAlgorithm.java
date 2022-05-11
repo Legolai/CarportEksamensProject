@@ -7,8 +7,6 @@ import java.util.List;
 public class CarportAlgorithm {
     int height = 210; // this changeable for customers?
 
-
-
     public LinkedHashMap<String,Object> flatRoofAlgo(int width, int length, boolean shack, int shackwidth, int shacklength) {
 
         LinkedHashMap<String,Object> list = new LinkedHashMap<>();
