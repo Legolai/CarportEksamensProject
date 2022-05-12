@@ -5,12 +5,27 @@
          version="4.0">
 
     <welcome-file-list>
-        <welcome-file>index.jsp</welcome-file>
+        <welcome-file>IndexServlet</welcome-file>
     </welcome-file-list>
 
     <error-page>
         <error-code>404</error-code>
         <location>/error.jsp</location>
     </error-page>
+
+<!--    <filter>-->
+<!--        <filter-name>filter-Authentication</filter-name>-->
+<!--        <filter-class>dk.cphbusiness.dat.cupcakeproject.control.filters.AuthenticationFilter</filter-class>-->
+<!--    </filter>-->
+
+<!--    <filter-mapping>-->
+<!--        <filter-name>filter-Authentication</filter-name>-->
+<!--        <url-pattern>/fc/*</url-pattern>-->
+<!--    </filter-mapping>-->
+
+    <listener>
+        <description>ApplicationStart</description>
+        <listener-class>dk.cphbusiness.dat.carporteksamensproject.model.config.ApplicationStart</listener-class>
+    </listener>
 
 </web-app>

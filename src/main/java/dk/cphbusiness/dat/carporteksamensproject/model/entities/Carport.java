@@ -94,6 +94,18 @@ public class Carport {
         this.updated = updated;
     }
 
+    @Override
+    public String toString() {
+        return "Carport{" +
+                "id=" + id +
+                ", width=" + width +
+                ", length=" + length +
+                ", height=" + height +
+                ", roofType=" + roofType +
+                ", roofMaterialId=" + roofMaterialId +
+                ", updated=" + updated +
+                '}';
+    }
 
     @Override
     public boolean equals(Object o) {

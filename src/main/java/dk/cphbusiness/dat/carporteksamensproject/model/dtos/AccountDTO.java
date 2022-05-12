@@ -12,8 +12,8 @@ import dk.cphbusiness.dat.carporteksamensproject.model.interfaces.IForeignKey;
 public record AccountDTO(Account account, PersonDTO personDTO) implements IForeignKey {
     @Override
     public void updateForeignKey(Object entity) {
-        if (entity instanceof Person foreignKey) {
-            account.setPersonId(foreignKey.getId());
+        if (entity instanceof PersonDTO foreignKey) {
+            account.setPersonId(foreignKey.person().getId());
         }
     }
 }

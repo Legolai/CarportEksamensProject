@@ -87,6 +87,18 @@ public class Order {
     }
 
     @Override
+    public String toString() {
+        return "Order{" +
+                "id=" + id +
+                ", created=" + created +
+                ", shipped=" + shipped +
+                ", deleted=" + deleted +
+                ", personId=" + personId +
+                ", inquiryId=" + inquiryId +
+                '}';
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Order order)) return false;

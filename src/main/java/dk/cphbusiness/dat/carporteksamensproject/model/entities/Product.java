@@ -10,6 +10,7 @@ import java.util.Objects;
 @Entity
 @Table("Product")
 public class Product {
+
     private int id;
     @Column("product_description")
     private String description;
@@ -92,6 +93,19 @@ public class Product {
 
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", description='" + description + '\'' +
+                ", unitPrice=" + unitPrice +
+                ", unit=" + unit +
+                ", amountUnit=" + amountUnit +
+                ", productTypeId=" + productTypeId +
+                ", deleted=" + deleted +
+                '}';
     }
 
     @Override

@@ -93,6 +93,19 @@ public class Inquiry {
     }
 
     @Override
+    public String toString() {
+        return "Inquiry{" +
+                "id=" + id +
+                ", inquiryStatus=" + inquiryStatus +
+                ", comment='" + comment + '\'' +
+                ", personId=" + personId +
+                ", carportId=" + carportId +
+                ", created=" + created +
+                ", updated=" + updated +
+                '}';
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Inquiry inquiry)) return false;

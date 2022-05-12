@@ -18,9 +18,6 @@ public class Account {
     @Column("account_created")
     private LocalDateTime created;
 
-    @Column("account_updated")
-    private LocalDateTime updated;
-
     @Column("person_ID")
     private int personId;
 
@@ -30,10 +27,9 @@ public class Account {
     @Column("account_role")
     private Role role;
 
-    public Account(int id, LocalDateTime created, LocalDateTime updated, int personId, String password, Role role) {
+    public Account(int id, LocalDateTime created, int personId, String password, Role role) {
         this.id = id;
         this.created = created;
-        this.updated = updated;
         this.personId = personId;
         this.password = password;
         this.role = role;
@@ -45,10 +41,6 @@ public class Account {
 
     public LocalDateTime getCreated() {
         return created;
-    }
-
-    public LocalDateTime getUpdated() {
-        return updated;
     }
 
     public int getPersonId() {
@@ -71,10 +63,6 @@ public class Account {
         this.created = created;
     }
 
-    public void setUpdated(LocalDateTime updated) {
-        this.updated = updated;
-    }
-
     public void setPersonId(int personId) {
         this.personId = personId;
     }
@@ -88,14 +76,25 @@ public class Account {
     }
 
     @Override
+    public String toString() {
+        return "Account{" +
+                "id=" + id +
+                ", created=" + created +
+                ", personId=" + personId +
+                ", password='" + password + '\'' +
+                ", role=" + role +
+                '}';
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Account account)) return false;
-        return getId() == account.getId() && getPersonId() == account.getPersonId() && Objects.equals(getCreated(), account.getCreated()) && Objects.equals(getUpdated(), account.getUpdated()) && Objects.equals(getPassword(), account.getPassword()) && getRole() == account.getRole();
+        return getId() == account.getId() && getPersonId() == account.getPersonId() && Objects.equals(getCreated(), account.getCreated()) && Objects.equals(getPassword(), account.getPassword()) && getRole() == account.getRole();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getCreated(), getUpdated(), getPersonId(), getPassword(), getRole());
+        return Objects.hash(getId(), getCreated(), getPersonId(), getPassword(), getRole());
     }
 }
