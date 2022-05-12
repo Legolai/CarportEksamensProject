@@ -17,7 +17,7 @@ public class AccountMapper implements DataMapper<AccountDTO> {
     }
 
     public Optional<AccountDTO> login(String email, String password) throws DatabaseException {
-        return entityManager.find(AccountDTO.class, Map.of("account_email", email, "account_password", password));
+        return entityManager.find(AccountDTO.class, Map.of("person_email", email, "account_password", password));
     }
 
     @Override

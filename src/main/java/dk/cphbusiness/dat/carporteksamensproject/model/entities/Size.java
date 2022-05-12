@@ -61,6 +61,16 @@ public class Size {
     }
 
     @Override
+    public String toString() {
+        return "Size{" +
+                "id=" + id +
+                ", detail=" + detail +
+                ", type=" + type +
+                ", deleted=" + deleted +
+                '}';
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Size size)) return false;

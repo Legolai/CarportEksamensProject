@@ -248,7 +248,7 @@ public class EntityManager {
             }
         }
 
-        Optional<List<T>> objects = findEntities(entityData.getEntityClass(), properties);
+        Optional<List<T>> objects = pagedFindEntities(entityData.getEntityClass(), properties, 0, 0);
         if (objects.isPresent()) {
             return objects.get().get(0);
         }
@@ -314,7 +314,7 @@ public class EntityManager {
         return makeConnection(conn -> newQuery(conn, sql, handler));
     }
 
-    public <T> Optional<T> find(Class<T> entityClass, Object primaryKey) throws DatabaseException {
+    public <T> Optional<T> findEntityById(Class<T> entityClass, Object primaryKey) throws DatabaseException {
         EntityData<T> entityData = new EntityData<>(entityClass);
 
         String idColumn = entityData.getFieldForId().getAnnotation(Column.class).value();
@@ -329,31 +329,27 @@ public class EntityManager {
     }
 
     public <T> Optional<T> find(Class<T> entityClass, Map<String, Object> properties) throws DatabaseException {
-        EntityData<T> entityData = new EntityData<>(entityClass);
-
-        String sqlColumns = String.join(" AND ", properties.keySet());
-        String options = sqlColumns.replaceAll("\\b(?!AND\\b)\\w+", "$0 = ?");
-
-        String sql = "SELECT * FROM " + entityData.getTableName() + " WHERE " + options + " LIMIT 1";
-
-        FunctionWithThrows<ResultSet, T> handler = resultSet -> {
-            if (resultSet.next())
-                return createEntity(resultSet, entityData);
-            return null;
-        };
-        return Optional.ofNullable(makeConnection(connection -> newQuery(connection, sql, handler, properties.values().toArray())));
+        Optional<List<T>> optionalList = pagedFind(entityClass, properties, 0, 1);
+        if (optionalList.isEmpty()) {
+            return Optional.empty();
+        }
+        return Optional.of(optionalList.get().get(0));
     }
 
     public <T> Optional<List<T>> findAll(Class<T> entityClass, Map<String, Object> properties) throws DatabaseException {
+        return pagedFind(entityClass, properties, 0, 0);
+    }
+
+    public <T> Optional<List<T>> pagedFind(Class<T> entityClass, Map<String, Object> properties, int offset, int rowCount) throws DatabaseException {
         if (entityClass.isAnnotationPresent(Entity.class)) {
-            return findEntities(entityClass, properties);
+            return pagedFindEntities(entityClass, properties, offset, rowCount);
         } else if (entityClass.isAnnotationPresent(JoinedEntity.class)) {
-            return findJoinedEntities(entityClass, properties);
+            return pagedFindJoinedEntities(entityClass, properties, offset, rowCount);
         }
         throw new DatabaseException("Class was not annotated as an entity or joinedEntity!");
     }
 
-    private <T> Optional<List<T>> findJoinedEntities(Class<T> entityClass, Map<String, Object> properties) throws DatabaseException {
+    private <T> Optional<List<T>> pagedFindJoinedEntities(Class<T> entityClass, Map<String, Object> properties, int offset, int rowCount) throws DatabaseException {
         JoinedEntityData<T> joinedEntityData = new JoinedEntityData<>(entityClass);
 
         String sqlColumns = String.join(" AND ", properties.keySet());
@@ -361,7 +357,7 @@ public class EntityManager {
         String join = Arrays.stream(joinedEntityData.getJoin()).reduce("", (curr, clazz) -> curr + String.format(" INNER JOIN %s USING(%s)", clazz.getAnnotation(Table.class).value(),
                 Arrays.stream(clazz.getDeclaredFields()).filter(field -> field.isAnnotationPresent(Id.class)).findFirst().orElseThrow().getAnnotation(Column.class).value()), String::concat);
 
-        String sql = "SELECT * FROM " + joinedEntityData.getMainTable().getAnnotation(Table.class).value() + join + " WHERE " + options;
+        String sql = "SELECT * FROM " + joinedEntityData.getMainTable().getAnnotation(Table.class).value() + join + " WHERE " + options + (rowCount != 0 ? " LIMIT " + rowCount : "") + (offset != 0 ? " OFFSET " + rowCount : "");
 
         FunctionWithThrows<ResultSet, List<T>> handler = resultSet -> {
             List<T> list = new ArrayList<>();
@@ -372,13 +368,13 @@ public class EntityManager {
         return Optional.ofNullable(makeConnection(connection -> newQuery(connection, sql, handler, properties.values().toArray())));
     }
 
-    private <T> Optional<List<T>> findEntities(Class<T> entityClass, Map<String, Object> properties) throws DatabaseException {
+    private <T> Optional<List<T>> pagedFindEntities(Class<T> entityClass, Map<String, Object> properties, int offset, int rowCount) throws DatabaseException {
         EntityData<T> entityData = new EntityData<>(entityClass);
 
         String sqlColumns = String.join(" AND ", properties.keySet());
         String options = sqlColumns.replaceAll("\\b(?!AND\\b)\\w+", "$0 = ?");
 
-        String sql = "SELECT * FROM " + entityData.getTableName() + " WHERE " + options;
+        String sql = "SELECT * FROM " + entityData.getTableName() + " WHERE " + options + (rowCount != 0 ? " LIMIT " + rowCount : "") + (offset != 0 ? " OFFSET " + rowCount : "");
 
         FunctionWithThrows<ResultSet, List<T>> handler = resultSet -> {
             List<T> list = new ArrayList<>();

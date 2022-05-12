@@ -65,7 +65,7 @@ public class Person {
         return addressId;
     }
 
-    public boolean isDeleted() {
+    public boolean getDeleted() {
         return deleted;
     }
 
@@ -95,6 +95,19 @@ public class Person {
 
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
+    }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "id=" + id +
+                ", forename='" + forename + '\'' +
+                ", surname='" + surname + '\'' +
+                ", email='" + email + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", addressId=" + addressId +
+                ", deleted=" + deleted +
+                '}';
     }
 
     @Override

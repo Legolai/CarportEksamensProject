@@ -69,6 +69,17 @@ public class BillOfMaterialLineItem {
     }
 
     @Override
+    public String toString() {
+        return "BillOfMaterialLineItem{" +
+                "id=" + id +
+                ", inquiryId=" + inquiryId +
+                ", amount=" + amount +
+                ", comment='" + comment + '\'' +
+                ", productId=" + productId +
+                '}';
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof BillOfMaterialLineItem that)) return false;

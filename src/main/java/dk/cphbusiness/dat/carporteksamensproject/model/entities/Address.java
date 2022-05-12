@@ -84,6 +84,18 @@ public class Address {
     }
 
     @Override
+    public String toString() {
+        return "Address{" +
+                "id=" + id +
+                ", number='" + number + '\'' +
+                ", streetName='" + streetName + '\'' +
+                ", floor='" + floor + '\'' +
+                ", zipcode='" + zipcode + '\'' +
+                ", cityName='" + cityName + '\'' +
+                '}';
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Address address)) return false;

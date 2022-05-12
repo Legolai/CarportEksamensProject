@@ -17,10 +17,10 @@ public class ApplicationStart implements ServletContextListener
 {
     private static ConnectionPool connectionPool;
 
-    public ApplicationStart()
-    {
-
-    }
+//    public ApplicationStart()
+//    {
+//
+//    }
 
     @Override
     public void contextInitialized(ServletContextEvent sce)

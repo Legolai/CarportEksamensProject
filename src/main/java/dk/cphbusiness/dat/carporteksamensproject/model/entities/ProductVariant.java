@@ -62,6 +62,16 @@ public class ProductVariant {
     }
 
     @Override
+    public String toString() {
+        return "ProductVariant{" +
+                "id=" + id +
+                ", productId=" + productId +
+                ", sizeId=" + sizeId +
+                ", deleted=" + deleted +
+                '}';
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof ProductVariant that)) return false;

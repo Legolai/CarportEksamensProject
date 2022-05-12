@@ -74,6 +74,17 @@ public class Shack {
     }
 
     @Override
+    public String toString() {
+        return "Shack{" +
+                "id=" + id +
+                ", width=" + width +
+                ", length=" + length +
+                ", isLeftAligned=" + isLeftAligned +
+                ", carportId=" + carportId +
+                '}';
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Shack shack)) return false;

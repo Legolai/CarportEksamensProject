@@ -50,6 +50,15 @@ public class ProductType {
     }
 
     @Override
+    public String toString() {
+        return "ProductType{" +
+                "id=" + id +
+                ", type='" + type + '\'' +
+                ", deleted=" + deleted +
+                '}';
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof ProductType that)) return false;
