@@ -422,6 +422,8 @@ public class EntityManager {
                     Object value = rs.getObject(name);
                     if (field.getType().isEnum()) {
                         value = Enum.valueOf(field.getType().asSubclass(Enum.class), (String) value);
+                    } else if (field.getType().equals(Boolean.TYPE)) {
+                        value = value.equals(1);
                     }
                     constArgs.add(value);
                 }

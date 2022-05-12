@@ -1,8 +1,6 @@
 package dk.cphbusiness.dat.carporteksamensproject.model.entities;
 
-import dk.cphbusiness.dat.carporteksamensproject.model.annotations.Column;
-import dk.cphbusiness.dat.carporteksamensproject.model.annotations.Entity;
-import dk.cphbusiness.dat.carporteksamensproject.model.annotations.Table;
+import dk.cphbusiness.dat.carporteksamensproject.model.annotations.*;
 
 import java.util.Objects;
 
@@ -10,6 +8,10 @@ import java.util.Objects;
 @Entity
 @Table("Product")
 public class Product {
+
+    @Id
+    @GeneratedValue(strategy = 1)
+    @Column("product_ID")
     private int id;
     @Column("product_description")
     private String description;

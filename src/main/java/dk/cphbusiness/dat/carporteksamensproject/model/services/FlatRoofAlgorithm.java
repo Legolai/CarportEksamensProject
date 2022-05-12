@@ -2,15 +2,21 @@ package dk.cphbusiness.dat.carporteksamensproject.model.services;
 
 import dk.cphbusiness.dat.carporteksamensproject.model.dtos.BillOfMaterialLineItemDTO;
 import dk.cphbusiness.dat.carporteksamensproject.model.dtos.CarportDTO;
+import dk.cphbusiness.dat.carporteksamensproject.model.dtos.ProductVariantDTO;
 import dk.cphbusiness.dat.carporteksamensproject.model.entities.Shack;
+import dk.cphbusiness.dat.carporteksamensproject.model.exceptions.DatabaseException;
+import dk.cphbusiness.dat.carporteksamensproject.model.persistence.ConnectionPool;
+import dk.cphbusiness.dat.carporteksamensproject.model.persistence.manager.EntityManager;
+import dk.cphbusiness.dat.carporteksamensproject.model.persistence.mappers.product.ProductVariantMapper;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class FlatRoofAlgorithm implements ICarportAlgorithm{
+    ProductVariantMapper mapper;
 
     public FlatRoofAlgorithm () {
-
+        EntityManager entityManager = new EntityManager(new ConnectionPool());
+        mapper = new ProductVariantMapper(entityManager);
     }
 
     @Override
@@ -29,6 +35,7 @@ public class FlatRoofAlgorithm implements ICarportAlgorithm{
 
     @Override
     public List<BillOfMaterialLineItemDTO> calcRoof(CarportDTO carportDTO) {
+        int roofPlateOverlay = 120;
         List<BillOfMaterialLineItemDTO> list = new ArrayList<>();
         int width = carportDTO.carport().getWidth();
         int length = carportDTO.carport().getLength();
@@ -39,11 +46,25 @@ public class FlatRoofAlgorithm implements ICarportAlgorithm{
         int tagpladeLength2 = 0;
         if (length > 600) {
             tagpladeLength = 600;
-            tagpladeLength2 = length - 600 + 180;
+            tagpladeLength2 = length - 600 + roofPlateOverlay;
         }
         // if length > 600, tagpladeAmounts * 2;
         // tagpladeLength = 600 if length <= 600 else needs 180 overlap.
 
+
+        Optional<List<ProductVariantDTO>> tagplader;
+        try {
+            tagplader = mapper.findAll(Map.of("product_type_name", "Tagplade"));
+            if (tagplader.isPresent()) {
+                for (ProductVariantDTO plader : tagplader.get()) {
+                    System.out.println(plader.product().product().getDescription());
+                    System.out.println(plader.size().getDetail());
+                }
+            }
+
+        } catch (DatabaseException ex) {
+
+        }
 
         //list.put("tagpladeAmounts",tagpladeAmounts);
 
