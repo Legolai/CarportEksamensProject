@@ -117,7 +117,10 @@ public class EntityManager {
     }
 
     public <T> List<T> insertBatch(Class<T> entityClass, List<T> batch) throws DatabaseException {
-        if (entityClass.isAnnotationPresent(JoinedEntity.class)) {
+
+        if (batch.isEmpty()) {
+            return new ArrayList<>();
+        } else if (entityClass.isAnnotationPresent(JoinedEntity.class)) {
             return insertJoinedEntityBatch(new JoinedEntityData<>(entityClass), batch);
         } else if (entityClass.isAnnotationPresent(Entity.class)) {
             return insertEntityBatch(new EntityData<>(entityClass), batch);
@@ -174,8 +177,6 @@ public class EntityManager {
     }
 
     private <T> List<T> insertEntityBatch(EntityData<T> entityData, List<T> batch) throws DatabaseException {
-        if (batch.isEmpty()) throw new DatabaseException("batch is empty!");
-
         FunctionWithThrows<Connection, List<T>> handler = connection -> {
             if (entityData.getFieldForId().isAnnotationPresent(GeneratedValue.class)) {
                 entityData.getFields().remove(entityData.getFieldForId());
@@ -203,27 +204,11 @@ public class EntityManager {
                         ps.setObject(i, value);
                     }
                     ps.addBatch();
-                    if (++count % batchSize == 0) {
-                        int[] rowStatus = ps.executeBatch();
-                        int rowStatusCount = 0;
-                        ResultSet resultSet = ps.getGeneratedKeys();
-                        ResultData<T> resultData = new ResultData<>(1, resultSet, entityData);
-                        while (resultSet.next() && rowStatus[rowStatusCount] >= Statement.SUCCESS_NO_INFO) {
-                            resultData.setEntity(batch.get(list.size()));
-                            list.add(extractIdFromQueryUpdate(resultData));
-                            ++rowStatusCount;
-                        }
+                    if (++count % batchSize != 0) {
+                        list.addAll(sendBatch(ps, entityData, batch, list.size()));
                     }
                 }
-                int[] rowStatus = ps.executeBatch();
-                int rowStatusCount = 0;
-                ResultSet resultSet = ps.getGeneratedKeys();
-                ResultData<T> resultData = new ResultData<>(1, resultSet, entityData);
-                while (rowStatus.length > rowStatusCount && rowStatus[rowStatusCount] >= Statement.SUCCESS_NO_INFO) {
-                    resultData.setEntity(batch.get(list.size()));
-                    list.add(extractIdFromQueryUpdate(resultData));
-                    ++rowStatusCount;
-                }
+                list.addAll(sendBatch(ps, entityData, batch, list.size()));
                 return list;
             }
             catch (SQLException ex) {
@@ -231,6 +216,20 @@ public class EntityManager {
             }
         };
         return makeConnection(handler);
+    }
+
+    private <T> List<T> sendBatch(PreparedStatement ps, EntityData<T> entityData, List<T> batch, int currentIndex) throws SQLException, DatabaseException {
+        List<T> list = new ArrayList<>();
+        int[] rowStatus = ps.executeBatch();
+        int rowStatusCount = 0;
+        ResultSet resultSet = ps.getGeneratedKeys();
+        ResultData<T> resultData = new ResultData<>(1, resultSet, entityData);
+        while (resultSet.next() && rowStatus[rowStatusCount] >= Statement.SUCCESS_NO_INFO) {
+            resultData.setEntity(batch.get(currentIndex));
+            list.add(extractIdFromQueryUpdate(resultData));
+            ++rowStatusCount;
+        }
+        return list;
     }
 
     private <T> T insertCheckedEntity(EntityData<T> entityData, Object entity) throws DatabaseException {
