@@ -8,6 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FlatRoofAlgorithm implements ICarportAlgorithm{
+
+    public FlatRoofAlgorithm () {
+
+    }
+
     @Override
     public List<BillOfMaterialLineItemDTO> calcCarport(CarportDTO carportDTO) {
         List<BillOfMaterialLineItemDTO> list = new ArrayList<>();
@@ -29,11 +34,16 @@ public class FlatRoofAlgorithm implements ICarportAlgorithm{
         int length = carportDTO.carport().getLength();
 
         int tagpladeAmounts = (int) Math.ceil(width/100);
+        int tagpladeLength = length;
+        int tagpladeAmounts2 = tagpladeAmounts;
+        int tagpladeLength2 = 0;
         if (length > 600) {
-            //TODO: NOT DONE
+            tagpladeLength = 600;
+            tagpladeLength2 = length - 600 + 180;
         }
         // if length > 600, tagpladeAmounts * 2;
         // tagpladeLength = 600 if length <= 600 else needs 180 overlap.
+
 
         //list.put("tagpladeAmounts",tagpladeAmounts);
 
