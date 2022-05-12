@@ -71,6 +71,14 @@ Opsamling:
 - Mere kodning
 - Mere algoritme
 - Login page
+- 
+  Dag 9 (5/12 torsdag)
+  Opsamling:
+- Vi have lavet TODO for dag 8
+- Login page næsten færdig
+  TODO:
+- Mere kodning
+- Mere algoritme
 
 
 
