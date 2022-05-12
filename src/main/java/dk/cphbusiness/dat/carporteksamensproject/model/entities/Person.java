@@ -28,13 +28,17 @@ public class Person {
     @Column("address_ID")
     private int addressId;
 
-    public Person(int id, String forename, String surname, String email, String phoneNumber, int addressId) {
+    @Column("person_deleted")
+    private boolean deleted;
+
+    public Person(int id, String forename, String surname, String email, String phoneNumber, int addressId, boolean deleted) {
         this.id = id;
         this.forename = forename;
         this.surname = surname;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.addressId = addressId;
+        this.deleted = deleted;
     }
 
     public int getId() {
@@ -61,6 +65,10 @@ public class Person {
         return addressId;
     }
 
+    public boolean isDeleted() {
+        return deleted;
+    }
+
     public void setId(int id) {
         this.id = id;
     }
@@ -83,6 +91,10 @@ public class Person {
 
     public void setAddressId(int addressId) {
         this.addressId = addressId;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 
     @Override

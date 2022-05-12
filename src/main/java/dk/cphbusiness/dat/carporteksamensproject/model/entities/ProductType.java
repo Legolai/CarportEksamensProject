@@ -16,9 +16,13 @@ public class ProductType {
     @Column("product_type_name")
     private String type;
 
-    public ProductType(int id, String type) {
+    @Column("product_type_deleted")
+    private boolean deleted;
+
+    public ProductType(int id, String type, boolean deleted) {
         this.id = id;
         this.type = type;
+        this.deleted = deleted;
     }
 
     public int getId() {
@@ -29,6 +33,10 @@ public class ProductType {
         return type;
     }
 
+    public boolean isDeleted() {
+        return deleted;
+    }
+
     public void setId(int id) {
         this.id = id;
     }
@@ -37,15 +45,19 @@ public class ProductType {
         this.type = type;
     }
 
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof ProductType that)) return false;
-        return getId() == that.getId() && Objects.equals(getType(), that.getType());
+        return getId() == that.getId() && isDeleted() == that.isDeleted() && Objects.equals(getType(), that.getType());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getType());
+        return Objects.hash(getId(), getType(), isDeleted());
     }
 }
