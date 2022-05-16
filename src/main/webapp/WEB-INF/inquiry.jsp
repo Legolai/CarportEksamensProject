@@ -5,7 +5,7 @@
 
 <t:pagetemplate>
     <jsp:attribute name="header">
-        Inquiry
+       <h1> Inquiry</h1>
     </jsp:attribute>
 
     <jsp:attribute name="footer">

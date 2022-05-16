@@ -6,7 +6,7 @@
 
 <t:pagetemplate>
     <jsp:attribute name="header">
-             Error page
+        <h1>Error page</h1>
     </jsp:attribute>
 
     <jsp:attribute name="footer">
