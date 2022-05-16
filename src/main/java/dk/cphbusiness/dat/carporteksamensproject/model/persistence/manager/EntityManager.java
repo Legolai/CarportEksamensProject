@@ -90,7 +90,7 @@ public class EntityManager {
     private <T> T insertJoinedEntity(JoinedEntityData<T> joinedEntityData, Object entity) throws DatabaseException {
         List<Object> constArgs = new LinkedList<>();
         try {
-            for (Iterator<Field> it = joinedEntityData.getFields().descendingIterator(); it.hasNext(); ) {
+            for (Iterator<Field> it = joinedEntityData.descendingFieldsIterator(); it.hasNext(); ) {
                 Field field = it.next();
                 Object fieldEntity = joinedEntityData.getEntityClass().getDeclaredMethod(field.getName()).invoke(entity);
                 Object baseEntity;

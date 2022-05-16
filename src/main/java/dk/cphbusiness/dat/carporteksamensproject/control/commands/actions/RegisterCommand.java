@@ -11,7 +11,6 @@ import dk.cphbusiness.dat.carporteksamensproject.model.entities.Person;
 import dk.cphbusiness.dat.carporteksamensproject.model.entities.Role;
 import dk.cphbusiness.dat.carporteksamensproject.model.exceptions.DatabaseException;
 import dk.cphbusiness.dat.carporteksamensproject.model.persistence.ConnectionPool;
-import dk.cphbusiness.dat.carporteksamensproject.model.persistence.UserMapper;
 import dk.cphbusiness.dat.carporteksamensproject.model.persistence.manager.EntityManager;
 import dk.cphbusiness.dat.carporteksamensproject.model.persistence.mappers.person.AccountMapper;
 

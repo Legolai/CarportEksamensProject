@@ -7,6 +7,8 @@ import dk.cphbusiness.dat.carporteksamensproject.model.entities.Address;
 import dk.cphbusiness.dat.carporteksamensproject.model.entities.Person;
 import dk.cphbusiness.dat.carporteksamensproject.model.interfaces.IForeignKey;
 
+import java.io.Serializable;
+
 @JoinedEntity
 @Join(main = Account.class, join = {Person.class, Address.class})
 public record AccountDTO(Account account, PersonDTO personDTO) implements IForeignKey {

@@ -1,7 +1,7 @@
 package dk.cphbusiness.dat.carporteksamensproject.model.services;
 
 public class SVG {
-    StringBuilder svg;
+    StringBuilder svgBuilder;
     private int x;
     private int y;
     private String viewBox;
@@ -39,73 +39,73 @@ public class SVG {
         this.hasEndArrow = false;
         this.defaultDashDistance = 10;
         this.defaultDashSpacing = 5;
-        svg = new StringBuilder(String.format(HEADER_TEMPLATE, height, width, x, y, viewBox));
+        svgBuilder = new StringBuilder(String.format(HEADER_TEMPLATE, height, width, x, y, viewBox));
     }
 
     public SVG addRect(int x, int y, int width, int height, int stroke) {
-        svg.append(String.format(DOT_RECT_TEMPLATE, x, y, width, height, stroke, 0, 0));
+        svgBuilder.append(String.format(DOT_RECT_TEMPLATE, x, y, width, height, stroke, 0, 0));
         return this;
     }
 
     public SVG addDottedRect(int x, int y, int width, int height, int stroke) {
-        svg.append(String.format(DOT_RECT_TEMPLATE, x, y, width, height, stroke, defaultDashDistance, defaultDashSpacing));
+        svgBuilder.append(String.format(DOT_RECT_TEMPLATE, x, y, width, height, stroke, defaultDashDistance, defaultDashSpacing));
         return this;
     }
 
     public SVG addDottedLine(int x1, int y1, int x2, int y2, int stroke) {
-        svg.append(String.format(DOT_LINE_TEMPLATE, x1, y1, x2, y2, stroke, defaultDashDistance, defaultDashSpacing, ""));
+        svgBuilder.append(String.format(DOT_LINE_TEMPLATE, x1, y1, x2, y2, stroke, defaultDashDistance, defaultDashSpacing, ""));
         return this;
     }
 
     public SVG addLine(int x1, int y1, int x2, int y2, int stroke) {
-        svg.append(String.format(DOT_LINE_TEMPLATE, x1, y1, x2, y2, stroke, 0, 0, ""));
+        svgBuilder.append(String.format(DOT_LINE_TEMPLATE, x1, y1, x2, y2, stroke, 0, 0, ""));
         return this;
     }
 
     public SVG addEndArrow(int x1, int y1, int x2, int y2, int stroke) {
         if (!hasEndArrow){
-            svg.append(END_ARROW_DEFINITION);
+            svgBuilder.append(END_ARROW_DEFINITION);
             hasEndArrow = true;
         }
 
-        svg.append(String.format(DOT_LINE_TEMPLATE, x1, y1, x2, y2, stroke, 0, 0, "marker-end: url(#endArrow);"));
+        svgBuilder.append(String.format(DOT_LINE_TEMPLATE, x1, y1, x2, y2, stroke, 0, 0, "marker-end: url(#endArrow);"));
         return this;
     }
 
     public SVG addStartArrow(int x1, int y1, int x2, int y2, int stroke) {
         if(!hasStartArrow) {
-            svg.append(START_ARROW_DEFINITION);
+            svgBuilder.append(START_ARROW_DEFINITION);
             hasStartArrow = true;
         }
-        svg.append(String.format(DOT_LINE_TEMPLATE, x1, y1, x2, y2, stroke, 0, 0, "marker-start: url(#startArrow);"));
+        svgBuilder.append(String.format(DOT_LINE_TEMPLATE, x1, y1, x2, y2, stroke, 0, 0, "marker-start: url(#startArrow);"));
         return this;
     }
 
     public SVG addDubleArrow(int x1, int y1, int x2, int y2, int stroke) {
         if (!hasEndArrow) {
-            svg.append(END_ARROW_DEFINITION);
+            svgBuilder.append(END_ARROW_DEFINITION);
             hasEndArrow = true;
         }
         if(!hasStartArrow) {
-            svg.append(START_ARROW_DEFINITION);
+            svgBuilder.append(START_ARROW_DEFINITION);
             hasStartArrow = true;
         }
-        svg.append(String.format(DOT_LINE_TEMPLATE, x1, y1, x2, y2, stroke, 0, 0, "marker-start: url(#startArrow); marker-end: url(#endArrow);"));
+        svgBuilder.append(String.format(DOT_LINE_TEMPLATE, x1, y1, x2, y2, stroke, 0, 0, "marker-start: url(#startArrow); marker-end: url(#endArrow);"));
         return this;
     }
 
     public SVG addText(String text, int x, int y, int rotation){
-        svg.append(String.format(TEXT_TEMPLATE, x, y, rotation, text));
+        svgBuilder.append(String.format(TEXT_TEMPLATE, x, y, rotation, text));
         return this;
     }
 
     public SVG addSVG(SVG innerSVG) {
-        svg.append(innerSVG.toString());
+        svgBuilder.append(innerSVG.toString());
         return this;
     }
 
     @Override
     public String toString() {
-        return svg.append("</svg>").toString();
+        return svgBuilder.append("</svg>").toString();
     }
 }

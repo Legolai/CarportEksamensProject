@@ -4,9 +4,7 @@ import dk.cphbusiness.dat.carporteksamensproject.model.annotations.Join;
 import dk.cphbusiness.dat.carporteksamensproject.model.annotations.JoinedEntity;
 
 import java.lang.reflect.Field;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class JoinedEntityData<T> {
     private Class<?> mainTable;
@@ -34,8 +32,12 @@ public class JoinedEntityData<T> {
         }
     }
 
-    public LinkedList<Field> getFields() {
+    public List<Field> getFields() {
         return fields;
+    }
+
+    public Iterator<Field> descendingFieldsIterator() {
+        return fields.descendingIterator();
     }
 
     public Class<?>[] getConstructorEmp() {

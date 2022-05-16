@@ -4,7 +4,6 @@ import dk.cphbusiness.dat.carporteksamensproject.control.commands.pages.Unprotec
 import dk.cphbusiness.dat.carporteksamensproject.control.webtypes.PageDirect;
 import dk.cphbusiness.dat.carporteksamensproject.control.webtypes.RedirectType;
 import dk.cphbusiness.dat.carporteksamensproject.model.persistence.ConnectionPool;
-import dk.cphbusiness.dat.carporteksamensproject.model.persistence.UserMapper;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

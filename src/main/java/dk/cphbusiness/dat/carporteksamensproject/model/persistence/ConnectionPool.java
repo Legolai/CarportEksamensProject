@@ -13,7 +13,7 @@ public class ConnectionPool
     private HikariDataSource ds;
     private static String USER = "teacher";
     private static String PASSWORD = "rootuser";
-    private static String URL = "jdbc:mysql://localhost:3306/carportprojectdb?serverTimezone=CET&useSSL=false&allowPublicKeyRetrieval=true";;
+    private static String URL = "jdbc:mysql://localhost:3306/carportprojectdb?serverTimezone=CET&useSSL=false&allowPublicKeyRetrieval=true";
 
     public ConnectionPool()
     {
@@ -31,8 +31,8 @@ public class ConnectionPool
             URL = System.getenv("JDBC_CONNECTION_STRING");
         }
 
-        Logger.getLogger("web").log(Level.INFO,
-                String.format("Connection Pool created for: (%s, %s, %s)", USER, PASSWORD, URL));
+        String msg = String.format("Connection Pool created for: (%s, %s, %s)", USER, PASSWORD, URL);
+        Logger.getLogger("web").log(Level.INFO, msg);
         HikariConfig config = new HikariConfig();
         config.setDriverClassName("com.mysql.cj.jdbc.Driver");
         config.setJdbcUrl(URL);
