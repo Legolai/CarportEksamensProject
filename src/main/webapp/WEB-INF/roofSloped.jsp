@@ -5,7 +5,7 @@
 
 <t:pagetemplate>
     <jsp:attribute name="header">
-        Sloped roof
+        <h1>Sloped roof</h1>
     </jsp:attribute>
 
     <jsp:attribute name="footer">

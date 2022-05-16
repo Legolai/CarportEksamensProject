@@ -31,6 +31,7 @@
                 <div class="navbar-nav">
                     <c:if test="${sessionScope.user == null }">
                         <a class="nav-item nav-link" href="${pageContext.request.contextPath}/fc/login-page">Login</a>
+                        <a class="nav-item nav-link" href="${pageContext.request.contextPath}/fc/register-page">Sign up</a>
                     </c:if>
                     <c:if test="${sessionScope.user != null }">
                         <a class="nav-item nav-link" href="${pageContext.request.contextPath}/fc/account-page">Min profil</a>
@@ -43,7 +44,7 @@
 </header>
 
 <div id="body" class="container mt-4" style="min-height: 400px;">
-    <h1><jsp:invoke fragment="header"/></h1>
+    <jsp:invoke fragment="header"/>
     <jsp:doBody/>
 </div>
 

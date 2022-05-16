@@ -8,6 +8,7 @@ import dk.cphbusiness.dat.carporteksamensproject.model.persistence.UserMapper;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 public class LogoutCommand extends UnprotectedPageCommand {
     public LogoutCommand(String pageName) {
@@ -16,24 +17,8 @@ public class LogoutCommand extends UnprotectedPageCommand {
 
     @Override
     public PageDirect execute(HttpServletRequest request, HttpServletResponse response, ConnectionPool connectionPool) {
-        UserMapper userMapper = new UserMapper(connectionPool);
-
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
-
-//        try {
-//            //DBEntity<User> dbUser = userMapper.login(email, password);
-//
-//            HttpSession session = request.getSession();
-//            //session.setAttribute("user", dbUser);
-//
-//            String pageToShow = "index";
-//            return new PageDirect(RedirectType.REDIRECT, pageToShow);
-//        }
-//        catch (DatabaseException ex) {
-//            request.setAttribute("error", "Wrong username or password!");
-//            return new PageDirect(RedirectType.DEFAULT, "login");
-//        }
-        return new PageDirect(RedirectType.DEFAULT, "index");
+        HttpSession session = request.getSession(false);
+        session.invalidate();
+        return new PageDirect(RedirectType.REDIRECT, "index");
     }
 }

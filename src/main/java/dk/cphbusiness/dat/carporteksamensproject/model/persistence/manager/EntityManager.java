@@ -145,7 +145,7 @@ public class EntityManager {
                 throw new DatabaseException(ex.getMessage());
             }
         }
-        Class unSafe = subList.get(0).getClass();
+        Class<?> unSafe = subList.get(0).getClass();
         subList = insertEntityBatch(new EntityData<>(unSafe), subList);
 
 
