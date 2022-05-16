@@ -11,6 +11,7 @@ public class CarportAlgorithm {
 
         LinkedHashMap<String,Object> list = new LinkedHashMap<>();
 
+            //TODO: This might be better to have on frontend
         if (width - shackwidth < 30 || length - shacklength < 30) {
             list.put("Error", "The Shack was too big compared to the carport!\n" +
                     "If the carport is 300 x 300, then the shack can at most be 270 x 270");

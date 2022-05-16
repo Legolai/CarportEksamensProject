@@ -3,7 +3,9 @@ package dk.cphbusiness.dat.carporteksamensproject.model.services;
 import dk.cphbusiness.dat.carporteksamensproject.model.dtos.BillOfMaterialLineItemDTO;
 import dk.cphbusiness.dat.carporteksamensproject.model.dtos.CarportDTO;
 import dk.cphbusiness.dat.carporteksamensproject.model.dtos.ProductVariantDTO;
+import dk.cphbusiness.dat.carporteksamensproject.model.entities.BillOfMaterialLineItem;
 import dk.cphbusiness.dat.carporteksamensproject.model.entities.Shack;
+import dk.cphbusiness.dat.carporteksamensproject.model.entities.Size;
 import dk.cphbusiness.dat.carporteksamensproject.model.exceptions.DatabaseException;
 import dk.cphbusiness.dat.carporteksamensproject.model.persistence.ConnectionPool;
 import dk.cphbusiness.dat.carporteksamensproject.model.persistence.manager.EntityManager;
@@ -28,54 +30,63 @@ public class FlatRoofAlgorithm implements ICarportAlgorithm{
         if (carportDTO.shack().isPresent()){
             list.addAll(calcShack(carportDTO));
         }
-        list.addAll(calcFittings(carportDTO));
-        list.addAll(calcScrews(carportDTO));
+//        list.addAll(calcFittings(carportDTO));
+//        list.addAll(calcScrews(carportDTO));
         return list;
     }
 
     @Override
     public List<BillOfMaterialLineItemDTO> calcRoof(CarportDTO carportDTO) {
-        int roofPlateOverlay = 120;
         List<BillOfMaterialLineItemDTO> list = new ArrayList<>();
+        int roofPlateOverlay = 120;     //TODO: This was just arbitarily selected
+
         int width = carportDTO.carport().getWidth();
         int length = carportDTO.carport().getLength();
-
         int tagpladeAmounts = (int) Math.ceil(width/100);
         int tagpladeLength = length;
-        int tagpladeAmounts2 = tagpladeAmounts;
+        //int tagpladeAmounts2 = tagpladeAmounts;
         int tagpladeLength2 = 0;
-        if (length > 600) {
-            tagpladeLength = 600;
+        if (length > 600) {             // if length > 600, tagpladeAmounts * 2;
+            tagpladeLength = 600;       // tagpladeLength = 600 if length <= 600 else needs 180 overlap.
             tagpladeLength2 = length - 600 + roofPlateOverlay;
         }
-        // if length > 600, tagpladeAmounts * 2;
-        // tagpladeLength = 600 if length <= 600 else needs 180 overlap.
+
+        list.addAll(getFromDB("product_description","Plastmo Ecolite blåtonet", tagpladeLength, tagpladeAmounts, "tagplader monteres på spær"));
+        list.addAll(getFromDB("product_description","Plastmo Ecolite blåtonet", tagpladeLength2, tagpladeAmounts, "tagplader monteres på spær"));
+
+//        Optional<List<ProductVariantDTO>> tagplader;
+//        try {
+//            tagplader = mapper.findAll(Map.of("product_description", "Plastmo Ecolite blåtonet"));
+//            if (tagplader.isPresent()) {
+//                List<ProductVariantDTO> sorted = tagplader.get();
+//                sorted.sort(Comparator.comparingInt(a -> a.size().getDetail()));
+//                boolean added1 = false;
+//                boolean added2 = false;
+//                for (ProductVariantDTO plader : sorted) {
+//                    if (plader.size().getDetail() >= tagpladeLength && added1 == false) {
+//                        BillOfMaterialLineItem tagpladeLineItem1 = new BillOfMaterialLineItem(0, 0, tagpladeAmounts, "tagplader monteres på spær", plader.variant().getId());
+//                        list.add(new BillOfMaterialLineItemDTO(tagpladeLineItem1, plader));
+//                        added1 = true;
+//                    }
+//                    if (plader.size().getDetail() >= tagpladeLength2 && tagpladeLength2 != 0 && added2 == false) {
+//                        BillOfMaterialLineItem tagpladeLineItem2  = new BillOfMaterialLineItem(0, 0, tagpladeAmounts, "tagplader monteres på spær", plader.variant().getId());
+//                        list.add(new BillOfMaterialLineItemDTO(tagpladeLineItem2, plader));
+//                        added2 = true;
+//                    }
+//                }
+//            }
+//        } catch (DatabaseException ex) {
+//            ex.printStackTrace();
+//        }
 
 
-        Optional<List<ProductVariantDTO>> tagplader;
-        try {
-            tagplader = mapper.findAll(Map.of("product_type_name", "Tagplade"));
-            if (tagplader.isPresent()) {
-                for (ProductVariantDTO plader : tagplader.get()) {
-                    System.out.println(plader.product().product().getDescription());
-                    System.out.println(plader.size().getDetail());
-                }
-            }
+        int spaerAmounts = (int) Math.ceil(length/56.5) + 1; // længde skal være lig med width
+        int spaerLength = width;
 
-        } catch (DatabaseException ex) {
-
-        }
-
-        //list.put("tagpladeAmounts",tagpladeAmounts);
+        list.addAll(getFromDB("product_description","45x195 mm. Spærtræ ubh.", spaerLength, spaerAmounts, "Spær, monteres på rem"));
 
 
-        int rafterAmounts = (int) Math.ceil(length/56.5) + 1; // længde skal være lig med width
-        int rafterLength = width;
-
-//        list.put("rafterAmounts",rafterAmounts);
-//        list.put("rafterLength",rafterLength);
-
-        return null;
+        return list;
     }
 
     @Override
@@ -85,11 +96,12 @@ public class FlatRoofAlgorithm implements ICarportAlgorithm{
         int height = carportDTO.carport().getHeight();
         int width = carportDTO.carport().getWidth();
         int length = carportDTO.carport().getLength();
+        Shack shack;
         boolean shackExists = false;
         int shackwidth = 0;
         int shacklength = 0;
         if (carportDTO.shack().isPresent()){
-            Shack shack = carportDTO.shack().get();
+            shack = carportDTO.shack().get();
             shackExists = true;
             shackwidth = shack.getWidth();
             shacklength = shack.getLength();
@@ -142,27 +154,89 @@ public class FlatRoofAlgorithm implements ICarportAlgorithm{
             }
         }
 
-//        list.put("strongerPosts",strongerPosts);
-//        list.put("postAmounts",postAmounts);
-//        list.put("postHeight(currently set to be height + 90, where height = 210)",postHeight);
-//        list.put("remAmounts",remAmounts);
-//        list.put("remLength",remLength);
-//        if (shackRem == true) {
-//            list.put("shackRems",shackRems);
-//            list.put("shackRemLength",shackRemLength);
-//        }
-//        return list;
-        return null;
+        list.addAll(getFromDB("product_description","97x97 mm. trykimp. Stolpe", postHeight, postAmounts, "Stolper nedgraves 90 cm. i jord"));
+        list.addAll(getFromDB("product_description", "45x195 mm. Spærtræ ubh.", remLength, remAmounts, "remme i sider, sadles ned i stolper"));
+        if (shackRem) {
+            list.addAll(getFromDB("product_description", "45x195 mm. Spærtræ ubh.", shackRemLength, shackRems, "remme i sider, sadles ned i stolper (skur del, deles)"));
+        }
+
+        return list;
     }
 
     @Override
     public List<BillOfMaterialLineItemDTO> calcSterns(CarportDTO carportDTO) {
-        return null;
+        List<BillOfMaterialLineItemDTO> list = new ArrayList<>();
+
+        int width = carportDTO.carport().getWidth();
+        int length = carportDTO.carport().getLength();
+
+        int overSternBoardsFront = 2; // length is (width + 120)/2
+        int sternBoardsFrontBackLength = (width + 120)/2;
+        int underSternBoardsFrontBack = 4; // length is same as above
+        int overSternBoardsSides = 4; // length is ~ 33% more than length, rounded to nearest mod 30
+        int sternBoardsSidesLength = (int) Math.ceil((Math.ceil(length * 1.33)/2)/30.0)*30;
+        int underSternBoardsSides = 4; // length is same as above
+
+        list.addAll(getFromDB("product_description","25x200 mm. trykimp. Brædt", sternBoardsFrontBackLength, underSternBoardsFrontBack, "Understernbrædder til for & bag ende"));
+        list.addAll(getFromDB("product_description","25x200 mm. trykimp. Brædt", sternBoardsSidesLength, underSternBoardsSides, "Understernbrædder til siderne"));
+        list.addAll(getFromDB("product_description","25x125 mm. trykimp. Brædt", sternBoardsFrontBackLength, overSternBoardsFront, "oversternbrædder til forenden"));
+        list.addAll(getFromDB("product_description","25x125 mm. trykimp. Brædt", sternBoardsSidesLength, overSternBoardsSides, "oversternbrædder til siderne"));
+
+
+        int waterBoardFront = 2; // same as overSternBoardsFront
+        int waterBoardSides = 4; // same as overSternBoardsSides
+
+        list.addAll(getFromDB("product_description","19x100 mm. trykimp. Brædt", sternBoardsSidesLength, waterBoardSides, "Vandbrædt på stern til sider"));
+        list.addAll(getFromDB("product_description","19x100 mm. trykimp. Brædt", sternBoardsFrontBackLength, waterBoardFront, "Vandbrædt på stern til forende"));
+
+
+        return list;
     }
 
     @Override
     public List<BillOfMaterialLineItemDTO> calcShack(CarportDTO carportDTO) {
-        return null;
+        List<BillOfMaterialLineItemDTO> list = new ArrayList<>();
+
+        int height = carportDTO.carport().getHeight();
+        System.out.println("Height is: "+height);
+        Shack shack = carportDTO.shack().get();
+        int shackwidth = shack.getWidth();
+        int shacklength = shack.getLength();
+        int shackRems = 2;
+        int shackRemLength = shacklength+30;
+        if (shackRemLength <= 300) {
+            shackRemLength = shackRemLength * 2;
+            shackRems = 1;
+        }
+
+        int loestholterSides = (int) Math.ceil(shacklength/270.0) * 4;
+        int loestholterSidesLength = shacklength + 30;
+        int loestholterGavler = (int) Math.ceil(shackwidth/270.0) * 6;
+        int loestholterGavlerLength = ((shackRemLength/2)*shackRems) + 30;
+        int shackTotalLength = (shacklength * 2 + shackwidth * 2)/10;
+        int skackBeklaedning = (int) ((shackTotalLength * 1.56) - (shackTotalLength * 1.56)%30);
+        System.out.println("skackBeklaedning is: "+skackBeklaedning);
+        int skackBeklaedningLength = height;    //210
+        System.out.println("skackBeklaedningLength is: "+skackBeklaedningLength);
+        int vinkelBeslag = (loestholterSides + loestholterGavler) * 2;
+
+        list.addAll(getFromDB("product_description","45x95 mm. regular ub.", loestholterGavlerLength, loestholterGavler, "Løstholter til skur gavle"));
+        list.addAll(getFromDB("product_description","45x95 mm. regular ub.", loestholterSidesLength, loestholterSides, "Løstholter til skur sider"));
+        list.addAll(getFromDB("product_description","Vinkelbeslag 35", 1, vinkelBeslag, "Til montering af løsholter i skur"));
+        list.addAll(getFromDB("product_description","19x100 mm. trykimp. Brædt", skackBeklaedningLength, skackBeklaedning, "Til beklædning af skur 1 på 2"));
+
+
+        int laegteForDoor = 1;     //TODO: for the z on door, amount can be adjusted directly?
+        int laegteForDoorLength = 420; // I think this is just constant
+        int doergreb = laegteForDoor;  // maybe people can choose how many doors they want?
+        int doerHaengsel = laegteForDoor*2;
+
+        list.addAll(getFromDB("product_description","38x73 mm. Lægte ubh.", laegteForDoorLength, laegteForDoor, "Til Z på bagside af dør"));
+        list.addAll(getFromDB("product_description","Stalddørsgreb 50x75", 1, doergreb, "Til lås på dør til skur"));
+        list.addAll(getFromDB("product_description","T hængsel 390 mm.", 1, doerHaengsel, "Til skurdør"));
+
+
+        return list;
     }
 
     @Override
@@ -174,4 +248,28 @@ public class FlatRoofAlgorithm implements ICarportAlgorithm{
     public List<BillOfMaterialLineItemDTO> calcScrews(CarportDTO carportDTO) {
         return null;
     }
+
+
+    public List<BillOfMaterialLineItemDTO> getFromDB(String in, String name, int compare1, int amount, String comment) {
+        List<BillOfMaterialLineItemDTO> list = new ArrayList<>();
+        Optional<List<ProductVariantDTO>> toGet;
+        try {
+            toGet = mapper.findAll(Map.of(in, name));
+            if (toGet.isPresent()) {
+                List<ProductVariantDTO> sorted = toGet.get();
+                sorted.sort(Comparator.comparingInt(a -> a.size().getDetail()));
+                for (ProductVariantDTO x : sorted) {
+                    if (x.size().getDetail() >= compare1) {
+                        BillOfMaterialLineItem y = new BillOfMaterialLineItem(0, 0, amount, comment, x.variant().getId());
+                        list.add(new BillOfMaterialLineItemDTO(y, x));
+                        break;
+                    }
+                }
+            }
+        } catch (DatabaseException ex) {
+            ex.printStackTrace();
+        }
+        return list;
+    }
+
 }

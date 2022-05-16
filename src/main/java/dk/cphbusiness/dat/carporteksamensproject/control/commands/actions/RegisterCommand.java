@@ -47,7 +47,7 @@ public class RegisterCommand extends UnprotectedPageCommand {
         try{
             Address address = new Address(0, streetNumber, street,null, zip, city);
             Person person = new Person(0, firstName, lastName,email, null, 0, false);
-            Account acc = new Account(0, LocalDateTime.now(), 0, password, Role.COSTUMER);
+            Account acc = new Account(0, LocalDateTime.now().withNano(0), 0, password, Role.COSTUMER);
             PersonDTO personDTO = new PersonDTO(person, address);
             AccountDTO accDTO = new AccountDTO(acc, personDTO);
 
