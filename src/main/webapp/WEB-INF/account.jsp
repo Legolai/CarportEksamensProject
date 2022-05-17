@@ -18,9 +18,11 @@
         <p>This is your account side </p>
 
 
-        <h3>Forespørgelser</h3>
+        <h3>Forespørgselsler</h3>
         <c:forEach items="${requestScope.inquires}" var="inquiry">
-
+            <details>
+                <summary>Inquiry ${inquiry.inquiry().getId()}</summary>
+            </details>
         </c:forEach>
 
 

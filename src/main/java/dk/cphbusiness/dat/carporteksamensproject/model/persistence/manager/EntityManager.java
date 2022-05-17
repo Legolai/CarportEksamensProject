@@ -91,6 +91,12 @@ public record EntityManager(ConnectionPool connectionPool) {
                     baseEntity = insertJoinedEntity(new JoinedEntityData<>(field.getType()), fieldEntity);
                 } else if (fieldEntity instanceof List batch) {
                     baseEntity = insertBatch(batch.get(0).getClass(), batch);
+                } else if (fieldEntity instanceof Optional<?> optional){
+                    if (optional.isEmpty()){
+                        baseEntity = Optional.empty();
+                    } else {
+                        baseEntity = insertCheckedEntity(new EntityData<>(field.getType()), optional.get());
+                    }
                 } else {
                     baseEntity = insertCheckedEntity(new EntityData<>(field.getType()), fieldEntity);
                 }

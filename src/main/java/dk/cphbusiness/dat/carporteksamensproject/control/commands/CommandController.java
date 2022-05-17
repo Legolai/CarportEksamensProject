@@ -28,6 +28,7 @@ public class CommandController {
         commands.put("login-command", new LoginActionCommand(""));
         commands.put("logout-command", new LogoutActionCommand(""));
         commands.put("register-command", new RegisterActionCommand(""));
+        commands.put("inquiry-flatRoof-command", new InquiryFlatRoofActionCommand(""));
     }
 
     public static CommandController getInstance(){

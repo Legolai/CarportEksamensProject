@@ -32,11 +32,11 @@ public class AccountPageCommand extends ProtectedPageCommand{
 
         try {
             Optional<List<InquiryDTO>> list = InquiryFacade.findAll(Map.of("person_ID", accountDTO.personDTO().person().getId()), connectionPool);
+            list.ifPresent(inquiryDTOS -> request.setAttribute("inquiries", inquiryDTOS));
         }
         catch (DatabaseException e) {
             Logger.getLogger("web").log(Level.SEVERE, "Failed to find inquiries for account!", e);
         }
-
 
         return new PageDirect(RedirectType.DEFAULT, getPageName());
     }

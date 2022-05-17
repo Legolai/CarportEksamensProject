@@ -3,20 +3,104 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page errorPage="../error.jsp" isErrorPage="false" %>
 
-<t:pagetemplate>
+<t:carportInquriyTemplate>
     <jsp:attribute name="header">
-        <h1>Flat roof</h1>
+         <h1>Carport med fladt tag</h1>
     </jsp:attribute>
 
     <jsp:attribute name="footer">
-        Flat roof
+        Carport med fladt tag
     </jsp:attribute>
 
-    <jsp:body>
+    <jsp:attribute name="links">
+        <a class="btn btn-primary" href="${pageContext.request.contextPath}/fc/roofFlat-page">Carport med fladt tag</a>
+        <a class="btn btn-outline-primary"  href="${pageContext.request.contextPath}/fc/roofSloped-page">Carport med rejsning</a>
+        <a class="btn btn-outline-primary">Standard carporte</a>
+    </jsp:attribute>
 
-        <p>Flat roof </p>
+    <jsp:attribute name="inquiryForm">
+        <form class="row g-3 mb-3" action="${pageContext.request.contextPath}/fc/inquiry-flatRoof-command" method="post">
+            <div class="col-md-12">
+                <label for="carport-width" class="form-label">Carport bredde</label>
+                <select id="carport-width" name="carport-width" class="form-select form-select-md mb3">
+                    <option selected>Vælg bredde</option>
+                </select>
+            </div>
+            <div class="col-md-12">
+                <label for="carport-length" class="form-label">Carport længde</label>
+                <select id="carport-length" name="carport-length" class="form-select form-select-md mb3">
+                    <option selected>Vælg længde</option>
+                </select>
+            </div>
+            <div class="col-md-12">
+                <label for="roof-material" class="form-label">Tag</label>
+                <select id="roof-material" name="roof-material" class="form-select form-select-md mb3">
+                    <option selected>Vælg tag</option>
+                </select>
+            </div>
+
+            <div class="col-md-12">
+                <h3>Redskabsrum:</h3>
+            </div>
+
+            <div class="col-md-12">
+                <label for="shack-width" class="form-label">Redskabsrum bredde</label>
+                <select id="shack-width" name="shack-width" class="form-select form-select-md mb3">
+                    <option selected>Ønsker ikke redskabsrum</option>
+                </select>
+            </div>
+            <div class="col-md-12 mb-20">
+                <label for="shack-length" class="form-label">Redskabsrum længde</label>
+                <select id="shack-length" name="shack-length" class="form-select form-select-md mb3">
+                    <option selected>Ønsker ikke redskabsrum</option>
+                </select>
+            </div>
+
+            <div class="col-md-12">
+                <hr>
+            </div>
+
+            <div class="col-md-6">
+                <label for="firstName" class="form-label">Fornavn</label>
+                <input type="text" class="form-control" id="firstName" name="firstName">
+            </div>
+            <div class="col-md-6">
+                <label for="lastName" class="form-label">Efternavn</label>
+                <input type="text" class="form-control" id="lastName" name="lastName">
+            </div>
+            <div class="col-md-12">
+                <label class="form-label" for="email">Email</label>
+                <input class="form-control" type="email" id="email" name="email"/>
+            </div>
+            <div class="col-md-5 col-8">
+                <label class="form-label" for="street">Gade</label>
+                <input class="form-control" type="text" id="street" name="street"/>
+            </div>
+            <div class="col-md-2 col-4">
+                <label class="form-label" for="streetNumber">Nr.</label>
+                <input class="form-control" type="text" id="streetNumber" name="streetNumber"/>
+            </div>
+            <div class="col-md-3 col-8">
+                <label class="form-label" for="city">By</label>
+                <input class="form-control" type="text" id="city" name="city"/>
+            </div>
+            <div class="col-md-2 col-4">
+                <label class="form-label" for="zip">Zip kode</label>
+                <input class="form-control" type="text" id="zip" name="zip"/>
+            </div>
 
 
-    </jsp:body>
+            <div class="col-md-12">
+                <label for="comment" class="form-label">Evt. bemærkninger</label>
+                <textarea class="form-control" cols="20" id="comment" name="comment" rows="2"></textarea>
+            </div>
 
-</t:pagetemplate>
+            <div class="col">
+                <button type="submit" class="btn btn-primary w-100">Send forespørgsel</button>
+            </div>
+
+        </form>
+
+    </jsp:attribute>
+
+</t:carportInquriyTemplate>

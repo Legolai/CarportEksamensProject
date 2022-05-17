@@ -12,14 +12,20 @@ import java.util.Optional;
 
 public class InquiryFacade {
 
+    private InquiryFacade() {}
+
     public static List<InquiryDTO> getAll(ConnectionPool connectionPool) throws DatabaseException {
         InquiryMapper inquiryMapper = new InquiryMapper(new EntityManager(connectionPool));
         return inquiryMapper.getAll();
     }
 
-
     public static Optional<List<InquiryDTO>> findAll(Map<String, Object> properties, ConnectionPool connectionPool) throws DatabaseException {
         InquiryMapper inquiryMapper = new InquiryMapper(new EntityManager(connectionPool));
         return inquiryMapper.findAll(properties);
+    }
+
+    public static InquiryDTO createInquiry(InquiryDTO inquiryDTO, ConnectionPool connectionPool) throws DatabaseException {
+        InquiryMapper inquiryMapper = new InquiryMapper(new EntityManager(connectionPool));
+        return inquiryMapper.insert(inquiryDTO);
     }
 }

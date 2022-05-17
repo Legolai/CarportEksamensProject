@@ -1,16 +1,23 @@
 package dk.cphbusiness.dat.carporteksamensproject.model.persistence.mappers;
 
 import dk.cphbusiness.dat.carporteksamensproject.model.annotations.Column;
-import dk.cphbusiness.dat.carporteksamensproject.model.dtos.*;
+import dk.cphbusiness.dat.carporteksamensproject.model.dtos.BillOfMaterialDTO;
+import dk.cphbusiness.dat.carporteksamensproject.model.dtos.BillOfMaterialLineItemDTO;
+import dk.cphbusiness.dat.carporteksamensproject.model.dtos.CarportDTO;
+import dk.cphbusiness.dat.carporteksamensproject.model.dtos.InquiryDTO;
+import dk.cphbusiness.dat.carporteksamensproject.model.dtos.PersonDTO;
 import dk.cphbusiness.dat.carporteksamensproject.model.entities.Inquiry;
 import dk.cphbusiness.dat.carporteksamensproject.model.exceptions.DatabaseException;
-import dk.cphbusiness.dat.carporteksamensproject.model.persistence.manager.EntityData;
 import dk.cphbusiness.dat.carporteksamensproject.model.persistence.manager.EntityManager;
 import dk.cphbusiness.dat.carporteksamensproject.model.services.facade.PersonFacade;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class InquiryMapper implements DataMapper<InquiryDTO> {
@@ -82,7 +89,25 @@ public class InquiryMapper implements DataMapper<InquiryDTO> {
 
     @Override
     public InquiryDTO insert(InquiryDTO inquiryDTO) throws DatabaseException {
-        return null;
+        PersonDTO personDTO = inquiryDTO.person();
+        CarportDTO carportDTO = inquiryDTO.carport();
+
+        CarportDTO dbCarport = entityManager.insert(CarportDTO.class, carportDTO);
+        inquiryDTO.updateForeignKey(dbCarport);
+        PersonDTO dbPerson = entityManager.insert(PersonDTO.class, personDTO);
+        inquiryDTO.updateForeignKey(dbPerson);
+        Inquiry dbInquiry = entityManager.insert(Inquiry.class, inquiryDTO.inquiry());
+
+        Optional<BillOfMaterialDTO> bill = inquiryDTO.billOfMaterial();
+        if (bill.isEmpty()){
+            return new InquiryDTO(dbInquiry, dbPerson, Optional.empty(), dbCarport);
+        }
+
+        bill.get().updateForeignKey(dbInquiry);
+        List<BillOfMaterialLineItemDTO> lineItems = entityManager.insertBatch(BillOfMaterialLineItemDTO.class, bill.get().lineItems());
+        BillOfMaterialDTO dbBill = new BillOfMaterialDTO(lineItems);
+
+        return new InquiryDTO(dbInquiry, dbPerson, Optional.of(dbBill), dbCarport);
     }
 
     @Override

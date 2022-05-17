@@ -12,6 +12,8 @@ import java.util.Optional;
 
 public class PersonFacade {
 
+    private PersonFacade(){}
+
     public static List<PersonDTO> getAll(ConnectionPool connectionPool) throws DatabaseException {
         PersonMapper personMapper = new PersonMapper(new EntityManager(connectionPool));
         return personMapper.getAll();
