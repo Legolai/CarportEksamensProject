@@ -5,7 +5,7 @@
 
 <t:pagetemplate>
     <jsp:attribute name="header">
-        Welcome to the all inquiries side
+       <h1> Welcome to the all inquiries side</h1>
     </jsp:attribute>
 
     <jsp:attribute name="footer">

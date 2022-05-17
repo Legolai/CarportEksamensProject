@@ -5,7 +5,7 @@
 
 <t:pagetemplate>
     <jsp:attribute name="header">
-        Fog Quickbyg
+        <h1>Fog Quickbyg</h1>
     </jsp:attribute>
 
     <jsp:attribute name="footer">
@@ -18,10 +18,8 @@
         <br>Tilbud og skitsetegningen fremsendes til din email hurtigst muligt.</p>
 
         <br>
-        <p>Carport med <a
-                href="${pageContext.request.contextPath}/fc/roofFlat-page">flat tag</a>.</p>
-        <p>Carport med <a
-                href="${pageContext.request.contextPath}/fc/roofSloped-page">rejsning</a>.</p>
+        <p>Carport med <a href="${pageContext.request.contextPath}/fc/roofFlat-page">flat tag</a>.</p>
+        <p>Carport med <a href="${pageContext.request.contextPath}/fc/roofSloped-page">rejsning</a>.</p>
 
 
         <br>

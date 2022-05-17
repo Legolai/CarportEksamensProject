@@ -1,7 +1,5 @@
 package dk.cphbusiness.dat.carporteksamensproject.model.persistence.manager;
 
-import dk.cphbusiness.dat.carporteksamensproject.model.persistence.manager.EntityData;
-
 import java.sql.ResultSet;
 
 public class ResultData<T> {

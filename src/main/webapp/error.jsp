@@ -6,7 +6,7 @@
 
 <t:pagetemplate>
     <jsp:attribute name="header">
-             Error page
+        <h1>Error page</h1>
     </jsp:attribute>
 
     <jsp:attribute name="footer">
@@ -19,11 +19,11 @@
             with right now: </p>
 
         <c:if test="${pageContext.errorData.statusCode == 404 }">
-            <p><b>Error code:</b> ${pageContext.errorData.statusCode}</p>
+            <p><strong>Error code:</strong> ${pageContext.errorData.statusCode}</p>
         </c:if>
 
         <c:if test="${pageContext.errorData.statusCode == 500 }">
-            <p><b>Error code:</b> ${pageContext.errorData.statusCode}</p>
+            <p><strong>Error code:</strong> ${pageContext.errorData.statusCode}</p>
             <p>A serious error happened at the server.</p>
         </c:if>
 

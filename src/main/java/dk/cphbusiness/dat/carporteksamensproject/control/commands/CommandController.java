@@ -10,7 +10,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class CommandController {
-    private static volatile CommandController instance = null;
+    private static final CommandController INSTANCE = new CommandController();
     private final Map<String, Command> commands = new HashMap<>();
 
     private CommandController(){
@@ -32,15 +32,7 @@ public class CommandController {
     }
 
     public static CommandController getInstance(){
-        if (instance == null) {
-            synchronized (CommandController.class) {
-                if (instance == null) {
-                    Logger.getLogger("CommandController").log(Level.SEVERE, "Commands has been created");
-                    instance = new CommandController();
-                }
-            }
-        }
-        return instance;
+        return INSTANCE;
     }
 
 

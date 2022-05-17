@@ -27,10 +27,6 @@ class CarportAlgorithmTest {
     }
 
     @Test
-    void testCarportItemList() {
-    }
-
-    @Test
     void testFlatRoofItemList() {
 //        Spær, tagplader
         List<BillOfMaterialLineItemDTO> expected = new ArrayList<>();
@@ -258,11 +254,6 @@ class CarportAlgorithmTest {
         assertEquals(expected.size(), actual.size());
         assertEquals(expected.get(0), actual.get(0));
         assertEquals(expected.get(1), actual.get(1));
-
-    }
-
-    @Test
-    void testFittingsItemList() {
 
     }
 

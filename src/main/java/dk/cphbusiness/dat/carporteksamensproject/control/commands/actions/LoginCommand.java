@@ -3,12 +3,9 @@ package dk.cphbusiness.dat.carporteksamensproject.control.commands.actions;
 import dk.cphbusiness.dat.carporteksamensproject.control.commands.pages.UnprotectedPageCommand;
 import dk.cphbusiness.dat.carporteksamensproject.control.webtypes.PageDirect;
 import dk.cphbusiness.dat.carporteksamensproject.control.webtypes.RedirectType;
-//import dk.cphbusiness.dat.carporteksamensproject.model.entities.DBEntity;
 import dk.cphbusiness.dat.carporteksamensproject.model.dtos.AccountDTO;
-import dk.cphbusiness.dat.carporteksamensproject.model.entities.User;
 import dk.cphbusiness.dat.carporteksamensproject.model.exceptions.DatabaseException;
 import dk.cphbusiness.dat.carporteksamensproject.model.persistence.ConnectionPool;
-import dk.cphbusiness.dat.carporteksamensproject.model.persistence.UserMapper;
 import dk.cphbusiness.dat.carporteksamensproject.model.persistence.manager.EntityManager;
 import dk.cphbusiness.dat.carporteksamensproject.model.persistence.mappers.person.AccountMapper;
 

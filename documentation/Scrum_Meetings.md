@@ -81,5 +81,20 @@ Opsamling:
 - Mere algoritme
 
 
+UGE 2
+
+Dag 10 (5/16 mandag)
+Opsamling:
+- Vi have lavet TODO for dag 9
+  TODO:
+- Undervisning (SVG og reflektion/evaluering)
+
+Dag 11 (5/17 tirsdag)
+Opsamling:
+- Vi have lavet TODO for dag 10
+  TODO:
+- Mere kodning
+- Mere algoritme
+
 
 
