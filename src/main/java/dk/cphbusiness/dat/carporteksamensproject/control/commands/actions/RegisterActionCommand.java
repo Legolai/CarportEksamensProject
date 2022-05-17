@@ -13,21 +13,21 @@ import dk.cphbusiness.dat.carporteksamensproject.model.exceptions.DatabaseExcept
 import dk.cphbusiness.dat.carporteksamensproject.model.persistence.ConnectionPool;
 import dk.cphbusiness.dat.carporteksamensproject.model.persistence.manager.EntityManager;
 import dk.cphbusiness.dat.carporteksamensproject.model.persistence.mappers.person.AccountMapper;
+import dk.cphbusiness.dat.carporteksamensproject.model.persistence.mappers.person.IAccountMapper;
+import dk.cphbusiness.dat.carporteksamensproject.model.services.AccountFacade;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 
-public class RegisterCommand extends UnprotectedPageCommand {
-    public RegisterCommand(String pageName) {
+public class RegisterActionCommand extends UnprotectedPageCommand {
+    public RegisterActionCommand(String pageName) {
         super(pageName);
     }
 
     @Override
     public PageDirect execute(HttpServletRequest request, HttpServletResponse response, ConnectionPool connectionPool) {
-        AccountMapper accountMapper = new AccountMapper(new EntityManager(connectionPool));
-
         String firstName = request.getParameter("firstName");
         String lastName = request.getParameter("lastName");
         String email = request.getParameter("email");
@@ -50,7 +50,7 @@ public class RegisterCommand extends UnprotectedPageCommand {
             PersonDTO personDTO = new PersonDTO(person, address);
             AccountDTO accDTO = new AccountDTO(acc, personDTO);
 
-            accDTO = accountMapper.insert(accDTO);
+            accDTO = AccountFacade.createAccount(accDTO, connectionPool);
 
             HttpSession session = request.getSession();
             session.setAttribute("user", accDTO);

@@ -8,26 +8,26 @@ import dk.cphbusiness.dat.carporteksamensproject.model.exceptions.DatabaseExcept
 import dk.cphbusiness.dat.carporteksamensproject.model.persistence.ConnectionPool;
 import dk.cphbusiness.dat.carporteksamensproject.model.persistence.manager.EntityManager;
 import dk.cphbusiness.dat.carporteksamensproject.model.persistence.mappers.person.AccountMapper;
+import dk.cphbusiness.dat.carporteksamensproject.model.persistence.mappers.person.IAccountMapper;
+import dk.cphbusiness.dat.carporteksamensproject.model.services.AccountFacade;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Optional;
 
-public class LoginCommand extends UnprotectedPageCommand {
-    public LoginCommand(String pageName) {
+public class LoginActionCommand extends UnprotectedPageCommand {
+    public LoginActionCommand(String pageName) {
         super(pageName);
     }
 
     @Override
     public PageDirect execute(HttpServletRequest request, HttpServletResponse response, ConnectionPool connectionPool) {
-        AccountMapper accountMapper = new AccountMapper(new EntityManager(connectionPool));
-
         String email = request.getParameter("email");
         String password = request.getParameter("password");
 
         try {
-            Optional<AccountDTO> user = accountMapper.login(email,password);
+            Optional<AccountDTO> user = AccountFacade.login(email, password, connectionPool);
             if (user.isEmpty()) {
                 request.setAttribute("error", "Wrong username or password!");
                 return new PageDirect(RedirectType.DEFAULT, "login");

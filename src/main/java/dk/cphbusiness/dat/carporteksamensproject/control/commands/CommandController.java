@@ -23,9 +23,9 @@ public class CommandController {
         commands.put("account-page", new UnprotectedPageCommand("account"));
         commands.put("inquiriesAll-page", new UnprotectedPageCommand("inquiriesAll"));
 
-        commands.put("login-command", new LoginCommand(""));
-        commands.put("logout-command", new LogoutCommand(""));
-        commands.put("register-command", new RegisterCommand(""));
+        commands.put("login-command", new LoginActionCommand(""));
+        commands.put("logout-command", new LogoutActionCommand(""));
+        commands.put("register-command", new RegisterActionCommand(""));
 
     }
 

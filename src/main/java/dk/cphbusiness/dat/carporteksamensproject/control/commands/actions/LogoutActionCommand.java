@@ -9,8 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-public class LogoutCommand extends UnprotectedPageCommand {
-    public LogoutCommand(String pageName) {
+public class LogoutActionCommand extends UnprotectedPageCommand {
+    public LogoutActionCommand(String pageName) {
         super(pageName);
     }
 

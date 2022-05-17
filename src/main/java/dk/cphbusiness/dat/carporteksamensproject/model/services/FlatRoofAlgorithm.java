@@ -25,7 +25,6 @@ public class FlatRoofAlgorithm implements ICarportAlgorithm{
     public List<BillOfMaterialLineItemDTO> calcRoof(CarportDTO carportDTO) {
         return null;
     }
-
     @Override
     public List<BillOfMaterialLineItemDTO> calcBase(CarportDTO carportDTO) {
         return null;
