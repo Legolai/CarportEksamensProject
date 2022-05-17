@@ -21,7 +21,7 @@ public class tempTests {
 
         FlatRoofAlgorithm algo2 = new FlatRoofAlgorithm();
 
-        Carport carport = new Carport(0, 600, 780, 210, RoofType.FLAT, 0, LocalDateTime.now());
+        Carport carport = new Carport(0, 600, 750, 210, RoofType.FLAT, 0, LocalDateTime.now());
         Shack shack = new Shack(0, 540, 210, true, 0);
         CarportDTO carportDTO = new CarportDTO(Optional.of(shack), carport);
 

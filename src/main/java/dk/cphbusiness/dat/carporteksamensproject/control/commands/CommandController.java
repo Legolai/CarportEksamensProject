@@ -27,6 +27,8 @@ public class CommandController {
         commands.put("logout-command", new LogoutCommand(""));
         commands.put("register-command", new RegisterCommand(""));
 
+        commands.put("svgExperiments-page", new UnprotectedPageCommand("svgExperiments"));
+
     }
 
     public static CommandController getInstance(){

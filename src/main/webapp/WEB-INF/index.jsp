@@ -24,6 +24,11 @@
                 href="${pageContext.request.contextPath}/fc/roofSloped-page">rejsning</a>.</p>
 
 
+        <br>
+        <p>SVG experiments <a
+                href="${pageContext.request.contextPath}/fc/svgExperiments-page">SVGs</a>.</p>
+
+
 
     </jsp:body>
 

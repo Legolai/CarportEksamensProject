@@ -11,6 +11,5 @@ public interface ICarportAlgorithm {
     List<BillOfMaterialLineItemDTO> calcBase(CarportDTO carportDTO);
     List<BillOfMaterialLineItemDTO> calcSterns(CarportDTO carportDTO);
     List<BillOfMaterialLineItemDTO> calcShack(CarportDTO carportDTO);
-    List<BillOfMaterialLineItemDTO> calcFittings(CarportDTO carportDTO);
-    List<BillOfMaterialLineItemDTO> calcScrews(CarportDTO carportDTO);
+    List<BillOfMaterialLineItemDTO> calcFittingsAndScrews(CarportDTO carportDTO);
 }

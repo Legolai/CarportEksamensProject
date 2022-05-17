@@ -35,26 +35,14 @@ class CarportAlgorithmTest {
 //        Spær, tagplader
         List<BillOfMaterialLineItemDTO> expected = new ArrayList<>();
         expected.add(new BillOfMaterialLineItemDTO(
-                new BillOfMaterialLineItem(0, 0, 15, "Spær, monteres på rem", 0),
+                new BillOfMaterialLineItem(0, 0, 6, "tagplader monteres på spær", 43),
                 new ProductVariantDTO(
-                        new ProductVariant(0, 0, 0, false),
+                        new ProductVariant(43, 8, 14, false),
                         new ProductDTO(
-                                new Product(0, "45x195 mm. spærtræ ubh.", 12, Unit.METER, AmountUnit.PIECE, 0, false),
-                                new ProductType(0, "Spærtræ", false)
+                                new Product(8, "Plastmo Ecolite blåtonet", 10, Unit.METER, AmountUnit.PIECE, 0, false),
+                                new ProductType(6, "Tagplade", false)
                         ),
-                        new Size (0, 600, SizeType.LENGTH, false)
-                )
-        ));
-
-        expected.add(new BillOfMaterialLineItemDTO(
-                new BillOfMaterialLineItem(0, 0, 6, "tagplader monteres på spær", 0),
-                new ProductVariantDTO(
-                        new ProductVariant(0, 0, 0, false),
-                        new ProductDTO(
-                                new Product(0, "Plastmo Ecolite blåtonet", 10, Unit.METER, AmountUnit.PIECE, 0, false),
-                                new ProductType(0, "Spærtre", false)
-                        ),
-                        new Size (0, 600, SizeType.LENGTH, false)
+                        new Size (14, 600, SizeType.LENGTH, false)
                 )
         ));
         expected.add(new BillOfMaterialLineItemDTO(
@@ -66,6 +54,17 @@ class CarportAlgorithmTest {
                                 new ProductType(0, "Tagplade", false)
                         ),
                         new Size (0, 360, SizeType.LENGTH, false)
+                )
+        ));
+        expected.add(new BillOfMaterialLineItemDTO(
+                new BillOfMaterialLineItem(0, 0, 15, "Spær, monteres på rem", 43),
+                new ProductVariantDTO(
+                        new ProductVariant(43, 8, 14, false),
+                        new ProductDTO(
+                                new Product(8, "45x195 mm. spærtræ ubh.", 12, Unit.METER, AmountUnit.PIECE, 0, false),
+                                new ProductType(0, "Spærtræ", false)
+                        ),
+                        new Size (14, 600, SizeType.LENGTH, false)
                 )
         ));
 

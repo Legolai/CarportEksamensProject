@@ -43,6 +43,7 @@ public class FlatRoofAlgorithm implements ICarportAlgorithm{
         int width = carportDTO.carport().getWidth();
         int length = carportDTO.carport().getLength();
         int tagpladeAmounts = (int) Math.ceil(width/100);
+                                // (width - overlap) / (109 - overlap) = tagpladeAmounts
         int tagpladeLength = length;
         //int tagpladeAmounts2 = tagpladeAmounts;
         int tagpladeLength2 = 0;
@@ -52,7 +53,9 @@ public class FlatRoofAlgorithm implements ICarportAlgorithm{
         }
 
         list.addAll(getFromDB("product_description","Plastmo Ecolite blåtonet", tagpladeLength, tagpladeAmounts, "tagplader monteres på spær"));
-        list.addAll(getFromDB("product_description","Plastmo Ecolite blåtonet", tagpladeLength2, tagpladeAmounts, "tagplader monteres på spær"));
+        if (tagpladeLength2 != 0) {
+            list.addAll(getFromDB("product_description","Plastmo Ecolite blåtonet", tagpladeLength2, tagpladeAmounts, "tagplader monteres på spær"));
+        }
 
 //        Optional<List<ProductVariantDTO>> tagplader;
 //        try {
@@ -80,8 +83,8 @@ public class FlatRoofAlgorithm implements ICarportAlgorithm{
 //        }
 
 
-        int spaerAmounts = (int) Math.ceil(length/56.5) + 1; // længde skal være lig med width
-        int spaerLength = width;
+        int spaerAmounts = (int) Math.ceil(length/56.5-0.35) + 1; // længde skal være lig med width
+        int spaerLength = width;    // space between spaer is Math.ceil((length-10)/(spaerAmounts-1))
 
         list.addAll(getFromDB("product_description","45x195 mm. Spærtræ ubh.", spaerLength, spaerAmounts, "Spær, monteres på rem"));
 
@@ -97,12 +100,10 @@ public class FlatRoofAlgorithm implements ICarportAlgorithm{
         int width = carportDTO.carport().getWidth();
         int length = carportDTO.carport().getLength();
         Shack shack;
-        boolean shackExists = false;
         int shackwidth = 0;
         int shacklength = 0;
         if (carportDTO.shack().isPresent()){
             shack = carportDTO.shack().get();
-            shackExists = true;
             shackwidth = shack.getWidth();
             shacklength = shack.getLength();
         }
@@ -117,14 +118,16 @@ public class FlatRoofAlgorithm implements ICarportAlgorithm{
         int shackRems = 0;
         int shackRemLength = 0;
 
-        if (!shackExists) {   //no shack
+        if (!carportDTO.shack().isPresent()) {   //no shack
             if (width > 390) {
                 strongerPosts = true;
             }
             if (length > 510) {
                 postAmounts += 2;
-                remAmounts += 2; // lengthOfRem would be length+60/2
-                remLength = (length + 60) / 2;
+                if (length > 600) {
+                    remAmounts += 2; // lengthOfRem would be length+60/2
+                    remLength = (length + 60) / 2;
+                }
             }
         } else {
             postAmounts += 2;
@@ -133,7 +136,7 @@ public class FlatRoofAlgorithm implements ICarportAlgorithm{
 
                 shackRems = 2;
                 shackRemLength = shacklength+30;
-                if (shackRemLength <= 300) {
+                if (shackRemLength <= 240) {
                     shackRemLength = shackRemLength * 2;
                     shackRems = 1;
                 }
@@ -198,13 +201,12 @@ public class FlatRoofAlgorithm implements ICarportAlgorithm{
         List<BillOfMaterialLineItemDTO> list = new ArrayList<>();
 
         int height = carportDTO.carport().getHeight();
-        System.out.println("Height is: "+height);
         Shack shack = carportDTO.shack().get();
         int shackwidth = shack.getWidth();
         int shacklength = shack.getLength();
         int shackRems = 2;
         int shackRemLength = shacklength+30;
-        if (shackRemLength <= 300) {
+        if (shackRemLength <= 240) {
             shackRemLength = shackRemLength * 2;
             shackRems = 1;
         }
@@ -213,11 +215,9 @@ public class FlatRoofAlgorithm implements ICarportAlgorithm{
         int loestholterSidesLength = shacklength + 30;
         int loestholterGavler = (int) Math.ceil(shackwidth/270.0) * 6;
         int loestholterGavlerLength = ((shackRemLength/2)*shackRems) + 30;
-        int shackTotalLength = (shacklength * 2 + shackwidth * 2)/10;
-        int skackBeklaedning = (int) ((shackTotalLength * 1.56) - (shackTotalLength * 1.56)%30);
-        System.out.println("skackBeklaedning is: "+skackBeklaedning);
+        double beklaedningOverlap = 7.5;
+        int skackBeklaedning = (int) ((shacklength * 2 + shackwidth * 2)/beklaedningOverlap);
         int skackBeklaedningLength = height;    //210
-        System.out.println("skackBeklaedningLength is: "+skackBeklaedningLength);
         int vinkelBeslag = (loestholterSides + loestholterGavler) * 2;
 
         list.addAll(getFromDB("product_description","45x95 mm. regular ub.", loestholterGavlerLength, loestholterGavler, "Løstholter til skur gavle"));
@@ -240,17 +240,61 @@ public class FlatRoofAlgorithm implements ICarportAlgorithm{
     }
 
     @Override
-    public List<BillOfMaterialLineItemDTO> calcFittings(CarportDTO carportDTO) {
-        return null;
-    }
+    public List<BillOfMaterialLineItemDTO> calcFittingsAndScrews(CarportDTO carportDTO) {
+        List<BillOfMaterialLineItemDTO> list = new ArrayList<>();
 
-    @Override
-    public List<BillOfMaterialLineItemDTO> calcScrews(CarportDTO carportDTO) {
-        return null;
+        int width = carportDTO.carport().getWidth();
+        int length = carportDTO.carport().getLength();
+        int tagpladeAmounts = (int) Math.ceil(width/100);
+        int spaerAmounts = (int) Math.ceil(length/56.5) + 1; // længde skal være lig med width
+        int postAmounts = 4+1;  // + 1 for an extra
+        int skackBeklaedning = 0;
+        if (carportDTO.shack().isEmpty()) {   //no shack
+            if (length > 510) {
+                postAmounts += 2;
+            }
+        } else {
+            postAmounts += 2;
+            if (length - carportDTO.shack().get().getLength() > 330) {
+                postAmounts += 2;
+            } else if (carportDTO.shack().get().getLength() > 270) {
+                postAmounts += 2;
+            }
+            if (carportDTO.shack().get().getWidth() > 270) {
+                postAmounts += 2;
+            }
+            int shackTotalLength = (carportDTO.shack().get().getLength() * 2 + carportDTO.shack().get().getWidth() * 2)/10;
+            skackBeklaedning = (int) ((shackTotalLength * 1.56) - (shackTotalLength * 1.56)%30);
+        }
+
+
+
+        int plastmoskruer200stk = tagpladeAmounts/2; // /2 again if length > 600
+        int hulbaand = 2; // just always 2
+        int universalRight = spaerAmounts;
+        int universalLeft = spaerAmounts;
+        int skruer45x60 = 1; // always just 1 pack
+        int beslagskruer4x50 = (int) Math.ceil(spaerAmounts/5); // 3 for 15, 2 for 10
+        int boltForRemOnPosts = (int) Math.ceil(postAmounts*1.8); // if we add 1 extra post, then -1 first
+        int skiverForRemOnPosts = postAmounts+2; // if we add 1 extra, then only +1
+
+        int skruerYderBeklaedning400 = skackBeklaedning / 100; // with 200 braedt for skur beklaedning
+        // 800 skuer is needed, 1 pack is 400
+        int skuerInnerBeklaedning300 = skruerYderBeklaedning400; // 300 a pack
+
+
+//        list.addAll(getFromDB("product_description","38x73 mm. Lægte ubh.", laegteForDoorLength, laegteForDoor, "Til Z på bagside af dør"));
+//        list.addAll(getFromDB("product_description","Stalddørsgreb 50x75", 1, doergreb, "Til lås på dør til skur"));
+//        list.addAll(getFromDB("product_description","T hængsel 390 mm.", 1, doerHaengsel, "Til skurdør"));
+
+
+        return list;
     }
 
 
     public List<BillOfMaterialLineItemDTO> getFromDB(String in, String name, int compare1, int amount, String comment) {
+        //list.addAll(getFromDB("product_description","97x97 mm. trykimp. Stolpe", postHeight, postAmounts, "Stolper nedgraves 90 cm. i jord"));
+
         List<BillOfMaterialLineItemDTO> list = new ArrayList<>();
         Optional<List<ProductVariantDTO>> toGet;
         try {
