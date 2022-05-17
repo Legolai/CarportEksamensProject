@@ -149,7 +149,8 @@ public class FlatRoofAlgorithm implements ICarportAlgorithm{
             }
             if (length - shacklength > 330) {
                 postAmounts += 2;
-            } else if (shacklength > 270) {
+            }
+            if (shacklength > 270) {
                 postAmounts += 2;
             }
             if (shackwidth > 270) {

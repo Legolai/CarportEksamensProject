@@ -90,6 +90,15 @@
         </svg>
 
 
+        <br><br>
+        <p>Svg with java class: </p>
+        <a href="${pageContext.request.contextPath}/fc/SVG-command">opdater</a>
+        <br>
+        ${requestScope.SVG}
+        <p>Note: just preliminary experiment</p>
+
+
+
     </jsp:body>
 
 </t:pagetemplate>

@@ -13,103 +13,167 @@ import dk.cphbusiness.dat.carporteksamensproject.model.persistence.mappers.produ
 import java.util.*;
 
 public class SVGAlgorithm {     //TODO: Is mapper needed for SVG algo?
-    ProductVariantMapper mapper;
-
-    public SVGAlgorithm () {
-        EntityManager entityManager = new EntityManager(new ConnectionPool());
-        mapper = new ProductVariantMapper(entityManager);
+    private final int overhang = 30;
+    private final int stolpeDim = 14;
+    
+    private int width = 0;
+    private int length = 0;
+    private CarportDTO carportDTO;
+    private int shackwidth = 0;
+    private int shacklength = 0;
+    private int spaerAmounts = 5;
+    private int lengthBetween = 55;
+    private int dottedX = 0;
+    public void setStats(CarportDTO carportDTO) {
+        width = carportDTO.carport().getWidth();
+        length = carportDTO.carport().getLength();
+        this.carportDTO = carportDTO;
+        if (carportDTO.shack().isPresent()){
+            shackwidth = carportDTO.shack().get().getWidth();
+            shacklength = carportDTO.shack().get().getLength();
+        }
+        spaerAmounts = (int) Math.ceil(length/56.5-0.35) + 1;
+        lengthBetween = (int) Math.ceil((length - 10)/(spaerAmounts-1));
     }
 
 
-    public void calcSVGCarport(CarportDTO carportDTO) {
-        List<BillOfMaterialLineItemDTO> list = new ArrayList<>();
-        (calcSVGBase(carportDTO);
-        calcSVGRoof(carportDTO);
-        calcSVGSterns(carportDTO);
-        if (carportDTO.shack().isPresent()){
-            calcSVGShack(carportDTO);
-        }
+    public SVG calcSVG(CarportDTO carportDTO) {
+        int height = carportDTO.carport().getWidth();
+        int width = carportDTO.carport().getLength();
+        SVG svg = new SVG(0,0, "0 0 "+width+" "+height, "520", "430");
+        svg.addRect(0,0, width, height,3);
 
-        //return list;
+        SVG carportSVG = new SVG(115,45, "0 0 "+width+" "+height, "90%", "85%");
+        carportSVG.addRect(0,0, width, height,3);
+
+
+        calcSVGCarport(carportDTO, carportSVG);
+
+
+        svg.addSVG(carportSVG);
+        return svg;
     }
 
-    public void calcSVGBase(CarportDTO carportDTO) {
-        int height = carportDTO.carport().getHeight();
-        int width = carportDTO.carport().getWidth();
-        int length = carportDTO.carport().getLength();
-        Shack shack;
-        int shackwidth = 0;
-        int shacklength = 0;
-        if (carportDTO.shack().isPresent()){
-            shack = carportDTO.shack().get();
-            shackwidth = shack.getWidth();
-            shacklength = shack.getLength();
+    public void calcSVGCarport(CarportDTO carportDTO, SVG svg) {
+        int postAmounts = calcStolper();
+
+        // Side ram
+        svg.addRect(0,overhang, length, 12, 1);
+        svg.addRect(0,width-overhang, length, 11, 1);
+
+        // Stolper and
+        if (carportDTO.shack().isPresent()) {
+            calcSVGBaseWithShack(postAmounts, svg);
+            dottedX = length - shacklength - overhang;
+        } else {
+            calcSVGBaseNoShack(postAmounts, svg);
+            dottedX = (spaerAmounts - 2)*lengthBetween;
+        }
+
+        // hulbaand, the dotted X that is
+        svg.addDottedLine(lengthBetween, overhang+12, dottedX, width-overhang,3);
+        svg.addDottedLine(dottedX, overhang+12, lengthBetween, width-overhang,3);
+
+        // spaer
+        svg.addRect(0,0, 5, width, 1);
+        for (int i = 1; i < spaerAmounts;i++) {
+            svg.addRect(lengthBetween*i,0, 5, width, 1);
         }
 
 
-        boolean strongerPosts = false;
-        int postAmounts = 4+1;  // + 1 for an extra
-        int postHeight = height + 90;
-        int remAmounts = 2;
-        int remLength = length;
-        boolean shackRem = false;   //Shack rems for the rems on the shack
-        int shackRems = 0;
-        int shackRemLength = 0;
+    }
 
-        if (!carportDTO.shack().isPresent()) {   //no shack
-            if (width > 390) {
-                strongerPosts = true;
+    private void calcSVGBaseWithShack(int postAmounts, SVG svg) {
+        //shack rems
+        svg.addRect(length-overhang-shacklength,overhang, 12, width-60, 1);
+        svg.addRect(length-overhang,overhang, 12, width-60, 1);
+
+        int stolperUsed = 4;
+        svg.addRect(length-overhang-shacklength-1,overhang-1,stolpeDim,stolpeDim, 3);
+        svg.addRect(length-overhang-1,overhang-1, stolpeDim,stolpeDim, 3);
+        svg.addRect(length-overhang-shacklength-1,width-overhang-1,stolpeDim,stolpeDim, 3);
+        svg.addRect(length-overhang-1,width-overhang-1, stolpeDim,stolpeDim, 3);
+
+        if (shackwidth > 270) {
+            stolperUsed +=2;
+            svg.addRect(length-overhang-shacklength-1,width/2-8-1,stolpeDim,stolpeDim, 3);
+            svg.addRect(length-overhang-1,width/2-8-1, stolpeDim,stolpeDim, 3);
+        }
+        if (shacklength > 270) {
+            stolperUsed +=2;
+            svg.addRect(length-overhang-shacklength/2-1,overhang-1,17,17, 3);
+            svg.addRect(length-overhang-shacklength/2-1,width-overhang-1,17,17, 3);
+        }
+
+        if (postAmounts - stolperUsed == 4+1) {
+            int carportlength = length - shacklength - overhang;
+            int frontStolpe = 60;
+            if (carportlength - frontStolpe > 400) {
+                frontStolpe = 100;
             }
+            int backStolpe = 50;
+            if (carportlength - frontStolpe - backStolpe > 310) {
+                backStolpe = carportlength - frontStolpe - 310;
+            }
+            svg.addRect(frontStolpe,overhang-1,stolpeDim,stolpeDim, 3);
+            svg.addRect(carportlength - backStolpe,overhang-1, stolpeDim,stolpeDim, 3);
+            svg.addRect(frontStolpe,width-overhang-1,stolpeDim,stolpeDim, 3);
+            svg.addRect(carportlength - backStolpe,width-overhang-1, stolpeDim,stolpeDim, 3);
+        } else if (postAmounts - stolperUsed == 2+1) {
+            int placement = overhang;
+            svg.addRect(placement,overhang-1,stolpeDim,stolpeDim, 3);
+            svg.addRect(placement,width-overhang-1,stolpeDim,stolpeDim, 3);
+        } else {
+            //error
+        }
+    }
+
+    private void calcSVGBaseNoShack(int postAmounts, SVG svg) {
+        if (postAmounts == 4+1) {
+            int stolpeDist = 30;
+            if (length > 300) {stolpeDist += 30;}
+            if (length > 420) {stolpeDist += 30;}
+
+            svg.addRect(stolpeDist,overhang-1,stolpeDim,stolpeDim, 3);
+            svg.addRect(length - stolpeDist,overhang-1, stolpeDim,stolpeDim, 3);
+            svg.addRect(stolpeDist,width-overhang-1,stolpeDim,stolpeDim, 3);
+            svg.addRect(length - stolpeDist,width-overhang-1, stolpeDim,stolpeDim, 3);
+        } else if (postAmounts == 6+1) {
+            svg.addRect(length/2,overhang-1,stolpeDim,stolpeDim, 3);
+            svg.addRect(length/2,width-overhang-1, stolpeDim,stolpeDim, 3);
+
+            int stolpeDist = 50;
+            if (length/2 > 300) {stolpeDist += 50;}
+
+            svg.addRect(stolpeDist,overhang-1,stolpeDim,stolpeDim, 3);
+            svg.addRect(length - stolpeDist,overhang-1, stolpeDim,stolpeDim, 3);
+            svg.addRect(stolpeDist,width-overhang-1,stolpeDim,stolpeDim, 3);
+            svg.addRect(length - stolpeDist,width-overhang-1, stolpeDim,stolpeDim, 3);
+        } else {
+            //error
+        }
+
+    }
+
+    private int calcStolper() {
+        int stolperAmounts = 4+1;  // + 1 for an extra
+        if (!carportDTO.shack().isPresent()) {   //no shack
             if (length > 510) {
-                postAmounts += 2;
-                if (length > 600) {
-                    remAmounts += 2; // lengthOfRem would be length+60/2
-                    remLength = (length + 60) / 2;
-                }
+                stolperAmounts += 2;
             }
         } else {
-            postAmounts += 2;
-            if (length > 510) {
-                shackRem = true;
-
-                shackRems = 2;
-                shackRemLength = shacklength+30;
-                if (shackRemLength <= 240) {
-                    shackRemLength = shackRemLength * 2;
-                    shackRems = 1;
-                }
-                remLength = length - shacklength + 30;
-                // shackRemLength seems like it can have 2 'different' kind of lengths
-                // shackRemLength would default to shacklength+30
-                // if lengthofshackrem would be 300 or under, then it can be doubled to 600 (or lower)
-                // and we can then do shackRems = 1;
-                // length of carport rem would be length-shacklength+30
-            }
+            stolperAmounts += 2;
             if (length - shacklength > 330) {
-                postAmounts += 2;
-            } else if (shacklength > 270) {
-                postAmounts += 2;
+                stolperAmounts += 2;
+            }
+            if (shacklength > 270) {
+                stolperAmounts += 2;
             }
             if (shackwidth > 270) {
-                postAmounts += 2;
+                stolperAmounts += 2;
             }
         }
-
-
-
-
-    }
-
-    public void calcSVGRoof(CarportDTO carportDTO) {
-
-    }
-
-    public void calcSVGSterns(CarportDTO carportDTO) {
-
-    }
-
-    public void calcSVGShack(CarportDTO carportDTO) {
-
+        return stolperAmounts;
     }
 
 

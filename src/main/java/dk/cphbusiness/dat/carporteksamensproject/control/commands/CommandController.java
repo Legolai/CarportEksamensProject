@@ -28,6 +28,7 @@ public class CommandController {
         commands.put("register-command", new RegisterCommand(""));
 
         commands.put("svgExperiments-page", new UnprotectedPageCommand("svgExperiments"));
+        commands.put("SVG-command", new SVGCommand(""));
 
     }
 
