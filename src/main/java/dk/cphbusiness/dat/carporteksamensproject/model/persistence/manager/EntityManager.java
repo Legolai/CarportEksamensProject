@@ -12,14 +12,7 @@ import java.sql.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class EntityManager {
-
-    private final ConnectionPool connectionPool;
-
-    public EntityManager(ConnectionPool connectionPool) {
-        this.connectionPool = connectionPool;
-    }
-
+public record EntityManager(ConnectionPool connectionPool) {
     private <R> R makeConnection(FunctionWithThrows<Connection, R> query) throws DatabaseException {
         try (Connection connection = connectionPool.getConnection()) {
             return query.apply(connection);
@@ -158,7 +151,7 @@ public class EntityManager {
             T t = batch.get(i);
             Object info = subList.get(i);
             constArgs.add(info);
-            for (Field field : joinedEntityData.getFields().subList(1, joinedEntityData.getFields().size()-1)) {
+            for (Field field : joinedEntityData.getFields().subList(1, joinedEntityData.getFields().size() - 1)) {
                 try {
                     constArgs.add(t.getClass().getMethod(field.getName()).invoke(t));
                 }
@@ -169,7 +162,9 @@ public class EntityManager {
             try {
                 list.add(joinedEntityData.getEntityClass().getConstructor(joinedEntityData.getConstructorEmp()).newInstance(constArgs.toArray()));
                 constArgs.clear();
-            } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException ex) {
+            }
+            catch (InstantiationException | IllegalAccessException | NoSuchMethodException |
+                   InvocationTargetException ex) {
                 throw new DatabaseException(ex.getMessage());
             }
         }

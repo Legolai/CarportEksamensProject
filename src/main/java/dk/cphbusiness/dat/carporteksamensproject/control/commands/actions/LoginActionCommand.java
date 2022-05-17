@@ -6,10 +6,7 @@ import dk.cphbusiness.dat.carporteksamensproject.control.webtypes.RedirectType;
 import dk.cphbusiness.dat.carporteksamensproject.model.dtos.AccountDTO;
 import dk.cphbusiness.dat.carporteksamensproject.model.exceptions.DatabaseException;
 import dk.cphbusiness.dat.carporteksamensproject.model.persistence.ConnectionPool;
-import dk.cphbusiness.dat.carporteksamensproject.model.persistence.manager.EntityManager;
-import dk.cphbusiness.dat.carporteksamensproject.model.persistence.mappers.person.AccountMapper;
-import dk.cphbusiness.dat.carporteksamensproject.model.persistence.mappers.person.IAccountMapper;
-import dk.cphbusiness.dat.carporteksamensproject.model.services.AccountFacade;
+import dk.cphbusiness.dat.carporteksamensproject.model.services.facade.AccountFacade;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -27,14 +24,14 @@ public class LoginActionCommand extends UnprotectedPageCommand {
         String password = request.getParameter("password");
 
         try {
-            Optional<AccountDTO> user = AccountFacade.login(email, password, connectionPool);
-            if (user.isEmpty()) {
+            Optional<AccountDTO> account = AccountFacade.login(email, password, connectionPool);
+            if (account.isEmpty()) {
                 request.setAttribute("error", "Wrong username or password!");
                 return new PageDirect(RedirectType.DEFAULT, "login");
             }
 
             HttpSession session = request.getSession();
-            session.setAttribute("user", user.get());
+            session.setAttribute("account", account.get());
 
             return new PageDirect(RedirectType.REDIRECT, "index");
         }

@@ -29,11 +29,11 @@
             </button>
             <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
                 <div class="navbar-nav">
-                    <c:if test="${sessionScope.user == null }">
+                    <c:if test="${sessionScope.account == null }">
                         <a class="nav-item nav-link" href="${pageContext.request.contextPath}/fc/login-page">Login</a>
                         <a class="nav-item nav-link" href="${pageContext.request.contextPath}/fc/register-page">Sign up</a>
                     </c:if>
-                    <c:if test="${sessionScope.user != null }">
+                    <c:if test="${sessionScope.account != null }">
                         <a class="nav-item nav-link" href="${pageContext.request.contextPath}/fc/account-page">Min profil</a>
                         <a class="nav-item nav-link" href="${pageContext.request.contextPath}/fc/logout-command">Log ud</a>
                     </c:if>

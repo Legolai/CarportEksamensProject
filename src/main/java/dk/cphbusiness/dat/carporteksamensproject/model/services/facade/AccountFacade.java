@@ -1,4 +1,4 @@
-package dk.cphbusiness.dat.carporteksamensproject.model.services;
+package dk.cphbusiness.dat.carporteksamensproject.model.services.facade;
 
 import dk.cphbusiness.dat.carporteksamensproject.model.dtos.AccountDTO;
 import dk.cphbusiness.dat.carporteksamensproject.model.exceptions.DatabaseException;

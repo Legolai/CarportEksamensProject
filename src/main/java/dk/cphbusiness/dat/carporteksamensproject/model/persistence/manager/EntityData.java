@@ -21,13 +21,13 @@ public class EntityData<T> {
     private final Class<T> entityClass;
 
 
-    public EntityData(Class<T> entityClass) throws DatabaseException {
+    public EntityData(Class<T> entityClass) throws IllegalArgumentException {
         if (!entityClass.isAnnotationPresent(Entity.class) || entityClass.isAnnotationPresent(JoinedEntity.class))
-            throw new DatabaseException("Object is not annotated as Entity!");
+            throw new IllegalArgumentException("Object is not annotated as Entity!");
 
         this.tableName = entityClass.getAnnotation(Table.class).value();
         this.fields = new LinkedList<>(Arrays.asList(entityClass.getDeclaredFields()));
-        this.fieldForId = fields.stream().filter(field -> field.isAnnotationPresent(Id.class)).findFirst().orElseThrow(() -> new DatabaseException("No ID is available on entity!"));
+        this.fieldForId = fields.stream().filter(field -> field.isAnnotationPresent(Id.class)).findFirst().orElseThrow(() -> new IllegalStateException("No ID is available on entity!"));
         this.constructorEmp = fields.stream().map(Field::getType).toArray(Class[]::new);
         this.entityClass = entityClass;
     }

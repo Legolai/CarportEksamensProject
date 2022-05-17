@@ -1,7 +1,9 @@
 package dk.cphbusiness.dat.carporteksamensproject.control.commands;
 
+import dk.cphbusiness.dat.carporteksamensproject.control.commands.pages.ProtectedPageCommand;
 import dk.cphbusiness.dat.carporteksamensproject.control.commands.pages.UnprotectedPageCommand;
 import dk.cphbusiness.dat.carporteksamensproject.control.commands.actions.*;
+import dk.cphbusiness.dat.carporteksamensproject.model.entities.Role;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -20,13 +22,12 @@ public class CommandController {
         commands.put("roofFlat-page", new UnprotectedPageCommand("roofFlat"));
         commands.put("roofSloped-page", new UnprotectedPageCommand("roofSloped"));
         commands.put("inquiry-page", new UnprotectedPageCommand("inquiry"));
-        commands.put("account-page", new UnprotectedPageCommand("account"));
-        commands.put("inquiriesAll-page", new UnprotectedPageCommand("inquiriesAll"));
+        commands.put("account-page", new ProtectedPageCommand("account", Role.COSTUMER));
+        commands.put("inquiriesAll-page", new ProtectedPageCommand("inquiriesAll", Role.EMPLOYEE));
 
         commands.put("login-command", new LoginActionCommand(""));
         commands.put("logout-command", new LogoutActionCommand(""));
         commands.put("register-command", new RegisterActionCommand(""));
-
     }
 
     public static CommandController getInstance(){

@@ -13,8 +13,15 @@
     </jsp:attribute>
 
     <jsp:body>
+        <h2>Hello ${sessionScope.account.personDTO().person().getForename()}</h2>
 
         <p>This is your account side </p>
+
+
+        <h3>Forespørgelser</h3>
+        <c:forEach items="${requestScope.inquires}" var="inquiry">
+
+        </c:forEach>
 
 
     </jsp:body>

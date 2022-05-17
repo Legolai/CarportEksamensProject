@@ -25,6 +25,6 @@ public class UnprotectedPageCommand implements Command
 
     @Override
     public PageDirect execute(HttpServletRequest request, HttpServletResponse response, ConnectionPool connectionPool) throws DatabaseException {
-        return null;
+        return new PageDirect(RedirectType.DEFAULT, getPageName());
     }
 }

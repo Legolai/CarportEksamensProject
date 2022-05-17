@@ -7,11 +7,11 @@ import java.lang.reflect.Field;
 import java.util.*;
 
 public class JoinedEntityData<T> {
-    private Class<?> mainTable;
-    private Class<?>[] join;
-    private LinkedList<Field> fields;
-    private Class<?>[] constructorEmp;
-    private Class<T> entityClass;
+    private final Class<?> mainTable;
+    private final Class<?>[] join;
+    private final LinkedList<Field> fields;
+    private final Class<?>[] constructorEmp;
+    private final Class<T> entityClass;
 
     public JoinedEntityData(Class<T> entityClass) {
         this.fields = new LinkedList<>(Arrays.asList(entityClass.getDeclaredFields()));
@@ -19,17 +19,6 @@ public class JoinedEntityData<T> {
         this.join = entityClass.getAnnotation(Join.class).join();
         this.constructorEmp = fields.stream().map(Field::getType).toArray(Class[]::new);
         this.entityClass = entityClass;
-    }
-
-    private void findJoinedEntity(Field classField, List<Class<?>> list, List<Class<?>> listDTOs){
-        if(!classField.getType().isAnnotationPresent(JoinedEntity.class)) {
-            list.add(classField.getType());
-            return;
-        }
-        listDTOs.add(classField.getType());
-        for (Field field : classField.getType().getFields()) {
-            findJoinedEntity(field, list, listDTOs);
-        }
     }
 
     public List<Field> getFields() {

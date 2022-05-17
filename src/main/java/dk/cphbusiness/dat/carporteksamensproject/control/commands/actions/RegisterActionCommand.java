@@ -11,10 +11,7 @@ import dk.cphbusiness.dat.carporteksamensproject.model.entities.Person;
 import dk.cphbusiness.dat.carporteksamensproject.model.entities.Role;
 import dk.cphbusiness.dat.carporteksamensproject.model.exceptions.DatabaseException;
 import dk.cphbusiness.dat.carporteksamensproject.model.persistence.ConnectionPool;
-import dk.cphbusiness.dat.carporteksamensproject.model.persistence.manager.EntityManager;
-import dk.cphbusiness.dat.carporteksamensproject.model.persistence.mappers.person.AccountMapper;
-import dk.cphbusiness.dat.carporteksamensproject.model.persistence.mappers.person.IAccountMapper;
-import dk.cphbusiness.dat.carporteksamensproject.model.services.AccountFacade;
+import dk.cphbusiness.dat.carporteksamensproject.model.services.facade.AccountFacade;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -53,7 +50,7 @@ public class RegisterActionCommand extends UnprotectedPageCommand {
             accDTO = AccountFacade.createAccount(accDTO, connectionPool);
 
             HttpSession session = request.getSession();
-            session.setAttribute("user", accDTO);
+            session.setAttribute("account", accDTO);
 
             return new PageDirect(RedirectType.DEFAULT, "index");
         } catch (DatabaseException ex) {
