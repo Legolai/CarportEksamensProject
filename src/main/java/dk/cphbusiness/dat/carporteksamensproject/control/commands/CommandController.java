@@ -1,5 +1,6 @@
 package dk.cphbusiness.dat.carporteksamensproject.control.commands;
 
+import dk.cphbusiness.dat.carporteksamensproject.control.commands.pages.FlatRoofPageCommand;
 import dk.cphbusiness.dat.carporteksamensproject.control.commands.pages.ProtectedPageCommand;
 import dk.cphbusiness.dat.carporteksamensproject.control.commands.pages.UnprotectedPageCommand;
 import dk.cphbusiness.dat.carporteksamensproject.control.commands.actions.*;
@@ -19,7 +20,7 @@ public class CommandController {
         commands.put("index", new UnprotectedPageCommand("index"));
         commands.put("login-page", new UnprotectedPageCommand("login"));
         commands.put("register-page", new UnprotectedPageCommand("register"));
-        commands.put("roofFlat-page", new UnprotectedPageCommand("roofFlat"));
+        commands.put("roofFlat-page", new FlatRoofPageCommand("roofFlat"));
         commands.put("roofSloped-page", new UnprotectedPageCommand("roofSloped"));
         commands.put("inquiry-page", new UnprotectedPageCommand("inquiry"));
         commands.put("account-page", new ProtectedPageCommand("account", Role.COSTUMER));

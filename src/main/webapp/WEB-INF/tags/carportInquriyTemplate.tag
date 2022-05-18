@@ -9,6 +9,14 @@
 
 <t:pagetemplate>
 
+    <jsp:attribute name="title">
+        Fog Quickbyg - Ny Forespørgsel
+    </jsp:attribute>
+
+    <jsp:attribute name="header">
+        <jsp:invoke fragment="header"/>
+    </jsp:attribute>
+
     <jsp:attribute name="footer">
         <jsp:invoke fragment="footer"/>
     </jsp:attribute>
@@ -22,7 +30,7 @@
                     </div>
                 </div>
                 <div class="col-lg-9">
-                    <jsp:invoke fragment="header"/>
+
                     <jsp:invoke fragment="inquiryForm"/>
                 </div>
             </div>

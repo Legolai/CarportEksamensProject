@@ -5,7 +5,7 @@
 
 <t:carportInquriyTemplate>
     <jsp:attribute name="header">
-         <h1>Carport med fladt tag</h1>
+         <h1 class="mb-3">Carport med fladt tag</h1>
     </jsp:attribute>
 
     <jsp:attribute name="footer">
@@ -24,18 +24,27 @@
                 <label for="carport-width" class="form-label">Carport bredde</label>
                 <select id="carport-width" name="carport-width" class="form-select form-select-md mb3">
                     <option selected>Vælg bredde</option>
+                    <c:forEach var = "i" begin = "240" end = "600" step="30">
+                        <option value="${i}">${i} cm</option>
+                    </c:forEach>
                 </select>
             </div>
             <div class="col-md-12">
                 <label for="carport-length" class="form-label">Carport længde</label>
                 <select id="carport-length" name="carport-length" class="form-select form-select-md mb3">
                     <option selected>Vælg længde</option>
+                    <c:forEach var = "i" begin = "240" end = "780" step="30">
+                        <option value="${i}">${i} cm</option>
+                    </c:forEach>
                 </select>
             </div>
             <div class="col-md-12">
                 <label for="roof-material" class="form-label">Tag</label>
                 <select id="roof-material" name="roof-material" class="form-select form-select-md mb3">
                     <option selected>Vælg tag</option>
+                    <c:forEach var = "roof" items="${requestScope.roofs}">
+                        <option value="${roof.product().getId()}">${roof.product().getDescription()}</option>
+                    </c:forEach>
                 </select>
             </div>
 
@@ -47,12 +56,18 @@
                 <label for="shack-width" class="form-label">Redskabsrum bredde</label>
                 <select id="shack-width" name="shack-width" class="form-select form-select-md mb3">
                     <option selected>Ønsker ikke redskabsrum</option>
+                    <c:forEach var = "i" begin = "210" end = "720" step="30">
+                        <option value="${i}">${i} cm</option>
+                    </c:forEach>
                 </select>
             </div>
             <div class="col-md-12 mb-20">
                 <label for="shack-length" class="form-label">Redskabsrum længde</label>
                 <select id="shack-length" name="shack-length" class="form-select form-select-md mb3">
                     <option selected>Ønsker ikke redskabsrum</option>
+                    <c:forEach var = "i" begin = "150" end = "690" step="30">
+                        <option value="${i}">${i} cm</option>
+                    </c:forEach>
                 </select>
             </div>
 
