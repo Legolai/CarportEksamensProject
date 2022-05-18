@@ -13,6 +13,11 @@
     </jsp:attribute>
 
     <jsp:body>
+        <p>Svg with java class: <a href="${pageContext.request.contextPath}/fc/SVG-command">opdater</a></p>
+        <br>
+        ${requestScope.SVG}
+        <p>Note: just preliminary experiment</p>
+
 
 
         <br><br>
@@ -88,15 +93,6 @@
                   style="stroke:#000000; fill: none"/>
 
         </svg>
-
-
-        <br><br>
-        <p>Svg with java class: </p>
-        <a href="${pageContext.request.contextPath}/fc/SVG-command">opdater</a>
-        <br>
-        ${requestScope.SVG}
-        <p>Note: just preliminary experiment</p>
-
 
 
     </jsp:body>

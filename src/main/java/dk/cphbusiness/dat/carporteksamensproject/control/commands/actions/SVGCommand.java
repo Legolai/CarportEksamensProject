@@ -33,7 +33,8 @@ public class SVGCommand extends UnprotectedPageCommand {
         Carport carport = new Carport(0, 600, 780, 210, RoofType.FLAT, 0, LocalDateTime.now());
         Shack shack = new Shack(0, 540, 210, true, 0);
         carportDTO = new CarportDTO(Optional.of(shack), carport);
-        //carportDTO = new CarportDTO(Optional.empty(), carport);
+//        Carport carport = new Carport(0, 360, 360, 210, RoofType.FLAT, 0, LocalDateTime.now());
+//        carportDTO = new CarportDTO(Optional.empty(), carport);
 
         SVGAlgorithm svgAlgo = new SVGAlgorithm();
         svgAlgo.setStats(carportDTO);

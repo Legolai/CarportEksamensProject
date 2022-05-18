@@ -12,21 +12,21 @@ public class SVG {
     private final int defaultDashSpacing;
     private boolean hasStartArrow;
     private boolean hasEndArrow;
+    private String textStyle = "14px";
     private static final String HEADER_TEMPLATE = "<svg height=\"%s\" width=\"%s\" x=\"%s\" y=\"%s\" viewBox=\"%s\" preserveAspectRatio=\"xMinYMin\">";
     private static final String DOT_RECT_TEMPLATE = "<rect x=\"%d\" y=\"%d\" width=\"%d\" height=\"%d\" stroke=\"black\" stroke-width=\"%d\" stroke-dasharray=\"%d %d\" fill=\"White\" />";
     private static final String DOT_LINE_TEMPLATE = "<Line x1=\"%d\" y1=\"%d\" x2=\"%d\" y2=\"%d\" stroke=\"black\" stroke-width=\"%d\" stroke-dasharray=\"%d %d\" style=\"%s\"/>";
-    private static final String TEXT_TEMPLATE = "<text style=\"text-anchor: middle\" transform=\"translate(%d,%d) rotate(%d)\">%s</text>";
+    private static final String TEXT_TEMPLATE = "<text style=\"text-anchor: middle\" font-size=\"%s\" transform=\"translate(%d,%d) rotate(%d)\">%s</text>";
     private static final String START_ARROW_DEFINITION = """
             <defs>
-                <marker id="beginArrow" markerWidth="6" markerHeight="12" refX="0" refY="6" orient="auto">
-                    <path d="M0,6 L12,0 L12,12 L0,6" style="fill: #000000;" />
+                <marker id="startArrow" markerWidth="6" markerHeight="6" refX="0" refY="2" orient="auto">
+                    <polygon points="4 0, 4 4, 0 2" fill="black" />
                 </marker>
-            </defs>
-            """;
+            </defs>""";
     private static final String END_ARROW_DEFINITION = """
             <defs>
-                <marker id="endArrow" markerWidth="6" markerHeight="12" refX="12" refY="6" orient="auto">
-                    <path d="M0,0 L12,6 L0,12 L0,0 " style="fill: #000000;" />
+                <marker id="endArrow" markerWidth="10" markerHeight="7" refX="4" refY="2" orient="auto">
+                    <polygon points="0 0, 4 2, 0 4" fill="black" />
                 </marker>
             </defs>""";
     public SVG(int x, int y, String viewBox, String width, String height) {
@@ -95,8 +95,11 @@ public class SVG {
     }
 
     public SVG addText(String text, int x, int y, int rotation){
-        svgBuilder.append(String.format(TEXT_TEMPLATE, x, y, rotation, text));
+        svgBuilder.append(String.format(TEXT_TEMPLATE, textStyle, x, y, rotation, text));
         return this;
+    }
+    public void setTextStyle(String textStyle) {
+        this.textStyle = textStyle;
     }
 
     public SVG addSVG(SVG innerSVG) {
