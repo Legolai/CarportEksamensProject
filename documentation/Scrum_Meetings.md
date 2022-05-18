@@ -94,7 +94,14 @@ Opsamling:
 - Vi have lavet TODO for dag 10
   TODO:
 - Mere kodning
-- Mere algoritme
+- Mere algoritme 
+
+Dag 12 (5/17 onsdag)
+  Opsamling:
+- Vi have lavet TODO for dag 11
+  TODO:
+- Mere kodning (færdigøre inquiry)
+- Mere algoritme (side view svg)
 
 
 
