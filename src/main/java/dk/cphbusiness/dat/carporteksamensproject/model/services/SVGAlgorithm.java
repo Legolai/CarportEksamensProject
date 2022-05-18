@@ -38,20 +38,32 @@ public class SVGAlgorithm {     //TODO: Is mapper needed for SVG algo?
 
 
     public SVG calcSVG(CarportDTO carportDTO) {
-        int height = carportDTO.carport().getWidth();
-        int width = carportDTO.carport().getLength();
+        int height = width;   //600
+        int width = length;   //780
         SVG svg = new SVG(0,0, "0 0 "+width+" "+height, "520", "430");
         svg.addRect(0,0, width, height,3);
 
-        SVG carportSVG = new SVG(115,45, "0 0 "+width+" "+height, "90%", "85%");
+        int heightoffset = (int) (height*0.075);
+        int widthoffset = (int) (width*0.15);
+
+        SVG carportSVG = new SVG(widthoffset, heightoffset, "0 0 "+width+" "+height, ""+(width*0.9), ""+(height*0.85));
         carportSVG.addRect(0,0, width, height,3);
-
-
         calcSVGCarport(carportDTO, carportSVG);
-
-
         svg.addSVG(carportSVG);
+
+        calcSVGCarportArrows(carportDTO, svg);
+
+
         return svg;
+    }
+
+    private void calcSVGCarportArrows(CarportDTO carportDTO, SVG svg) {
+        int height = width;   //600
+        int width = length;   //780
+        int heightoffset = (int) (height*0.075);
+        int widthoffset = (int) (width*0.15);
+        svg.addDoubleArrow(widthoffset, height-heightoffset/2, width, height-heightoffset/2, 2);
+        svg.addText(""+width+" cm", widthoffset+((width-widthoffset)/2), height-heightoffset/2+5, 0);
     }
 
     public void calcSVGCarport(CarportDTO carportDTO, SVG svg) {

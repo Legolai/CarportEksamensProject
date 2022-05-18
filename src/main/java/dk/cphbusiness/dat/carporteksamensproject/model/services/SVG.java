@@ -18,14 +18,14 @@ public class SVG {
     private static final String TEXT_TEMPLATE = "<text style=\"text-anchor: middle\" transform=\"translate(%d,%d) rotate(%d)\">%s</text>";
     private static final String START_ARROW_DEFINITION = """
             <defs>
-                <marker id="beginArrow" markerWidth="12" markerHeight="12" refX="0" refY="6" orient="auto">
+                <marker id="beginArrow" markerWidth="6" markerHeight="12" refX="0" refY="6" orient="auto">
                     <path d="M0,6 L12,0 L12,12 L0,6" style="fill: #000000;" />
                 </marker>
             </defs>
             """;
     private static final String END_ARROW_DEFINITION = """
             <defs>
-                <marker id="endArrow" markerWidth="12" markerHeight="12" refX="12" refY="6" orient="auto">
+                <marker id="endArrow" markerWidth="6" markerHeight="12" refX="12" refY="6" orient="auto">
                     <path d="M0,0 L12,6 L0,12 L0,0 " style="fill: #000000;" />
                 </marker>
             </defs>""";
@@ -81,7 +81,7 @@ public class SVG {
         return this;
     }
 
-    public SVG addDubleArrow(int x1, int y1, int x2, int y2, int stroke) {
+    public SVG addDoubleArrow(int x1, int y1, int x2, int y2, int stroke) {
         if (!hasEndArrow) {
             svgBuilder.append(END_ARROW_DEFINITION);
             hasEndArrow = true;

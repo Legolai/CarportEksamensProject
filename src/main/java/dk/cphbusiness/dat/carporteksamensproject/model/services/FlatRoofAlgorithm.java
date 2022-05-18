@@ -30,8 +30,8 @@ public class FlatRoofAlgorithm implements ICarportAlgorithm{
         if (carportDTO.shack().isPresent()){
             list.addAll(calcShack(carportDTO));
         }
-//        list.addAll(calcFittings(carportDTO));
-//        list.addAll(calcScrews(carportDTO));
+        list.addAll(calcFittingsAndScrews(carportDTO));
+
         return list;
     }
 
@@ -269,7 +269,6 @@ public class FlatRoofAlgorithm implements ICarportAlgorithm{
         }
 
 
-
         int plastmoskruer200stk = tagpladeAmounts/2; // /2 again if length > 600
         int hulbaand = 2; // just always 2
         int universalRight = spaerAmounts;
@@ -284,9 +283,16 @@ public class FlatRoofAlgorithm implements ICarportAlgorithm{
         int skuerInnerBeklaedning300 = skruerYderBeklaedning400; // 300 a pack
 
 
-//        list.addAll(getFromDB("product_description","38x73 mm. Lægte ubh.", laegteForDoorLength, laegteForDoor, "Til Z på bagside af dør"));
-//        list.addAll(getFromDB("product_description","Stalddørsgreb 50x75", 1, doergreb, "Til lås på dør til skur"));
-//        list.addAll(getFromDB("product_description","T hængsel 390 mm.", 1, doerHaengsel, "Til skurdør"));
+        list.addAll(getFromDB("product_description", "Plastmo bundskruer 200 stk.", 200, plastmoskruer200stk, "Skruer til tagplader"));
+        list.addAll(getFromDB("product_description", "Hulbånd 1x20 mm. 10 mtr", 1, hulbaand, "Til vindkryds på spær"));
+        list.addAll(getFromDB("product_description", "Universal 190 mm. højre", 1, universalRight, "Til montering af spær på rem"));
+        list.addAll(getFromDB("product_description", "Universal 190 mm. venstre", 1, universalLeft, "Til montering af spær på rem"));
+        list.addAll(getFromDB("product_description", "4,5x60 mm. Skruer 200 stk.", 200, skruer45x60, "Til montering af stern og vandbrændt"));
+        list.addAll(getFromDB("product_description", "4,0x50 mm. Beslagskruer 250 stk.", 250, beslagskruer4x50, "Til montering af universalbeslag + hulbånd"));
+        list.addAll(getFromDB("product_description", "Bræddebolt 10x120 mm.", 1, boltForRemOnPosts, "Til montering af rem på stolper"));
+        list.addAll(getFromDB("product_description", "Firkantskiver 40x40x11 mm.", 1, skiverForRemOnPosts, "Til montering af rem på stolper"));
+        list.addAll(getFromDB("product_description", "4,5x70 mm. Skruer 400 stk.", 400, skruerYderBeklaedning400, "Til montering af yderste beklædning"));
+        list.addAll(getFromDB("product_description", "4,5x50 mm. Skruer 300 stk.", 300, skuerInnerBeklaedning300, "Til montering af inderste beklædning"));
 
 
         return list;

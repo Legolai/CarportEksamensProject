@@ -48,7 +48,7 @@ values ('97x97 mm. trykimp. Stolpe', 50, 'METER', 1, 'PIECE'),
 
 ('Plastmo bundskruer 200 stk.', 5, 'PIECE', 7, 'PACK'),
 ('4,0x50 mm. Beslagskruer 250 stk.', 5, 'PIECE', 7, 'PACK'),
-('4,5x50 mm. Skruer	300	stk.', 5, 'PIECE', 7, 'PACK'),
+('4,5x50 mm. Skruer 300 stk.', 5, 'PIECE', 7, 'PACK'),
 ('4,5x60 mm. Skruer 200 stk.', 5, 'PIECE', 7, 'PACK'),
 ('4,5x70 mm. Skruer 400 stk.', 5, 'PIECE', 7, 'PACK'),
 ('Bræddebolt 10x120 mm.', 10, 'PIECE', 8, 'PIECE'),
