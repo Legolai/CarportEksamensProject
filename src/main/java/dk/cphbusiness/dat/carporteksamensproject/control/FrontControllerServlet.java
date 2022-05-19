@@ -45,6 +45,11 @@ public class FrontControllerServlet extends HttpServlet {
                 response.sendRedirect(page);
                 return;
             }
+            if (view.redirectType().equals(RedirectType.ERROR))
+            {
+                request.getRequestDispatcher("/" + view.pageName() + ".jsp").forward(request, response);
+                return;
+            }
 
             request.getRequestDispatcher("/WEB-INF/" + view.pageName() + ".jsp").forward(request, response);
         }

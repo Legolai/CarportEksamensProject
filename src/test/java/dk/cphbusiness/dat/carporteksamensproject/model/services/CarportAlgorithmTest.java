@@ -21,9 +21,9 @@ class CarportAlgorithmTest {
 
     @BeforeEach
     void setUp() {
-        Carport carport = new Carport(0, 600, 780, 210, RoofType.FLAT, 0, LocalDateTime.now());
-        Shack shack = new Shack(0, 540, 210, true, 0);
-        carportDTO = new CarportDTO(Optional.of(shack), carport);
+        Carport carport = new Carport(0, 600, 780, 210, RoofType.FLAT, 0, LocalDateTime.now(), 0);
+        Shack shack = new Shack(0, 540, 210, true);
+        carportDTO = new CarportDTO(carport, Optional.of(shack));
     }
 
     @Test

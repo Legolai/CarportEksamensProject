@@ -24,6 +24,12 @@ public class InquiryFacade {
         return inquiryMapper.findAll(properties);
     }
 
+    public static Optional<InquiryDTO> find(Map<String, Object> properties, ConnectionPool connectionPool) throws DatabaseException {
+        InquiryMapper inquiryMapper = new InquiryMapper(new EntityManager(connectionPool));
+        return inquiryMapper.find(properties);
+    }
+
+
     public static InquiryDTO createInquiry(InquiryDTO inquiryDTO, ConnectionPool connectionPool) throws DatabaseException {
         InquiryMapper inquiryMapper = new InquiryMapper(new EntityManager(connectionPool));
         return inquiryMapper.insert(inquiryDTO);

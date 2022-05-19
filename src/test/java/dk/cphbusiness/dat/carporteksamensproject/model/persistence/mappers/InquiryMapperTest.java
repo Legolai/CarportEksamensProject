@@ -17,6 +17,7 @@ import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -91,8 +92,8 @@ class InquiryMapperTest {
         Optional<Shack> optionalShack = Optional.empty();
 
         LocalDateTime time = LocalDateTime.now().withNano(0);
-        Carport carport = new Carport(0, carportWidth, carportLength, 210, RoofType.FLAT, roofMaterial, time);
-        CarportDTO carportDTO = new CarportDTO(optionalShack, carport);
+        Carport carport = new Carport(0, carportWidth, carportLength, 210, RoofType.FLAT, roofMaterial, time, 0);
+        CarportDTO carportDTO = new CarportDTO(carport, optionalShack);
 
         Inquiry inquiry = new Inquiry(0, InquiryStatus.OPEN, comment, 0, 0, time, time);
         InquiryDTO inquiryDTO = new InquiryDTO(inquiry, personDTO, Optional.empty(), carportDTO);
@@ -104,8 +105,8 @@ class InquiryMapperTest {
 
         Optional<Shack> optionalShack1 = Optional.empty();
 
-        Carport carport1 = new Carport(1, carportWidth, carportLength, 210, RoofType.FLAT, roofMaterial, time);
-        CarportDTO carportDTO1 = new CarportDTO(optionalShack1, carport1);
+        Carport carport1 = new Carport(1, carportWidth, carportLength, 210, RoofType.FLAT, roofMaterial, time, 0);
+        CarportDTO carportDTO1 = new CarportDTO(carport1, optionalShack1);
 
         Inquiry inquiry1 = new Inquiry(1, InquiryStatus.OPEN, comment, 1, 1, time, time);
         InquiryDTO expected = new InquiryDTO(inquiry1, personDTO1, Optional.empty(), carportDTO1);
@@ -113,6 +114,48 @@ class InquiryMapperTest {
         InquiryDTO actual = InquiryFacade.createInquiry(inquiryDTO, connectionPool);
 
         assertEquals(expected, actual);
+    }
+
+    @Test
+    void findAllForEmail() throws DatabaseException {
+        String firstName = "Nicolai";
+        String lastName = "Peterson";
+        String email = "nic1@gmail.com";
+
+        String street = "Solsikkevej";
+        String streetNumber = "14B";
+        String city = "Drømmeland";
+        String zip = "1234";
+
+        String comment = "";
+
+        int carportWidth = 200;
+        int carportLength = 300;
+        int roofMaterial = 0;
+
+        Address address = new Address(0, streetNumber, street, null, zip, city);
+        Person person = new Person(0, firstName, lastName, email, null, 0, false);
+        PersonDTO personDTO = new PersonDTO(person, address);
+
+        Optional<Shack> optionalShack = Optional.empty();
+
+        LocalDateTime time = LocalDateTime.now().withNano(0);
+        Carport carport = new Carport(0, carportWidth, carportLength, 210, RoofType.FLAT, roofMaterial, time, 0);
+        CarportDTO carportDTO = new CarportDTO(carport, optionalShack);
+
+        Inquiry inquiry = new Inquiry(0, InquiryStatus.OPEN, comment, 0, 0, time, time);
+        InquiryDTO inquiryDTO = new InquiryDTO(inquiry, personDTO, Optional.empty(), carportDTO);
+
+        Carport carport1 = new Carport(0, carportWidth+100, carportLength+100, 210, RoofType.FLAT, roofMaterial, time, 0);
+        CarportDTO carportDTO1 = new CarportDTO(carport1, optionalShack);
+        InquiryDTO inquiryDTO1 = new InquiryDTO(inquiry, personDTO, Optional.empty(), carportDTO1);
+
+        InquiryFacade.createInquiry(inquiryDTO, connectionPool);
+        InquiryFacade.createInquiry(inquiryDTO1, connectionPool);
+
+        Optional<List<InquiryDTO>> listOptional = InquiryFacade.findAll(Map.of("person_email","nic1@gmail.com"), connectionPool);
+        assertTrue(listOptional.isPresent());
+        assertEquals(2, listOptional.get().size());
     }
 
 }

@@ -5,6 +5,7 @@
 <%@attribute name="links" fragment="true" %>
 <%@attribute name="inquiryForm" fragment="true" %>
 <%@attribute name="header" fragment="true" %>
+<%@attribute name="script" fragment="true" %>
 <%@attribute name="footer" fragment="true" %>
 
 <t:pagetemplate>
@@ -19,6 +20,10 @@
 
     <jsp:attribute name="footer">
         <jsp:invoke fragment="footer"/>
+    </jsp:attribute>
+
+    <jsp:attribute name="script">
+        <jsp:invoke fragment="script"/>
     </jsp:attribute>
 
     <jsp:body>

@@ -10,7 +10,7 @@
     </jsp:attribute>
 
     <jsp:attribute name="header">
-       <h1> Inquiry</h1>
+       <h1>Tak for din henvendelse.</h1>
     </jsp:attribute>
 
     <jsp:attribute name="footer">
@@ -18,10 +18,8 @@
     </jsp:attribute>
 
     <jsp:body>
-
-        <p>Inquiry for X </p>
-
-
+        <p>Dit forespørgselsnummer er ${requestScope.inquiry.inquiry().getId()}</p>
+        <p>For at se status på din forespørgsel så <a href="${pageContext.request.contextPath}/fc/login-page">login</a> eller <a href="${pageContext.request.contextPath}/fc/register-page">opret en bruger</a></p>
     </jsp:body>
 
 </t:pagetemplate>

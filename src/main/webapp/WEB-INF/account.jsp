@@ -23,12 +23,46 @@
         <p>This is your account side </p>
 
 
-        <h3>Forespørgselsler</h3>
-        <c:forEach items="${requestScope.inquires}" var="inquiry">
-            <details>
-                <summary>Inquiry ${inquiry.inquiry().getId()}</summary>
-            </details>
-        </c:forEach>
+        <h3 id="inquiryTable">Forespørgselsler</h3>
+        <table class="table table-striped table-hover" aria-describedby="inquiryTable">
+            <thead>
+            <tr>
+                <th scope="col">Forespørgselsnummer</th>
+                <th scope="col">Dato</th>
+                <th scope="col">Beskrivelse</th>
+                <th scope="col">Status</th>
+                <th scope="col">Totale beløb</th>
+            </tr>
+            </thead>
+            <tbody class="table-group-divider">
+            <c:forEach items="${requestScope.inquiries}" var="inquiry">
+                <tr>
+                    <th scope="row">
+                        <form action="${pageContext.request.contextPath}/fc/my-inquiry-page">
+                            <button type="submit" name="inquiry-ID" value="${inquiry.inquiry().getId()}">${inquiry.inquiry().getId()}</button>
+                        </form>
+                    </th>
+                    <td>${inquiry.inquiry().getCreated().toLocalDate()}</td>
+                    <td>Carport med ${inquiry.carport().carport().getRoofType().getValue()}
+                        (${inquiry.carport().carport().getWidth()} x ${inquiry.carport().carport().getLength()})
+                        <c:if test="${inquiry.carport().shack().isPresent()}"> med skur</c:if>
+                    </td>
+                    <td>${inquiry.inquiry().getInquiryStatus().name().toLowerCase()}</td>
+                    <td>
+                        <c:choose>
+                            <c:when test="${inquiry.billOfMaterial().isPresent()}">
+                                ${inquiry.billOfMaterial().get().calcTotalPrice()} Kr.
+                            </c:when>
+                            <c:otherwise>
+                                - kr.
+                            </c:otherwise>
+                        </c:choose>
+                    </td>
+                </tr>
+            </c:forEach>
+
+            </tbody>
+        </table>
 
 
     </jsp:body>

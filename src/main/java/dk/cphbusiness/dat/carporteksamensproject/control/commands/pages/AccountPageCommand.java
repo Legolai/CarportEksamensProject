@@ -31,7 +31,7 @@ public class AccountPageCommand extends ProtectedPageCommand{
         AccountDTO accountDTO = (AccountDTO) session.getAttribute("account");
 
         try {
-            Optional<List<InquiryDTO>> list = InquiryFacade.findAll(Map.of("person_ID", accountDTO.personDTO().person().getId()), connectionPool);
+            Optional<List<InquiryDTO>> list = InquiryFacade.findAll(Map.of("person_email", accountDTO.personDTO().person().getEmail()), connectionPool);
             list.ifPresent(inquiryDTOS -> request.setAttribute("inquiries", inquiryDTOS));
         }
         catch (DatabaseException e) {

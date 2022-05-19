@@ -9,6 +9,7 @@ import dk.cphbusiness.dat.carporteksamensproject.model.dtos.PersonDTO;
 import dk.cphbusiness.dat.carporteksamensproject.model.entities.Inquiry;
 import dk.cphbusiness.dat.carporteksamensproject.model.exceptions.DatabaseException;
 import dk.cphbusiness.dat.carporteksamensproject.model.persistence.manager.EntityManager;
+import dk.cphbusiness.dat.carporteksamensproject.model.services.Search;
 import dk.cphbusiness.dat.carporteksamensproject.model.services.facade.PersonFacade;
 
 import java.lang.reflect.Field;
@@ -57,7 +58,7 @@ public class InquiryMapper implements DataMapper<InquiryDTO> {
                 throw new DatabaseException(String.format("Carport for inquiry numbered %s could not be found!", inquiry.getId()));
             }
 
-            Optional<BillOfMaterialDTO> billOfMaterialDTO = Optional.ofNullable(bill.get(inquiry.getId()));
+            Optional<BillOfMaterialDTO> billOfMaterialDTO = Optional.ofNullable(bill.getOrDefault(inquiry.getId(), null));
 
             inquiryDTOS.add(new InquiryDTO(inquiry, personDTO.get(), billOfMaterialDTO, carportDTO.get()));
         }
@@ -68,23 +69,19 @@ public class InquiryMapper implements DataMapper<InquiryDTO> {
     @Override
     public Optional<List<InquiryDTO>> findAll(Map<String, Object> properties) throws DatabaseException {
         List<InquiryDTO> list = getAll();
-
+        List<InquiryDTO> returnList = new ArrayList<>();
         for (Map.Entry<String, Object> p: properties.entrySet()) {
             for (InquiryDTO inquiryDTO : list) {
-                Field field = Arrays.stream(Inquiry.class.getDeclaredFields())
-                        .filter(field1 -> field1.getAnnotation(Column.class).value().equals(p.getKey()))
-                        .findAny().orElseThrow();
-                String methodName = "get" + field.getName().substring(0, 1).toUpperCase() + field.getName().substring(1);
                 try{
-                    Object value = Inquiry.class.getDeclaredMethod(methodName).invoke(inquiryDTO.inquiry());
-                    if (!p.getValue().equals(value))
-                        list.remove(inquiryDTO);
+                    Object value = Search.deepSearch(p.getKey(), inquiryDTO);
+                    if (p.getValue().equals(value))
+                        returnList.add(inquiryDTO);
                 } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException ex) {
-                    throw new DatabaseException("Could not access field value by invoke!");
+                    throw new DatabaseException(ex.getMessage());
                 }
             }
         }
-        return list.isEmpty() ? Optional.empty() : Optional.of(list);
+        return returnList.isEmpty() ? Optional.empty() : Optional.of(returnList);
     }
 
     @Override

@@ -4,6 +4,7 @@
 
 <%@attribute name="title" fragment="true" %>
 <%@attribute name="header" fragment="true" %>
+<%@attribute name="script" fragment="true" %>
 <%@attribute name="footer" fragment="true" %>
 
 <!DOCTYPE html>
@@ -11,7 +12,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title><jsp:invoke fragment="title"/></title>
+    <title>
+        <jsp:invoke fragment="title"/>
+    </title>
     <link rel="stylesheet" href="<%=request.getContextPath()%>/css/style.css">
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -32,11 +35,14 @@
                 <div class="navbar-nav">
                     <c:if test="${sessionScope.account == null }">
                         <a class="nav-item nav-link" href="${pageContext.request.contextPath}/fc/login-page">Login</a>
-                        <a class="nav-item nav-link" href="${pageContext.request.contextPath}/fc/register-page">Sign up</a>
+                        <a class="nav-item nav-link" href="${pageContext.request.contextPath}/fc/register-page">Sign
+                            up</a>
                     </c:if>
                     <c:if test="${sessionScope.account != null }">
-                        <a class="nav-item nav-link" href="${pageContext.request.contextPath}/fc/account-page">Min profil</a>
-                        <a class="nav-item nav-link" href="${pageContext.request.contextPath}/fc/logout-command">Log ud</a>
+                        <a class="nav-item nav-link" href="${pageContext.request.contextPath}/fc/account-page">Min
+                            profil</a>
+                        <a class="nav-item nav-link" href="${pageContext.request.contextPath}/fc/logout-command">Log
+                            ud</a>
                     </c:if>
                 </div>
             </div>
@@ -58,7 +64,8 @@
             2800 Lyngby
         </div>
         <div class="col">
-            <jsp:invoke fragment="footer"/><br/>
+            <jsp:invoke fragment="footer"/>
+            <br/>
             <p>&copy; 2022 Cphbusiness</p>
         </div>
         <div class="col">
@@ -69,12 +76,14 @@
 
 </div>
 
-</div>
 
-<!-- Bootstrap Bundle with Popper -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
         crossorigin="anonymous"></script>
+<div>
+    <jsp:invoke fragment="script"/>
+</div>
+
 
 </body>
 </html>

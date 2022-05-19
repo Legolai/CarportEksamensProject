@@ -1,8 +1,6 @@
 package dk.cphbusiness.dat.carporteksamensproject.control.commands;
 
-import dk.cphbusiness.dat.carporteksamensproject.control.commands.pages.FlatRoofPageCommand;
-import dk.cphbusiness.dat.carporteksamensproject.control.commands.pages.ProtectedPageCommand;
-import dk.cphbusiness.dat.carporteksamensproject.control.commands.pages.UnprotectedPageCommand;
+import dk.cphbusiness.dat.carporteksamensproject.control.commands.pages.*;
 import dk.cphbusiness.dat.carporteksamensproject.control.commands.actions.*;
 import dk.cphbusiness.dat.carporteksamensproject.model.entities.Role;
 
@@ -22,20 +20,21 @@ public class CommandController {
         commands.put("register-page", new UnprotectedPageCommand("register"));
         commands.put("roofFlat-page", new FlatRoofPageCommand("roofFlat"));
         commands.put("roofSloped-page", new UnprotectedPageCommand("roofSloped"));
+        commands.put("my-inquiry-page", new MyInquiryPageCommand("myInquiry", Role.COSTUMER));
         commands.put("inquiry-page", new UnprotectedPageCommand("inquiry"));
-        commands.put("account-page", new ProtectedPageCommand("account", Role.COSTUMER));
+        commands.put("account-page", new AccountPageCommand("account", Role.COSTUMER));
         commands.put("inquiriesAll-page", new ProtectedPageCommand("inquiriesAll", Role.EMPLOYEE));
 
-        commands.put("login-command", new LoginActionCommand(""));
-        commands.put("logout-command", new LogoutActionCommand(""));
-        commands.put("register-command", new RegisterActionCommand(""));
-        commands.put("inquiry-flatRoof-command", new InquiryFlatRoofActionCommand(""));
+        commands.put("login-command", new LoginActionCommand());
+        commands.put("logout-command", new LogoutActionCommand());
+        commands.put("register-command", new RegisterActionCommand());
+
+        commands.put("inquiry-flatRoof-command", new InquiryFlatRoofActionCommand());
     }
 
     public static CommandController getInstance(){
         return INSTANCE;
     }
-
 
     public Command fromPath(HttpServletRequest request) {
         String route = request.getPathInfo().replaceAll("^/+", "");

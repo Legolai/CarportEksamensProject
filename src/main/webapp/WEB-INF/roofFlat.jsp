@@ -14,7 +14,7 @@
 
     <jsp:attribute name="links">
         <a class="btn btn-primary" href="${pageContext.request.contextPath}/fc/roofFlat-page">Carport med fladt tag</a>
-        <a class="btn btn-outline-primary"  href="${pageContext.request.contextPath}/fc/roofSloped-page">Carport med rejsning</a>
+        <a class="btn btn-outline-primary" href="${pageContext.request.contextPath}/fc/roofSloped-page">Carport med rejsning</a>
         <a class="btn btn-outline-primary">Standard carporte</a>
     </jsp:attribute>
 
@@ -22,8 +22,8 @@
         <form class="row g-3 mb-3" action="${pageContext.request.contextPath}/fc/inquiry-flatRoof-command" method="post">
             <div class="col-md-12">
                 <label for="carport-width" class="form-label">Carport bredde</label>
-                <select id="carport-width" name="carport-width" class="form-select form-select-md mb3">
-                    <option selected>Vælg bredde</option>
+                <select id="carport-width" name="carport-width" class="form-select form-select-md mb3" required>
+                    <option disabled hidden selected>Vælg bredde</option>
                     <c:forEach var = "i" begin = "240" end = "600" step="30">
                         <option value="${i}">${i} cm</option>
                     </c:forEach>
@@ -31,8 +31,8 @@
             </div>
             <div class="col-md-12">
                 <label for="carport-length" class="form-label">Carport længde</label>
-                <select id="carport-length" name="carport-length" class="form-select form-select-md mb3">
-                    <option selected>Vælg længde</option>
+                <select id="carport-length" name="carport-length" class="form-select form-select-md mb3" required>
+                    <option disabled hidden selected>Vælg længde</option>
                     <c:forEach var = "i" begin = "240" end = "780" step="30">
                         <option value="${i}">${i} cm</option>
                     </c:forEach>
@@ -40,8 +40,8 @@
             </div>
             <div class="col-md-12">
                 <label for="roof-material" class="form-label">Tag</label>
-                <select id="roof-material" name="roof-material" class="form-select form-select-md mb3">
-                    <option selected>Vælg tag</option>
+                <select id="roof-material" name="roof-material" class="form-select form-select-md mb3" required>
+                    <option disabled hidden selected>Vælg tag</option>
                     <c:forEach var = "roof" items="${requestScope.roofs}">
                         <option value="${roof.product().getId()}">${roof.product().getDescription()}</option>
                     </c:forEach>
@@ -53,9 +53,16 @@
             </div>
 
             <div class="col-md-12">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="has-shack" name="has-shack" onchange="wishShack(this)">
+                    <label for="has-shack" class="form-label">Ønsker Redskabsrum</label>
+                </div>
+            </div>
+
+            <div class="col-md-12">
                 <label for="shack-width" class="form-label">Redskabsrum bredde</label>
-                <select id="shack-width" name="shack-width" class="form-select form-select-md mb3">
-                    <option selected>Ønsker ikke redskabsrum</option>
+                <select disabled id="shack-width" name="shack-width" class="form-select form-select-md mb3" required>
+                    <option disabled hidden selected>Ønsker ikke redskabsrum</option>
                     <c:forEach var = "i" begin = "210" end = "720" step="30">
                         <option value="${i}">${i} cm</option>
                     </c:forEach>
@@ -63,8 +70,8 @@
             </div>
             <div class="col-md-12 mb-20">
                 <label for="shack-length" class="form-label">Redskabsrum længde</label>
-                <select id="shack-length" name="shack-length" class="form-select form-select-md mb3">
-                    <option selected>Ønsker ikke redskabsrum</option>
+                <select disabled id="shack-length" name="shack-length" class="form-select form-select-md mb3" required>
+                    <option disabled hidden selected>Ønsker ikke redskabsrum</option>
                     <c:forEach var = "i" begin = "150" end = "690" step="30">
                         <option value="${i}">${i} cm</option>
                     </c:forEach>
@@ -77,19 +84,19 @@
 
             <div class="col-md-6">
                 <label for="firstName" class="form-label">Fornavn</label>
-                <input type="text" class="form-control" id="firstName" name="firstName">
+                <input type="text" class="form-control" id="firstName" name="firstName" required>
             </div>
             <div class="col-md-6">
                 <label for="lastName" class="form-label">Efternavn</label>
-                <input type="text" class="form-control" id="lastName" name="lastName">
+                <input type="text" class="form-control" id="lastName" name="lastName" required>
             </div>
             <div class="col-md-12">
                 <label class="form-label" for="email">Email</label>
-                <input class="form-control" type="email" id="email" name="email"/>
+                <input class="form-control" type="email" id="email" name="email" required/>
             </div>
             <div class="col-md-5 col-8">
                 <label class="form-label" for="street">Gade</label>
-                <input class="form-control" type="text" id="street" name="street"/>
+                <input class="form-control" type="text" id="street" name="street" required/>
             </div>
             <div class="col-md-2 col-4">
                 <label class="form-label" for="streetNumber">Nr.</label>
@@ -97,11 +104,11 @@
             </div>
             <div class="col-md-3 col-8">
                 <label class="form-label" for="city">By</label>
-                <input class="form-control" type="text" id="city" name="city"/>
+                <input class="form-control" type="text" id="city" name="city" required/>
             </div>
             <div class="col-md-2 col-4">
                 <label class="form-label" for="zip">Zip kode</label>
-                <input class="form-control" type="text" id="zip" name="zip"/>
+                <input class="form-control" type="text" id="zip" name="zip" required/>
             </div>
 
 
@@ -116,6 +123,24 @@
 
         </form>
 
+    </jsp:attribute>
+
+    <jsp:attribute name="script">
+        <script>
+            function wishShack(ckType){
+                const shackWidthElem = document.getElementById("shack-width");
+                const shackLengthElem = document.getElementById("shack-length");
+                const checked = document.getElementById(ckType.id);
+
+                if (checked.checked) {
+                    shackWidthElem.disabled = false
+                    shackLengthElem.disabled = false
+                } else {
+                    shackWidthElem.disabled = true
+                    shackLengthElem.disabled = true
+                }
+            }
+        </script>
     </jsp:attribute>
 
 </t:carportInquriyTemplate>
