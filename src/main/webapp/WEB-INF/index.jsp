@@ -4,6 +4,11 @@
 <%@page errorPage="../error.jsp" isErrorPage="false" %>
 
 <t:pagetemplate>
+
+    <jsp:attribute name="title">
+        Fog Quickbyg
+    </jsp:attribute>
+
     <jsp:attribute name="header">
         <h1>Fog Quickbyg</h1>
     </jsp:attribute>

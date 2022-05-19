@@ -9,13 +9,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class AccountMapper implements DataMapper<AccountDTO> {
+public class AccountMapper implements IAccountMapper {
     private final EntityManager entityManager;
 
     public AccountMapper(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
 
+    @Override
     public Optional<AccountDTO> login(String email, String password) throws DatabaseException {
         return entityManager.find(AccountDTO.class, Map.of("person_email", email, "account_password", password));
     }

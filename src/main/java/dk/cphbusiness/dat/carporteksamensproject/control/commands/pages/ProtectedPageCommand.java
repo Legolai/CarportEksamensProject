@@ -9,7 +9,7 @@ import dk.cphbusiness.dat.carporteksamensproject.model.persistence.ConnectionPoo
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class ProtectedPageCommand extends PageCommand
+public class ProtectedPageCommand extends UnprotectedPageCommand
 {
     private final Role role;
 

@@ -1,5 +1,6 @@
 package dk.cphbusiness.dat.carporteksamensproject.control.commands.actions;
 
+import dk.cphbusiness.dat.carporteksamensproject.control.commands.Command;
 import dk.cphbusiness.dat.carporteksamensproject.control.commands.pages.UnprotectedPageCommand;
 import dk.cphbusiness.dat.carporteksamensproject.control.webtypes.PageDirect;
 import dk.cphbusiness.dat.carporteksamensproject.control.webtypes.RedirectType;
@@ -11,23 +12,16 @@ import dk.cphbusiness.dat.carporteksamensproject.model.entities.Person;
 import dk.cphbusiness.dat.carporteksamensproject.model.entities.Role;
 import dk.cphbusiness.dat.carporteksamensproject.model.exceptions.DatabaseException;
 import dk.cphbusiness.dat.carporteksamensproject.model.persistence.ConnectionPool;
-import dk.cphbusiness.dat.carporteksamensproject.model.persistence.manager.EntityManager;
-import dk.cphbusiness.dat.carporteksamensproject.model.persistence.mappers.person.AccountMapper;
+import dk.cphbusiness.dat.carporteksamensproject.model.services.facade.AccountFacade;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 
-public class RegisterCommand extends UnprotectedPageCommand {
-    public RegisterCommand(String pageName) {
-        super(pageName);
-    }
-
+public class RegisterActionCommand implements Command {
     @Override
     public PageDirect execute(HttpServletRequest request, HttpServletResponse response, ConnectionPool connectionPool) {
-        AccountMapper accountMapper = new AccountMapper(new EntityManager(connectionPool));
-
         String firstName = request.getParameter("firstName");
         String lastName = request.getParameter("lastName");
         String email = request.getParameter("email");
@@ -50,10 +44,10 @@ public class RegisterCommand extends UnprotectedPageCommand {
             PersonDTO personDTO = new PersonDTO(person, address);
             AccountDTO accDTO = new AccountDTO(acc, personDTO);
 
-            accDTO = accountMapper.insert(accDTO);
+            accDTO = AccountFacade.createAccount(accDTO, connectionPool);
 
             HttpSession session = request.getSession();
-            session.setAttribute("user", accDTO);
+            session.setAttribute("account", accDTO);
 
             return new PageDirect(RedirectType.DEFAULT, "index");
         } catch (DatabaseException ex) {

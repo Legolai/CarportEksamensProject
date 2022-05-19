@@ -27,7 +27,10 @@ public class Carport {
     @Column("carport_updated")
     private LocalDateTime updated;
 
-    public Carport(int id, int width, int length, int height, RoofType roofType, int roofMaterialId, LocalDateTime updated) {
+    @Column("shack_ID")
+    private int shackId;
+
+    public Carport(int id, int width, int length, int height, RoofType roofType, int roofMaterialId, LocalDateTime updated, int sizeId) {
         this.id = id;
         this.width = width;
         this.length = length;
@@ -35,6 +38,7 @@ public class Carport {
         this.roofType = roofType;
         this.roofMaterialId = roofMaterialId;
         this.updated = updated;
+        this.shackId = sizeId;
     }
 
     public int getId() {
@@ -65,6 +69,13 @@ public class Carport {
         return updated;
     }
 
+    public int getShackId() {
+        return shackId;
+    }
+
+    public void setShackId(int shackId) {
+        this.shackId = shackId;
+    }
 
     public void setId(int id) {
         this.id = id;
@@ -104,6 +115,7 @@ public class Carport {
                 ", roofType=" + roofType +
                 ", roofMaterialId=" + roofMaterialId +
                 ", updated=" + updated +
+                ", sizeId=" + shackId +
                 '}';
     }
 
@@ -111,11 +123,11 @@ public class Carport {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Carport carport)) return false;
-        return getId() == carport.getId() && getWidth() == carport.getWidth() && getLength() == carport.getLength() && getHeight() == carport.getHeight() && getRoofMaterialId() == carport.getRoofMaterialId() && getRoofType() == carport.getRoofType() && Objects.equals(getUpdated(), carport.getUpdated());
+        return getId() == carport.getId() && getWidth() == carport.getWidth() && getLength() == carport.getLength() && getHeight() == carport.getHeight() && getRoofMaterialId() == carport.getRoofMaterialId() && getShackId() == carport.getShackId() && getRoofType() == carport.getRoofType() && Objects.equals(getUpdated(), carport.getUpdated());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getWidth(), getLength(), getHeight(), getRoofType(), getRoofMaterialId(), getUpdated());
+        return Objects.hash(getId(), getWidth(), getLength(), getHeight(), getRoofType(), getRoofMaterialId(), getUpdated(), getShackId());
     }
 }
