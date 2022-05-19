@@ -30,6 +30,7 @@ public class CommandController {
         commands.put("register-command", new RegisterActionCommand());
 
         commands.put("inquiry-flatRoof-command", new InquiryFlatRoofActionCommand());
+
         commands.put("svgExperiments-page", new UnprotectedPageCommand("svgExperiments"));
         commands.put("SVG-command", new SVGCommand(""));
 

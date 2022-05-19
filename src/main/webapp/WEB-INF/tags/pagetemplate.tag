@@ -2,6 +2,8 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
+<%@tag import="dk.cphbusiness.dat.carporteksamensproject.model.entities.Role" %>
+
 <%@attribute name="title" fragment="true" %>
 <%@attribute name="header" fragment="true" %>
 <%@attribute name="script" fragment="true" %>
@@ -39,6 +41,15 @@
                             up</a>
                     </c:if>
                     <c:if test="${sessionScope.account != null }">
+                        <a class="nav-item nav-link" href="${pageContext.request.contextPath}/fc/account-page">Min
+                            profil</a>
+                        <a class="nav-item nav-link" href="${pageContext.request.contextPath}/fc/logout-command">Log
+                            ud</a>
+                    </c:if>
+
+                    <c:if test="${sessionScope.account == Role.ADMIN || sessionScope.account == Role.EMPLOYEE }">
+                        <a class="nav-item nav-link" href="${pageContext.request.contextPath}/fc/inquiriesAll-page">Min
+                            profil</a>
                         <a class="nav-item nav-link" href="${pageContext.request.contextPath}/fc/account-page">Min
                             profil</a>
                         <a class="nav-item nav-link" href="${pageContext.request.contextPath}/fc/logout-command">Log

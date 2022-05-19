@@ -15,7 +15,10 @@
     <jsp:body>
         <p>Svg with java class: <a href="${pageContext.request.contextPath}/fc/SVG-command">opdater</a></p>
         <br>
-        ${requestScope.SVG}
+        ${requestScope.SVG1}<br>
+        ${requestScope.SVG2}<br>
+        ${requestScope.SVG3}<br>
+        ${requestScope.SVG4}<br>
         <p>Note: just preliminary experiment</p>
 
 
