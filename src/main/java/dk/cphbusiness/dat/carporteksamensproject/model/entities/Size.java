@@ -1,12 +1,25 @@
 package dk.cphbusiness.dat.carporteksamensproject.model.entities;
 
+import dk.cphbusiness.dat.carporteksamensproject.model.annotations.*;
+
 import java.util.Objects;
 
+@Entity
+@Table("Size")
 public class Size {
+
+    @Id
+    @GeneratedValue(strategy = 1)
+    @Column("size_ID")
     private int id;
+
+    @Column("size_detail")
     private int detail;
 
+    @Column("size_type")
     private SizeType type;
+
+    @Column("size_deleted")
     private boolean deleted;
 
     public Size(int id, int detail, SizeType type, boolean deleted) {

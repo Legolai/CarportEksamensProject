@@ -23,7 +23,7 @@ public class EntityData<T> {
 
     public EntityData(Class<T> entityClass) throws IllegalArgumentException {
         if (!entityClass.isAnnotationPresent(Entity.class) || entityClass.isAnnotationPresent(JoinedEntity.class))
-            throw new IllegalArgumentException("Object is not annotated as Entity!");
+            throw new IllegalArgumentException(String.format("Object %s is not annotated as Entity!", entityClass));
 
         this.tableName = entityClass.getAnnotation(Table.class).value();
         this.fields = new LinkedList<>(Arrays.asList(entityClass.getDeclaredFields()));
