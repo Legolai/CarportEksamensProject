@@ -38,7 +38,7 @@ class InquiryMapperTest {
     void setUp() {
         try (Connection testConnection = connectionPool.getConnection()) {
             try (Statement stmt = testConnection.createStatement()) {
-                List<String> list = Arrays.asList("`Order`", "Inquiry", "Bill_of_material_line_item", "Account", "Person",
+                List<String> list = Arrays.asList("Inquiry", "Bill_of_material_line_item", "Account", "Person",
                         "Address", "Shack", "Carport", "Product_variant", "Product", "Size", "Product_type"
                 );
 
@@ -95,7 +95,7 @@ class InquiryMapperTest {
         Carport carport = new Carport(0, carportWidth, carportLength, 210, RoofType.FLAT, roofMaterial, time, 0);
         CarportDTO carportDTO = new CarportDTO(carport, optionalShack);
 
-        Inquiry inquiry = new Inquiry(0, InquiryStatus.OPEN, comment, 0, 0, time, time);
+        Inquiry inquiry = new Inquiry(0, InquiryStatus.OPEN, comment, 0, 0, 1000, time, time);
         InquiryDTO inquiryDTO = new InquiryDTO(inquiry, personDTO, Optional.empty(), carportDTO);
 
 
@@ -108,7 +108,7 @@ class InquiryMapperTest {
         Carport carport1 = new Carport(1, carportWidth, carportLength, 210, RoofType.FLAT, roofMaterial, time, 0);
         CarportDTO carportDTO1 = new CarportDTO(carport1, optionalShack1);
 
-        Inquiry inquiry1 = new Inquiry(1, InquiryStatus.OPEN, comment, 1, 1, time, time);
+        Inquiry inquiry1 = new Inquiry(1, InquiryStatus.OPEN, comment, 1, 1, 1000, time, time);
         InquiryDTO expected = new InquiryDTO(inquiry1, personDTO1, Optional.empty(), carportDTO1);
 
         InquiryDTO actual = InquiryFacade.createInquiry(inquiryDTO, connectionPool);
@@ -143,7 +143,7 @@ class InquiryMapperTest {
         Carport carport = new Carport(0, carportWidth, carportLength, 210, RoofType.FLAT, roofMaterial, time, 0);
         CarportDTO carportDTO = new CarportDTO(carport, optionalShack);
 
-        Inquiry inquiry = new Inquiry(0, InquiryStatus.OPEN, comment, 0, 0, time, time);
+        Inquiry inquiry = new Inquiry(0, InquiryStatus.OPEN, comment, 0, 0, 1000, time, time);
         InquiryDTO inquiryDTO = new InquiryDTO(inquiry, personDTO, Optional.empty(), carportDTO);
 
         Carport carport1 = new Carport(0, carportWidth+100, carportLength+100, 210, RoofType.FLAT, roofMaterial, time, 0);

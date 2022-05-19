@@ -48,16 +48,7 @@
                         <c:if test="${inquiry.carport().shack().isPresent()}"> med skur</c:if>
                     </td>
                     <td>${inquiry.inquiry().getInquiryStatus().name().toLowerCase()}</td>
-                    <td>
-                        <c:choose>
-                            <c:when test="${inquiry.billOfMaterial().isPresent()}">
-                                ${inquiry.billOfMaterial().get().calcTotalPrice()} Kr.
-                            </c:when>
-                            <c:otherwise>
-                                - kr.
-                            </c:otherwise>
-                        </c:choose>
-                    </td>
+                    <td>${inquiry.inquiry().getPrice()} kr.</td>
                 </tr>
             </c:forEach>
 
