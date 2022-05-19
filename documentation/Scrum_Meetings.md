@@ -103,5 +103,12 @@ Dag 12 (5/17 onsdag)
 - Mere kodning (færdigøre inquiry)
 - Mere algoritme (side view svg)
 
+Dag 13 (5/18 onsdag)
+Opsamling:
+- Inquiry ikke helt færdig
+- side view ikke færdig (top and stykliste færdig)
+  TODO:
+- Mere kodning (færdigøre inquiry)
+- Mere algoritme (side view svg)
 
 
