@@ -1,43 +1,15 @@
 package dk.cphbusiness.dat.carporteksamensproject.model.services;
 
-import dk.cphbusiness.dat.carporteksamensproject.model.dtos.BillOfMaterialLineItemDTO;
 import dk.cphbusiness.dat.carporteksamensproject.model.dtos.CarportDTO;
-import dk.cphbusiness.dat.carporteksamensproject.model.dtos.ProductVariantDTO;
-import dk.cphbusiness.dat.carporteksamensproject.model.entities.BillOfMaterialLineItem;
-import dk.cphbusiness.dat.carporteksamensproject.model.entities.Shack;
-import dk.cphbusiness.dat.carporteksamensproject.model.exceptions.DatabaseException;
-import dk.cphbusiness.dat.carporteksamensproject.model.persistence.ConnectionPool;
-import dk.cphbusiness.dat.carporteksamensproject.model.persistence.manager.EntityManager;
-import dk.cphbusiness.dat.carporteksamensproject.model.persistence.mappers.product.ProductVariantMapper;
 
-import java.util.*;
+public class SVGTopView extends SVGAlgorithmsBase {     // Is mapper needed for SVG algo?
 
-public class SVGAlgorithm {     //TODO: Is mapper needed for SVG algo?
-    private final int overhang = 30;
-    private final int stolpeDim = 14;
-    
-    private int width = 0;
-    private int length = 0;
-    private CarportDTO carportDTO;
-    private int shackwidth = 0;
-    private int shacklength = 0;
-    private int spaerAmounts = 5;
-    private int lengthBetween = 55;
-    private int dottedX = 0;
-    public void setStats(CarportDTO carportDTO) {
-        width = carportDTO.carport().getWidth();
-        length = carportDTO.carport().getLength();
-        this.carportDTO = carportDTO;
-        if (carportDTO.shack().isPresent()){
-            shackwidth = carportDTO.shack().get().getWidth();
-            shacklength = carportDTO.shack().get().getLength();
-        }
-        spaerAmounts = (int) Math.ceil(length/56.5-0.35) + 1;
-        lengthBetween = (int) Math.ceil((length - 10)/(spaerAmounts-1));
+    public SVGTopView(CarportDTO carportDTO) {
+        super(carportDTO);
     }
 
 
-    public SVG calcSVG(CarportDTO carportDTO) {
+    public SVG calcSVG() {
         int height = width;   //600
         int width = length;   //780
         int svgHeight = 430 - ((20-(height/30))*10);
@@ -83,7 +55,7 @@ public class SVGAlgorithm {     //TODO: Is mapper needed for SVG algo?
         //smaller side arrow (int) (600*(0.075+(30.0/600.0*0.85)));
         int rempos = (int) ((double)(overhang)*0.85);
         svg.addDoubleArrow(widthoffset*2/3, heightoffset+rempos, widthoffset*2/3, height-heightoffset-rempos, 1);
-        svg.addText(""+(height-overhang*2)/100.0+"*", widthoffset*2/3-5, height/2, -90);
+        svg.addText(""+(height-overhang*2)/100.0+"**", widthoffset*2/3-5, height/2, -90);
         svg.addLine(widthoffset*3/6,heightoffset+rempos,widthoffset*5/6,heightoffset+rempos,1);
         svg.addLine(widthoffset*3/6,height-heightoffset-rempos,widthoffset*5/6,height-heightoffset-rempos,1);
 
@@ -92,7 +64,7 @@ public class SVGAlgorithm {     //TODO: Is mapper needed for SVG algo?
         for (int i = 0; i < spaerAmounts-1; i++) {
             int daX = widthoffset+spaerBetween*i+i;
             svg.addDoubleArrow(daX, heightoffset/2+5, daX+spaerBetween, heightoffset/2+5, 1);
-            svg.addText(""+lengthBetween/100.0+"**", widthoffset+spaerBetween/2+spaerBetween*i+i+1, heightoffset/2+5-5, 0);
+            svg.addText(""+lengthBetween/100.0+"*", widthoffset+spaerBetween/2+spaerBetween*i+i+1, heightoffset/2+5-5, 0);
             svg.addLine(daX,heightoffset*5/6,daX,heightoffset*2/6,1);
             svg.addLine(daX+spaerBetween+1,heightoffset*5/6,daX+spaerBetween+1,heightoffset*2/6,1);
         }
@@ -145,8 +117,8 @@ public class SVGAlgorithm {     //TODO: Is mapper needed for SVG algo?
         }
         if (shacklength > 270) {
             stolperUsed +=2;
-            svg.addRect(length-overhang-shacklength/2-1,overhang-1,17,17, 2);
-            svg.addRect(length-overhang-shacklength/2-1,width-overhang-1,17,17, 2);
+            svg.addRect(length-overhang-shacklength/2-1,overhang-1,stolpeDim,stolpeDim, 2);
+            svg.addRect(length-overhang-shacklength/2-1,width-overhang-1,stolpeDim,stolpeDim, 2);
         }
 
         if (postAmounts - stolperUsed == 4+1) {
@@ -164,9 +136,8 @@ public class SVGAlgorithm {     //TODO: Is mapper needed for SVG algo?
             svg.addRect(frontStolpe,width-overhang-1,stolpeDim,stolpeDim, 2);
             svg.addRect(carportlength - backStolpe,width-overhang-1, stolpeDim,stolpeDim, 2);
         } else if (postAmounts - stolperUsed == 2+1) {
-            int placement = overhang;
-            svg.addRect(placement,overhang-1,stolpeDim,stolpeDim, 2);
-            svg.addRect(placement,width-overhang-1,stolpeDim,stolpeDim, 2);
+            svg.addRect(overhang,overhang-1,stolpeDim,stolpeDim, 2);
+            svg.addRect(overhang,width-overhang-1,stolpeDim,stolpeDim, 2);
         } else {
             //error
         }
@@ -219,7 +190,5 @@ public class SVGAlgorithm {     //TODO: Is mapper needed for SVG algo?
         }
         return stolperAmounts;
     }
-
-
 
 }
