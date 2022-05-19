@@ -44,6 +44,8 @@
                     <option selected>25 grader</option>
                 </select>
             </div>
+
+
             <fieldset>
                 <legend>Redskabsrum:</legend>
                 <div class="col-md-12">

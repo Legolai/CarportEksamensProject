@@ -73,7 +73,7 @@ public class SVGTopView extends SVGAlgorithmsBase {     // Is mapper needed for 
     public void calcSVGCarport(CarportDTO carportDTO, SVG svg) {
         int postAmounts = calcStolper();
 
-        // Side ram
+        // Side rem
         svg.addRect(0,overhang, length, 12, 1);
         svg.addRect(0,width-overhang, length, 11, 1);
 
