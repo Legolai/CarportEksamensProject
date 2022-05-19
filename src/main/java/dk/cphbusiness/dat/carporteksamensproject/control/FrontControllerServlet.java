@@ -39,14 +39,19 @@ public class FrontControllerServlet extends HttpServlet {
 
             PageDirect view = action.execute(request, response, connectionPool);
 
-            if (view.redirectType.equals(RedirectType.REDIRECT))
+            if (view.redirectType().equals(RedirectType.REDIRECT))
             {
-                String page = view.pageName;
+                String page = view.pageName();
                 response.sendRedirect(page);
                 return;
             }
+            if (view.redirectType().equals(RedirectType.ERROR))
+            {
+                request.getRequestDispatcher("/" + view.pageName() + ".jsp").forward(request, response);
+                return;
+            }
 
-            request.getRequestDispatcher("/WEB-INF/" + view.pageName + ".jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/" + view.pageName() + ".jsp").forward(request, response);
         }
         catch (Exception ex) {
             request.setAttribute("errormessage", ex.getMessage());

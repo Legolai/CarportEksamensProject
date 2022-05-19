@@ -1,6 +1,7 @@
 package dk.cphbusiness.dat.carporteksamensproject.model.dtos;
 
 import dk.cphbusiness.dat.carporteksamensproject.model.annotations.Join;
+import dk.cphbusiness.dat.carporteksamensproject.model.annotations.JoinView;
 import dk.cphbusiness.dat.carporteksamensproject.model.annotations.JoinedEntity;
 import dk.cphbusiness.dat.carporteksamensproject.model.entities.Carport;
 import dk.cphbusiness.dat.carporteksamensproject.model.entities.Product;
@@ -14,12 +15,13 @@ import java.util.Optional;
 
 
 @JoinedEntity
-@Join(main = Carport.class, join = {Shack.class, ProductVariant.class, Product.class, Size.class, ProductType.class})
-public record CarportDTO(Optional<Shack> shack, Carport carport) implements IForeignKey {
+@Join(main = Carport.class, join = {Shack.class})
+@JoinView("carportdto")
+public record CarportDTO(Carport carport, Optional<Shack> shack) implements IForeignKey {
     @Override
     public void updateForeignKey(Object entity) {
-        if (entity instanceof Carport foreignKey) {
-            shack.ifPresent(item -> item.setCarportId(foreignKey.getId()));
+        if (entity instanceof Optional<?> foreignKey) {
+            foreignKey.ifPresent(key -> carport.setShackId(((Shack) key).getId()));
         }
     }
 }

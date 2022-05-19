@@ -2,6 +2,8 @@ package dk.cphbusiness.dat.carporteksamensproject.control.filters;
 
 import dk.cphbusiness.dat.carporteksamensproject.control.commands.Command;
 import dk.cphbusiness.dat.carporteksamensproject.control.commands.CommandController;
+import dk.cphbusiness.dat.carporteksamensproject.control.commands.pages.ProtectedPageCommand;
+import dk.cphbusiness.dat.carporteksamensproject.model.dtos.AccountDTO;
 import dk.cphbusiness.dat.carporteksamensproject.model.entities.Role;
 
 import javax.servlet.*;
@@ -35,39 +37,39 @@ public class AuthenticationFilter implements Filter
         HttpServletResponse res = (HttpServletResponse) response;
 
         String servletPath = req.getServletPath();
-//        if (servletPath != null && servletPath.equals("/fc"))
-//        {
-//            Command command = CommandController.getInstance().fromPath(req);
-//            HttpSession session = req.getSession(false);
-//            if (command instanceof ProtectedPageCommand protectedPageCommand)
-//            {
-//                Role roleFromCommand = protectedPageCommand.getRole();
-//                if (session == null || session.getAttribute("user") == null)
-//                {
-//                    handleIllegalAccess(
-//                            req,
-//                            res,
-//                            FailingStrategy.REDIRECT_TO_LOGIN,
-//                            "You are not authenticated. Please login first",
-//                            401);
-//                    return;
-//                } else
-//                {
-//                    DBEntity<User> user = (DBEntity<User>) session.getAttribute("user");
-//                    Role role = user.getEntity().getRole();
-//                    if (role == null || !(role.equals(Role.ADMIN) || role.equals(roleFromCommand)))
-//                    {
-//                        handleIllegalAccess(
-//                                req,
-//                                res,
-//                                FailingStrategy.REDIRECT_TO_HOME,
-//                                "Attempt to call a resource you are not authorized to view ",
-//                                403);
-//                        return;
-//                    }
-//                }
-//            }
-//        }
+        if (servletPath != null && servletPath.equals("/fc"))
+        {
+            Command command = CommandController.getInstance().fromPath(req);
+            HttpSession session = req.getSession(false);
+            if (command instanceof ProtectedPageCommand protectedPageCommand)
+            {
+                Role roleFromCommand = protectedPageCommand.getRole();
+                if (session == null || session.getAttribute("account") == null)
+                {
+                    handleIllegalAccess(
+                            req,
+                            res,
+                            FailingStrategy.REDIRECT_TO_LOGIN,
+                            "You are not authenticated. Please login first",
+                            401);
+                    return;
+                } else
+                {
+                    AccountDTO account = (AccountDTO) session.getAttribute("account");
+                    Role role = account.account().getRole();
+                    if (role == null || !(role.equals(Role.ADMIN) || role.equals(roleFromCommand)))
+                    {
+                        handleIllegalAccess(
+                                req,
+                                res,
+                                FailingStrategy.REDIRECT_TO_HOME,
+                                "Attempt to call a resource you are not authorized to view ",
+                                403);
+                        return;
+                    }
+                }
+            }
+        }
 
         //Prevents users, who has logged out, to use the back-button and see pages they could see, while logged in
 //        res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.

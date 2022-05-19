@@ -8,18 +8,12 @@ import dk.cphbusiness.dat.carporteksamensproject.model.persistence.ConnectionPoo
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.ParameterizedType;
 import java.sql.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class EntityManager {
-
-    private final ConnectionPool connectionPool;
-
-    public EntityManager(ConnectionPool connectionPool) {
-        this.connectionPool = connectionPool;
-    }
-
+public record EntityManager(ConnectionPool connectionPool) {
     private <R> R makeConnection(FunctionWithThrows<Connection, R> query) throws DatabaseException {
         try (Connection connection = connectionPool.getConnection()) {
             return query.apply(connection);
@@ -98,6 +92,12 @@ public class EntityManager {
                     baseEntity = insertJoinedEntity(new JoinedEntityData<>(field.getType()), fieldEntity);
                 } else if (fieldEntity instanceof List batch) {
                     baseEntity = insertBatch(batch.get(0).getClass(), batch);
+                } else if (fieldEntity instanceof Optional<?> optional) {
+                    if (optional.isEmpty()) {
+                        baseEntity = Optional.empty();
+                    } else {
+                        baseEntity = insertCheckedEntity(new EntityData<>(field.getType()), optional.get());
+                    }
                 } else {
                     baseEntity = insertCheckedEntity(new EntityData<>(field.getType()), fieldEntity);
                 }
@@ -145,6 +145,7 @@ public class EntityManager {
                 throw new DatabaseException(ex.getMessage());
             }
         }
+
         Class<?> unSafe = subList.get(0).getClass();
         subList = insertEntityBatch(new EntityData<>(unSafe), subList);
 
@@ -158,7 +159,7 @@ public class EntityManager {
             T t = batch.get(i);
             Object info = subList.get(i);
             constArgs.add(info);
-            for (Field field : joinedEntityData.getFields().subList(1, joinedEntityData.getFields().size()-1)) {
+            for (Field field : joinedEntityData.getFields().subList(1, joinedEntityData.getFields().size() - 1)) {
                 try {
                     constArgs.add(t.getClass().getMethod(field.getName()).invoke(t));
                 }
@@ -169,7 +170,9 @@ public class EntityManager {
             try {
                 list.add(joinedEntityData.getEntityClass().getConstructor(joinedEntityData.getConstructorEmp()).newInstance(constArgs.toArray()));
                 constArgs.clear();
-            } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException ex) {
+            }
+            catch (InstantiationException | IllegalAccessException | NoSuchMethodException |
+                   InvocationTargetException ex) {
                 throw new DatabaseException(ex.getMessage());
             }
         }
@@ -238,8 +241,8 @@ public class EntityManager {
         for (Field field : entityData.getFields()) {
             try {
                 String name = field.getName();
-                Object value = entityData.getEntityClass().getMethod("get" + field.getName().substring(0, 1).toUpperCase() + field.getName().substring(1)).invoke(entity);
-                if (value == null || (name.equals("id") && value.equals(0))) continue;
+                Object value = entityData.getEntityClass().getMethod("get" + name.substring(0, 1).toUpperCase() + name.substring(1)).invoke(entity);
+                if (value == null || (field.isAnnotationPresent(Id.class) && value.equals(0))) continue;
                 properties.put(field.getAnnotation(Column.class).value(), value);
             }
             catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException ex) {
@@ -281,11 +284,7 @@ public class EntityManager {
     private <T> List<T> getAllJoinedEntities(Class<T> entityClass) throws DatabaseException {
         JoinedEntityData<T> joinedEntityData = new JoinedEntityData<>(entityClass);
 
-        String join = Arrays.stream(joinedEntityData.getJoin()).reduce("", (curr, clazz) -> curr + String.format(" INNER JOIN %s USING(%s)", clazz.getAnnotation(Table.class).value(),
-                Arrays.stream(clazz.getDeclaredFields()).filter(field -> field.isAnnotationPresent(Id.class)).findFirst().orElseThrow().getAnnotation(Column.class).value()), String::concat);
-
-
-        String sql = "SELECT * FROM " + joinedEntityData.getMainTable().getAnnotation(Table.class).value() + join;
+        String sql = "SELECT * FROM " + joinedEntityData.getJoinView();
 
         FunctionWithThrows<ResultSet, List<T>> handler = (resultSet -> {
             List<T> list = new ArrayList<>();
@@ -353,10 +352,8 @@ public class EntityManager {
 
         String sqlColumns = String.join(" AND ", properties.keySet());
         String options = sqlColumns.replaceAll("\\b(?!AND\\b)\\w+", "$0 = ?");
-        String join = Arrays.stream(joinedEntityData.getJoin()).reduce("", (curr, clazz) -> curr + String.format(" INNER JOIN %s USING(%s)", clazz.getAnnotation(Table.class).value(),
-                Arrays.stream(clazz.getDeclaredFields()).filter(field -> field.isAnnotationPresent(Id.class)).findFirst().orElseThrow().getAnnotation(Column.class).value()), String::concat);
 
-        String sql = "SELECT * FROM " + joinedEntityData.getMainTable().getAnnotation(Table.class).value() + join + " WHERE " + options + (rowCount != 0 ? " LIMIT " + rowCount : "") + (offset != 0 ? " OFFSET " + rowCount : "");
+        String sql = "SELECT * FROM " + joinedEntityData.getJoinView() + " WHERE " + options + (rowCount != 0 ? " LIMIT " + rowCount : "") + (offset != 0 ? " OFFSET " + rowCount : "");
 
         FunctionWithThrows<ResultSet, List<T>> handler = resultSet -> {
             List<T> list = new ArrayList<>();
@@ -418,11 +415,21 @@ public class EntityManager {
                     if (field.getType().isEnum()) {
                         value = Enum.valueOf(field.getType().asSubclass(Enum.class), (String) value);
                     } else if (field.getType().equals(Boolean.TYPE)) {
-                        value = value.equals(1);
+                        if (value != null) {
+                            value = value.equals(1);
+                        } else {
+                            value = false;
+                        }
+                    } else if (field.getType().equals(Integer.TYPE) && value == null) {
+                        value = 0;
                     }
                     constArgs.add(value);
                 }
             }
+            if (constArgs.stream().allMatch(arg -> arg.equals(0) || arg.equals(false))) {
+                return null;
+            }
+
             return entityData.getEntityClass().getConstructor(entityData.getConstructorEmp()).newInstance(constArgs.toArray());
         }
         catch (SQLException | NoSuchMethodException | InvocationTargetException | InstantiationException |
@@ -437,6 +444,10 @@ public class EntityManager {
             for (Field field : joinedEntityData.getFields()) {
                 if (field.getType().isAnnotationPresent(JoinedEntity.class)) {
                     constArgs.add(createJoinedEntity(rs, new JoinedEntityData<>(field.getType())));
+                } else if (field.getType().equals(Optional.class)) {
+                    Class<?> clazz = (Class<?>) ((ParameterizedType) field.getGenericType()).getActualTypeArguments()[0];
+                    EntityData<?> entityData = new EntityData<>(clazz);
+                    constArgs.add(Optional.ofNullable(createEntity(rs, entityData)));
                 } else {
                     constArgs.add(createEntity(rs, new EntityData<>(field.getType())));
                 }
