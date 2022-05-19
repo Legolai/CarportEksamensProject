@@ -1,8 +1,6 @@
 package dk.cphbusiness.dat.carporteksamensproject.model.entities;
 
-import dk.cphbusiness.dat.carporteksamensproject.model.annotations.Column;
-import dk.cphbusiness.dat.carporteksamensproject.model.annotations.Entity;
-import dk.cphbusiness.dat.carporteksamensproject.model.annotations.Table;
+import dk.cphbusiness.dat.carporteksamensproject.model.annotations.*;
 
 import java.util.Objects;
 
@@ -11,6 +9,9 @@ import java.util.Objects;
 @Table("Product")
 public class Product {
 
+    @Id
+    @GeneratedValue(strategy = 1)
+    @Column("product_ID")
     private int id;
     @Column("product_description")
     private String description;
@@ -96,6 +97,18 @@ public class Product {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Product product)) return false;
+        return getId() == product.getId() && getUnitPrice() == product.getUnitPrice() && getProductTypeId() == product.getProductTypeId() && isDeleted() == product.isDeleted() && Objects.equals(getDescription(), product.getDescription()) && getUnit() == product.getUnit() && getAmountUnit() == product.getAmountUnit();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getDescription(), getUnitPrice(), getUnit(), getAmountUnit(), getProductTypeId(), isDeleted());
+    }
+
+    @Override
     public String toString() {
         return "Product{" +
                 "id=" + id +
@@ -106,17 +119,5 @@ public class Product {
                 ", productTypeId=" + productTypeId +
                 ", deleted=" + deleted +
                 '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Product product)) return false;
-        return getId() == product.getId() && getUnitPrice() == product.getUnitPrice() && getProductTypeId() == product.getProductTypeId() && isDeleted() == product.isDeleted() && Objects.equals(getDescription(), product.getDescription()) && getUnit() == product.getUnit() && getAmountUnit() == product.getAmountUnit();
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId(), getDescription(), getUnitPrice(), getUnit(), getAmountUnit(), getProductTypeId(), isDeleted());
     }
 }
