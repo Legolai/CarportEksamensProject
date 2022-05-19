@@ -1,8 +1,6 @@
 <%@tag description="Overall Page template" pageEncoding="UTF-8" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-
-<%@attribute name="title" fragment="true" %>
 <%@tag import="dk.cphbusiness.dat.carporteksamensproject.model.entities.Role" %>
 
 <%@attribute name="title" fragment="true" %>
