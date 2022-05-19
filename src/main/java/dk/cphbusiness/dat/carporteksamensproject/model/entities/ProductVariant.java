@@ -20,13 +20,13 @@ public class ProductVariant {
     private int sizeId;
 
     @Column("product_variant_deleted")
-    private boolean deleted;
+    private boolean isDeleted;
 
-    public ProductVariant(int id, int productId, int sizeId, boolean deleted) {
+    public ProductVariant(int id, int productId, int sizeId, boolean isDeleted) {
         this.id = id;
         this.productId = productId;
         this.sizeId = sizeId;
-        this.deleted = deleted;
+        this.isDeleted = isDeleted;
     }
 
     public int getId() {
@@ -42,7 +42,7 @@ public class ProductVariant {
     }
 
     public boolean isDeleted() {
-        return deleted;
+        return isDeleted;
     }
 
     public void setId(int id) {
@@ -58,7 +58,7 @@ public class ProductVariant {
     }
 
     public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
+        this.isDeleted = deleted;
     }
 
     @Override
@@ -67,7 +67,7 @@ public class ProductVariant {
                 "id=" + id +
                 ", productId=" + productId +
                 ", sizeId=" + sizeId +
-                ", deleted=" + deleted +
+                ", deleted=" + isDeleted +
                 '}';
     }
 

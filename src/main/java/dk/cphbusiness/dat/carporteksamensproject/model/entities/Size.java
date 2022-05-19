@@ -7,6 +7,7 @@ import java.util.Objects;
 @Entity
 @Table("Size")
 public class Size {
+
     @Id
     @GeneratedValue(strategy = 1)
     @Column("size_ID")

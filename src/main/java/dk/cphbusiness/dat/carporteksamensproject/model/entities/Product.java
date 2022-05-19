@@ -28,16 +28,16 @@ public class Product {
     private int productTypeId;
 
     @Column("product_deleted")
-    private boolean deleted;
+    private boolean isDeleted;
 
-    public Product(int id, String description, int unitPrice, Unit unit, AmountUnit amountUnit, int productTypeId, boolean deleted) {
+    public Product(int id, String description, int unitPrice, Unit unit, AmountUnit amountUnit, int productTypeId, boolean isDeleted) {
         this.id = id;
         this.description = description;
         this.unitPrice = unitPrice;
         this.unit = unit;
         this.amountUnit = amountUnit;
         this.productTypeId = productTypeId;
-        this.deleted = deleted;
+        this.isDeleted = isDeleted;
     }
 
     public int getId() {
@@ -65,7 +65,7 @@ public class Product {
     }
 
     public boolean isDeleted() {
-        return deleted;
+        return isDeleted;
     }
 
     public void setId(int id) {
@@ -93,7 +93,7 @@ public class Product {
     }
 
     public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
+        this.isDeleted = deleted;
     }
 
     @Override
@@ -117,7 +117,7 @@ public class Product {
                 ", unit=" + unit +
                 ", amountUnit=" + amountUnit +
                 ", productTypeId=" + productTypeId +
-                ", deleted=" + deleted +
+                ", deleted=" + isDeleted +
                 '}';
     }
 }

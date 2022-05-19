@@ -20,18 +20,24 @@ public class Inquiry {
     private int personId;
     @Column("carport_ID")
     private int carportId;
+
+    @Column("inquiry_price")
+    private int price;
     @Column("inquiry_created")
     private LocalDateTime created;
 
     @Column("inquiry_updated")
     private LocalDateTime updated;
 
-    public Inquiry(int id, InquiryStatus inquiryStatus, String comment, int personId, int carportId, LocalDateTime created, LocalDateTime updated) {
+
+
+    public Inquiry(int id, InquiryStatus inquiryStatus, String comment, int personId, int carportId, int price, LocalDateTime created, LocalDateTime updated) {
         this.id = id;
         this.inquiryStatus = inquiryStatus;
         this.comment = comment;
         this.personId = personId;
         this.carportId = carportId;
+        this.price = price;
         this.created = created;
         this.updated = updated;
     }
@@ -58,6 +64,14 @@ public class Inquiry {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
     }
 
     public int getPersonId() {
@@ -100,6 +114,7 @@ public class Inquiry {
                 ", comment='" + comment + '\'' +
                 ", personId=" + personId +
                 ", carportId=" + carportId +
+                ", price=" + price +
                 ", created=" + created +
                 ", updated=" + updated +
                 '}';
@@ -109,11 +124,11 @@ public class Inquiry {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Inquiry inquiry)) return false;
-        return getId() == inquiry.getId() && getPersonId() == inquiry.getPersonId() && getCarportId() == inquiry.getCarportId() && getInquiryStatus() == inquiry.getInquiryStatus() && Objects.equals(getComment(), inquiry.getComment()) && Objects.equals(getCreated(), inquiry.getCreated()) && Objects.equals(getUpdated(), inquiry.getUpdated());
+        return getId() == inquiry.getId() && getPersonId() == inquiry.getPersonId() && getCarportId() == inquiry.getCarportId() && getPrice() == inquiry.getPrice() && getInquiryStatus() == inquiry.getInquiryStatus() && Objects.equals(getComment(), inquiry.getComment()) && Objects.equals(getCreated(), inquiry.getCreated()) && Objects.equals(getUpdated(), inquiry.getUpdated());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getInquiryStatus(), getComment(), getPersonId(), getCarportId(), getCreated(), getUpdated());
+        return Objects.hash(getId(), getInquiryStatus(), getComment(), getPersonId(), getCarportId(), getPrice(), getCreated(), getUpdated());
     }
 }

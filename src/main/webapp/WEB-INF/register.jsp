@@ -5,6 +5,11 @@
 <%@page errorPage="../error.jsp" isErrorPage="false" %>
 
 <t:pagetemplate>
+
+    <jsp:attribute name="title">
+        Fog Quickbyg - Ny bruger
+    </jsp:attribute>
+
     <jsp:attribute name="header">
            <h1 style="text-align: center">Register</h1>
     </jsp:attribute>

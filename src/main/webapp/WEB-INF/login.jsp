@@ -5,6 +5,11 @@
 <%@page errorPage="../error.jsp" isErrorPage="false" %>
 
 <t:pagetemplate>
+
+    <jsp:attribute name="title">
+        Fog Quickbyg - Login
+    </jsp:attribute>
+
     <jsp:attribute name="header">
             <h1 style="text-align: center">Login</h1>
     </jsp:attribute>

@@ -17,12 +17,12 @@ public class ProductType {
     private String type;
 
     @Column("product_type_deleted")
-    private boolean deleted;
+    private boolean isDeleted;
 
-    public ProductType(int id, String type, boolean deleted) {
+    public ProductType(int id, String type, boolean isDeleted) {
         this.id = id;
         this.type = type;
-        this.deleted = deleted;
+        this.isDeleted = isDeleted;
     }
 
     public int getId() {
@@ -34,7 +34,7 @@ public class ProductType {
     }
 
     public boolean isDeleted() {
-        return deleted;
+        return isDeleted;
     }
 
     public void setId(int id) {
@@ -46,7 +46,7 @@ public class ProductType {
     }
 
     public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
+        this.isDeleted = deleted;
     }
 
     @Override
@@ -54,7 +54,7 @@ public class ProductType {
         return "ProductType{" +
                 "id=" + id +
                 ", type='" + type + '\'' +
-                ", deleted=" + deleted +
+                ", deleted=" + isDeleted +
                 '}';
     }
 

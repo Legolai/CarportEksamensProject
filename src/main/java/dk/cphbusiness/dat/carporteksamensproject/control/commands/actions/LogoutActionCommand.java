@@ -1,5 +1,6 @@
 package dk.cphbusiness.dat.carporteksamensproject.control.commands.actions;
 
+import dk.cphbusiness.dat.carporteksamensproject.control.commands.Command;
 import dk.cphbusiness.dat.carporteksamensproject.control.commands.pages.UnprotectedPageCommand;
 import dk.cphbusiness.dat.carporteksamensproject.control.webtypes.PageDirect;
 import dk.cphbusiness.dat.carporteksamensproject.control.webtypes.RedirectType;
@@ -9,11 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-public class LogoutCommand extends UnprotectedPageCommand {
-    public LogoutCommand(String pageName) {
-        super(pageName);
-    }
-
+public class LogoutActionCommand implements Command {
     @Override
     public PageDirect execute(HttpServletRequest request, HttpServletResponse response, ConnectionPool connectionPool) {
         HttpSession session = request.getSession(false);

@@ -1,6 +1,7 @@
 package dk.cphbusiness.dat.carporteksamensproject.model.dtos;
 
 import dk.cphbusiness.dat.carporteksamensproject.model.annotations.Join;
+import dk.cphbusiness.dat.carporteksamensproject.model.annotations.JoinView;
 import dk.cphbusiness.dat.carporteksamensproject.model.annotations.JoinedEntity;
 import dk.cphbusiness.dat.carporteksamensproject.model.entities.BillOfMaterialLineItem;
 import dk.cphbusiness.dat.carporteksamensproject.model.entities.Product;
@@ -10,7 +11,7 @@ import dk.cphbusiness.dat.carporteksamensproject.model.entities.Size;
 import dk.cphbusiness.dat.carporteksamensproject.model.interfaces.IForeignKey;
 
 @JoinedEntity
-@Join(main = BillOfMaterialLineItem.class, join = {ProductVariant.class, Product.class, Size.class, ProductType.class})
+@JoinView("lineitemdto")
 public record  BillOfMaterialLineItemDTO(BillOfMaterialLineItem lineItem, ProductVariantDTO product) implements IForeignKey {
 
     @Override
@@ -18,5 +19,9 @@ public record  BillOfMaterialLineItemDTO(BillOfMaterialLineItem lineItem, Produc
         if (entity instanceof ProductVariantDTO foreignKey) {
             lineItem.setProductId(foreignKey.variant().getId());
         }
+    }
+
+    public double getPrice() {
+        return (double) lineItem.getAmount() * product.getPrice();
     }
 }

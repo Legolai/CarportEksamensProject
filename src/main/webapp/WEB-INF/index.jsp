@@ -4,6 +4,11 @@
 <%@page errorPage="../error.jsp" isErrorPage="false" %>
 
 <t:pagetemplate>
+
+    <jsp:attribute name="title">
+        Fog Quickbyg
+    </jsp:attribute>
+
     <jsp:attribute name="header">
         <h1>Fog Quickbyg</h1>
     </jsp:attribute>
@@ -20,7 +25,6 @@
         <br>
         <p>Carport med <a href="${pageContext.request.contextPath}/fc/roofFlat-page">flat tag</a>.</p>
         <p>Carport med <a href="${pageContext.request.contextPath}/fc/roofSloped-page">rejsning</a>.</p>
-
 
         <br>
         <p>SVG experiments <a

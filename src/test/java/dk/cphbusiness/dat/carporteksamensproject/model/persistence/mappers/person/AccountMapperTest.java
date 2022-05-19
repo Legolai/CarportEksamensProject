@@ -62,6 +62,15 @@ class AccountMapperTest {
     }
 
     @Test
+    void testConnection() throws SQLException {
+        Connection connection = connectionPool.getConnection();
+        assertNotNull(connection);
+        if (connection != null) {
+            connection.close();
+        }
+    }
+
+    @Test
     void insert() throws DatabaseException {
         AccountMapper mapper = new AccountMapper(new EntityManager(connectionPool));
 
