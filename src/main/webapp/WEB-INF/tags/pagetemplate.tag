@@ -3,6 +3,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <%@attribute name="title" fragment="true" %>
+<%@tag import="dk.cphbusiness.dat.carporteksamensproject.model.entities.Role" %>
+
+<%@attribute name="title" fragment="true" %>
 <%@attribute name="header" fragment="true" %>
 <%@attribute name="script" fragment="true" %>
 <%@attribute name="footer" fragment="true" %>
@@ -39,6 +42,9 @@
                             up</a>
                     </c:if>
                     <c:if test="${sessionScope.account != null }">
+                        <c:if test="${sessionScope.account.account().role.equals(Role.ADMIN) || sessionScope.account.account().role.equals(Role.ADMIN)}">
+                            <a class="nav-item nav-link" href="${pageContext.request.contextPath}/fc/inquiriesAll-page">Forespørgelser</a>
+                        </c:if>
                         <a class="nav-item nav-link" href="${pageContext.request.contextPath}/fc/account-page">Min
                             profil</a>
                         <a class="nav-item nav-link" href="${pageContext.request.contextPath}/fc/logout-command">Log

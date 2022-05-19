@@ -23,7 +23,7 @@ public class CommandController {
         commands.put("my-inquiry-page", new MyInquiryPageCommand("myInquiry", Role.COSTUMER));
         commands.put("inquiry-page", new UnprotectedPageCommand("inquiry"));
         commands.put("account-page", new AccountPageCommand("account", Role.COSTUMER));
-        commands.put("inquiriesAll-page", new ProtectedPageCommand("inquiriesAll", Role.EMPLOYEE));
+        commands.put("inquiriesAll-page", new InquiriesAllPageCommand("inquiriesAll", Role.EMPLOYEE));
 
         commands.put("login-command", new LoginActionCommand());
         commands.put("logout-command", new LogoutActionCommand());
