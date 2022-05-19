@@ -5,16 +5,15 @@
 
 <t:pagetemplate>
     <jsp:attribute name="header">
-       <h1> Welcome to the all inquiries side</h1>
+       <h1>Forespørgelser</h1>
     </jsp:attribute>
 
     <jsp:attribute name="footer">
-        Welcome to the all inquires side
+        Forespørgelser
     </jsp:attribute>
 
     <jsp:body>
 
-        <p>Her is all the inquiries </p>
 
 
     </jsp:body>
