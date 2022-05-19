@@ -25,11 +25,13 @@ public class MyInquiryPageCommand extends ProtectedPageCommand {
         String inquiryIdString = request.getParameter("inquiry-ID");
         HttpSession session = request.getSession(false);
 
-        AccountDTO account = (AccountDTO) session.getAttribute("account");
-
-        if (account == null){
+        if (session == null){
             return new PageDirect(RedirectType.REDIRECT, "index");
         }
+
+        AccountDTO account = (AccountDTO) session.getAttribute("account");
+
+
 
         int inquiryId = Integer.parseInt(inquiryIdString);
 

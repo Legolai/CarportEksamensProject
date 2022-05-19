@@ -62,7 +62,7 @@ public class InquiryFlatRoofActionCommand implements Command {
             Carport carport = new Carport(0, carportWidth, carportLength, 210, RoofType.FLAT, roofMaterial, time, 0);
             CarportDTO carportDTO = new CarportDTO(carport, optionalShack);
 
-            Inquiry inquiry = new Inquiry(0, InquiryStatus.OPEN, comment, 0 ,0, time, time);
+            Inquiry inquiry = new Inquiry(0, InquiryStatus.OPEN, comment, 0, 0, 0, time, time);
             InquiryDTO inquiryDTO = new InquiryDTO(inquiry, personDTO, Optional.empty(), carportDTO);
 
             InquiryDTO dbCreated = InquiryFacade.createInquiry(inquiryDTO, connectionPool);
