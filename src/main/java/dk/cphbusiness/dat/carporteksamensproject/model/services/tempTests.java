@@ -14,27 +14,17 @@ public class tempTests {
 
     public static void main(String[] args) {
 
-        int heightoffset = (int) (600*0.075);
-        int temp = (int) (600*(0.075+(30/600*0.85)));
-        System.out.println(heightoffset);
-        System.out.println(temp);
-        System.out.println("---");
-        System.out.println(30.0/600.0*0.85);
+        //somecalcs();
 
 
-        System.out.println("---");
-        int spaerpos = (int) (780*((double)(58)/(double)(780)*0.9));
-        System.out.println(spaerpos);
-        System.out.println(55.0/780.0*0.9);
 
 
-//        int carportlength = 360;
-//        int frontStolpe = (carportlength/5);
-//        if (frontStolpe <= 90) {
-//            frontStolpe = 60;
-//        }
-//        System.out.println("Frontstolpe is: "+frontStolpe);
 
+
+    }
+
+
+    public static void flatroofalgo() {
 //        CarportAlgorithm algo = new CarportAlgorithm();
 //
 //        //algo.flatRoofAlgo(600, 600, true, 530, 210);
@@ -54,8 +44,21 @@ public class tempTests {
 //            System.out.print(" | mængde: "+roofDTO.lineItem().getAmount());
 //            System.out.println(" | kommentar: "+roofDTO.lineItem().getComment());
 //        }
+    }
+
+    public static void somecalcs() {
+        int heightoffset = (int) (600*0.075);
+        int temp = (int) (600*(0.075+(30/600*0.85)));
+        System.out.println(heightoffset);
+        System.out.println(temp);
+        System.out.println("---");
+        System.out.println(30.0/600.0*0.85);
 
 
+        System.out.println("---");
+        int spaerpos = (int) (780*((double)(58)/(double)(780)*0.9));
+        System.out.println(spaerpos);
+        System.out.println(55.0/780.0*0.9);
     }
 
 }
