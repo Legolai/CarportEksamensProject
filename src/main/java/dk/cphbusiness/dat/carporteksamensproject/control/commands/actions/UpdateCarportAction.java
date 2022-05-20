@@ -21,6 +21,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -55,7 +56,9 @@ public class UpdateCarportAction extends ProtectedPage {
             boolean hasShack = Boolean.parseBoolean(hasShackString);
             int shackID = 0;
             if(shackIdString != null){
-                shackID = Integer.parseInt(shackIdString);
+                if(!(shackIdString.equals("") || shackIdString.equals("0"))){
+                    shackID = Integer.parseInt(shackIdString);
+                }
             }
 
             Optional<Shack> optionalShack = Optional.empty();
