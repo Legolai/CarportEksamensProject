@@ -2,7 +2,7 @@ package dk.cphbusiness.dat.carporteksamensproject.control.filters;
 
 import dk.cphbusiness.dat.carporteksamensproject.control.commands.Command;
 import dk.cphbusiness.dat.carporteksamensproject.control.commands.CommandController;
-import dk.cphbusiness.dat.carporteksamensproject.control.commands.pages.ProtectedPageCommand;
+import dk.cphbusiness.dat.carporteksamensproject.control.commands.pages.ProtectedPage;
 import dk.cphbusiness.dat.carporteksamensproject.model.dtos.AccountDTO;
 import dk.cphbusiness.dat.carporteksamensproject.model.entities.Role;
 
@@ -41,7 +41,7 @@ public class AuthenticationFilter implements Filter
         {
             Command command = CommandController.getInstance().fromPath(req);
             HttpSession session = req.getSession(false);
-            if (command instanceof ProtectedPageCommand protectedPageCommand)
+            if (command instanceof ProtectedPage protectedPageCommand)
             {
                 Role roleFromCommand = protectedPageCommand.getRole();
                 if (session == null || session.getAttribute("account") == null)

@@ -42,11 +42,11 @@ public class AccountMapper implements IAccountMapper {
 
     @Override
     public boolean delete(AccountDTO accountDTO) throws DatabaseException {
-        return entityManager.delete(AccountDTO.class, accountDTO);
+        return entityManager.delete(AccountDTO.class, Map.of("account_ID", accountDTO.account().getId())) == 1;
     }
 
     @Override
     public boolean update(AccountDTO accountDTO) throws DatabaseException {
-        return entityManager.update(AccountDTO.class, accountDTO);
+        return false;
     }
 }

@@ -43,7 +43,7 @@ public class PersonMapper implements DataMapper<PersonDTO> {
 
     @Override
     public boolean update(PersonDTO personDTO) throws DatabaseException {
-        return entityManager.update(PersonDTO.class, personDTO);
+        return false;
     }
 
 

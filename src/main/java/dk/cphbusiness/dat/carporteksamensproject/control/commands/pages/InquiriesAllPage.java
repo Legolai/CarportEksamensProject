@@ -2,7 +2,6 @@ package dk.cphbusiness.dat.carporteksamensproject.control.commands.pages;
 
 import dk.cphbusiness.dat.carporteksamensproject.control.webtypes.PageDirect;
 import dk.cphbusiness.dat.carporteksamensproject.control.webtypes.RedirectType;
-import dk.cphbusiness.dat.carporteksamensproject.model.dtos.AccountDTO;
 import dk.cphbusiness.dat.carporteksamensproject.model.dtos.InquiryDTO;
 import dk.cphbusiness.dat.carporteksamensproject.model.entities.Role;
 import dk.cphbusiness.dat.carporteksamensproject.model.exceptions.DatabaseException;
@@ -11,15 +10,12 @@ import dk.cphbusiness.dat.carporteksamensproject.model.services.facade.InquiryFa
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class InquiriesAllPageCommand extends ProtectedPageCommand{
-    public InquiriesAllPageCommand(String pageName, Role role) {
+public class InquiriesAllPage extends ProtectedPage {
+    public InquiriesAllPage(String pageName, Role role) {
         super(pageName, role);
     }
 

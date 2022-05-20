@@ -45,6 +45,6 @@ public class SizeMapper implements DataMapper<Size> {
 
     @Override
     public boolean update(Size size) throws DatabaseException {
-        return entityManager.update(Size.class, size);
+        return entityManager.updateEntity(Size.class, size);
     }
 }

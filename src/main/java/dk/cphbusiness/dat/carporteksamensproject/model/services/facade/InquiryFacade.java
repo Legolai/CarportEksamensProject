@@ -1,6 +1,7 @@
 package dk.cphbusiness.dat.carporteksamensproject.model.services.facade;
 
 import dk.cphbusiness.dat.carporteksamensproject.model.dtos.InquiryDTO;
+import dk.cphbusiness.dat.carporteksamensproject.model.entities.InquiryStatus;
 import dk.cphbusiness.dat.carporteksamensproject.model.exceptions.DatabaseException;
 import dk.cphbusiness.dat.carporteksamensproject.model.persistence.ConnectionPool;
 import dk.cphbusiness.dat.carporteksamensproject.model.persistence.manager.EntityManager;
@@ -33,5 +34,10 @@ public class InquiryFacade {
     public static InquiryDTO createInquiry(InquiryDTO inquiryDTO, ConnectionPool connectionPool) throws DatabaseException {
         InquiryMapper inquiryMapper = new InquiryMapper(new EntityManager(connectionPool));
         return inquiryMapper.insert(inquiryDTO);
+    }
+
+    public static boolean updateStatus(int inquiryId, InquiryStatus newStatus, ConnectionPool connectionPool) throws DatabaseException {
+        InquiryMapper inquiryMapper = new InquiryMapper(new EntityManager(connectionPool));
+        return inquiryMapper.updateStatus(inquiryId, newStatus);
     }
 }
