@@ -2,7 +2,7 @@
 'https://plantuml.com/activity-diagram-beta
 
 
-Title Fog hjemmeside forspørgelse om skryddersyet carport, as is
+Title Fog hjemmeside forspørgelse om skryddersyet carport ("as-is")
 |#White|Kunde|
     start
     :Går til Fog's hjemmeside;

@@ -32,6 +32,6 @@ US-6: Som sælger eller administrator kan jeg se alle forspørgelser i systemet 
 **Givet** at jeg er sælger eller administrator, kan jeg efter at have logget ind, gå til en side hvor jeg kan se alle forspørgelser der er blevet lavet. **Heraf** kan jeg så gå ind på disse forspørgelser og skrive bare til kunden eller f.eks. at lukke forspørgelsen hvis kunden ikke vælger at købe eller har betalt.  
 Estimat: large
 
-US-7: Som sælger eller admin, vil jeg automatisk få en generet SVG og stykliste når jeg går ind på en kundes forspørgelse, heraf kan jeg tjekke og lave ændringer på dem.
-**Givet** at jeg er sælger eller admin og er logget på, så når jeg har valgt at gå ind på en forspørgelse, **vil** jeg nå hen på en side hvor jeg kan se en automatisk SVG og stykliste for kundens krav og jeg kan også ændre på både SVG'en og styklisten.  
+US-7: Som sælger eller admin, vil jeg automatisk få en generet SVG og stykliste når jeg går ind på en kundes forspørgelse, heraf kan jeg tjekke og lave ændringer på dem (heriblandt også kunne sætte en pris og sende dette tilbud til kunden).  
+**Givet** at jeg er sælger eller admin og er logget på, så når jeg har valgt at gå ind på en forspørgelse, **vil** jeg nå hen på en side hvor jeg kan se en automatisk SVG og stykliste for kundens krav og jeg kan også ændre på både SVG'en og styklisten. **Derudover** kan jeg også sætte en pris og sende et tilbud til kunden.  
 Estimat: large

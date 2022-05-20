@@ -96,19 +96,26 @@ Opsamling:
 - Mere kodning
 - Mere algoritme 
 
-Dag 12 (5/17 onsdag)
+Dag 12 (5/18 onsdag)
   Opsamling:
 - Vi have lavet TODO for dag 11
   TODO:
 - Mere kodning (færdigøre inquiry)
 - Mere algoritme (side view svg)
 
-Dag 13 (5/18 onsdag)
+Dag 13 (5/19 torsdag)
 Opsamling:
 - Inquiry ikke helt færdig
 - side view ikke færdig (top and stykliste færdig)
   TODO:
 - Mere kodning (færdigøre inquiry)
 - Mere algoritme (side view svg)
+
+  Dag 14 (5/20 fredag)
+  Opsamling:
+- Vi have lavet TODO for dag 13
+  TODO:
+- Mere kodning (færdigøre inquiriesAll for admin/employee)
+- Rapport skrivning
 
 
