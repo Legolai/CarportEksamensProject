@@ -45,6 +45,6 @@ public class ProductVariantMapper implements DataMapper<ProductVariantDTO> {
 
     @Override
     public boolean update(ProductVariantDTO productVariantDTO) throws DatabaseException {
-        return entityManager.update(ProductVariantDTO.class, productVariantDTO);
+        return false;
     }
 }

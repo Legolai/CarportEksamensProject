@@ -7,6 +7,7 @@ import dk.cphbusiness.dat.carporteksamensproject.model.dtos.CarportDTO;
 import dk.cphbusiness.dat.carporteksamensproject.model.dtos.InquiryDTO;
 import dk.cphbusiness.dat.carporteksamensproject.model.dtos.PersonDTO;
 import dk.cphbusiness.dat.carporteksamensproject.model.entities.Inquiry;
+import dk.cphbusiness.dat.carporteksamensproject.model.entities.InquiryStatus;
 import dk.cphbusiness.dat.carporteksamensproject.model.exceptions.DatabaseException;
 import dk.cphbusiness.dat.carporteksamensproject.model.persistence.manager.EntityManager;
 import dk.cphbusiness.dat.carporteksamensproject.model.services.Search;
@@ -14,6 +15,7 @@ import dk.cphbusiness.dat.carporteksamensproject.model.services.facade.PersonFac
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -117,5 +119,9 @@ public class InquiryMapper implements DataMapper<InquiryDTO> {
     @Override
     public boolean update(InquiryDTO inquiryDTO) throws DatabaseException {
         return false;
+    }
+
+    public boolean updateStatus(int inquiryId, InquiryStatus newStatus) throws DatabaseException {
+        return entityManager.updateProperties(Inquiry.class, inquiryId, Map.of("inquiry_status", newStatus.name(), "inquiry_updated", LocalDateTime.now().withNano(0)));
     }
 }

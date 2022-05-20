@@ -44,6 +44,19 @@ public record EntityManager(ConnectionPool connectionPool) {
         }
     }
 
+    private <R> R newQueryUpdate(Connection connection, String sql, FunctionWithThrows<Integer, R> queryHandler, Object... params) throws DatabaseException {
+        try (PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            for (int i = 1; i <= params.length; ++i) {
+                ps.setObject(i, params[i - 1]);
+            }
+            Integer rowsAffected = ps.executeUpdate();
+            return queryHandler.apply(rowsAffected);
+        }
+        catch (Exception e) {
+            throw new DatabaseException(e.getMessage());
+        }
+    }
+
     private <R> R newQuery(Connection connection, String sql, FunctionWithThrows<ResultSet, R> queryHandler, Object... params) throws DatabaseException {
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             for (int i = 1; i <= params.length; ++i) {
@@ -56,7 +69,7 @@ public record EntityManager(ConnectionPool connectionPool) {
         }
     }
 
-    public <T> boolean update(Class<T> entityClass, T entity) throws DatabaseException {
+    public <T> boolean updateEntity(Class<T> entityClass, T entity) throws DatabaseException {
         EntityData<T> entityData = new EntityData<>(entityClass);
 
         entityData.getFields().remove(entityData.getFieldForId());
@@ -465,7 +478,31 @@ public record EntityManager(ConnectionPool connectionPool) {
         }
     }
 
-    public <T> boolean delete(Class<T> entityClass, T entity) {
-        return false;
+    public <T> int delete(Class<T> entityClass, Map<String, Object> conditions) throws DatabaseException {
+        EntityData<T> entityData = new EntityData<>(entityClass);
+
+        String sqlColumns = String.join(", ", conditions.keySet());
+        String options = sqlColumns.replaceAll("\\b(?!,\\b)\\w+", "$0 = ?");
+
+        String sql = "DELETE FROM " + entityData.getTableName() + " WHERE " + options + ";";
+
+        FunctionWithThrows<Integer, Integer> handler = rowsAffected ->  rowsAffected;
+
+        return makeConnection(connection -> newQueryUpdate(connection, sql, handler, conditions.values().toArray()));
+    }
+
+    public <T> boolean updateProperties(Class<T> entityClass, Object primaryKey,  Map<String, Object> properties) throws DatabaseException {
+        EntityData<T> entityData = new EntityData<>(entityClass);
+
+        String sqlColumns = String.join(", ", properties.keySet());
+        String options = sqlColumns.replaceAll("\\b(?!,\\b)\\w+", "$0 = ?");
+
+        String sql = "UPDATE " + entityData.getTableName() + " SET " + options + " WHERE " + entityData.getFieldForId().getAnnotation(Column.class).value() + " = ?;";
+
+        FunctionWithThrows<Integer, Boolean> handler = rowsAffected ->  rowsAffected == 1;
+
+        List<Object> params = new ArrayList<>(properties.values());
+        params.add(primaryKey);
+        return makeConnection(connection -> newQueryUpdate(connection, sql, handler, params.toArray()));
     }
 }

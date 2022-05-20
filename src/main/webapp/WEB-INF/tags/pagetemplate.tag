@@ -40,8 +40,8 @@
                             up</a>
                     </c:if>
                     <c:if test="${sessionScope.account != null }">
-                        <c:if test="${sessionScope.account.account().role.equals(Role.ADMIN) || sessionScope.account.account().role.equals(Role.ADMIN)}">
-                            <a class="nav-item nav-link" href="${pageContext.request.contextPath}/fc/inquiriesAll-page">Forespørgelser</a>
+                        <c:if test="${sessionScope.account.account().role.equals(Role.EMPLOYEE) || sessionScope.account.account().role.equals(Role.ADMIN)}">
+                            <a class="nav-item nav-link" href="${pageContext.request.contextPath}/fc/employee-dashboard-page">Forespørgselser</a>
                         </c:if>
                         <a class="nav-item nav-link" href="${pageContext.request.contextPath}/fc/account-page">Min
                             profil</a>

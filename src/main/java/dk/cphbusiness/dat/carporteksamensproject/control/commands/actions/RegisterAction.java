@@ -1,7 +1,6 @@
 package dk.cphbusiness.dat.carporteksamensproject.control.commands.actions;
 
 import dk.cphbusiness.dat.carporteksamensproject.control.commands.Command;
-import dk.cphbusiness.dat.carporteksamensproject.control.commands.pages.UnprotectedPageCommand;
 import dk.cphbusiness.dat.carporteksamensproject.control.webtypes.PageDirect;
 import dk.cphbusiness.dat.carporteksamensproject.control.webtypes.RedirectType;
 import dk.cphbusiness.dat.carporteksamensproject.model.dtos.AccountDTO;
@@ -19,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 
-public class RegisterActionCommand implements Command {
+public class RegisterAction implements Command {
     @Override
     public PageDirect execute(HttpServletRequest request, HttpServletResponse response, ConnectionPool connectionPool) {
         String firstName = request.getParameter("firstName");

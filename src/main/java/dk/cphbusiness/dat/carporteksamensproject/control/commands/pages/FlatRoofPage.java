@@ -14,8 +14,8 @@ import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class FlatRoofPageCommand extends UnprotectedPageCommand{
-    public FlatRoofPageCommand(String pageName) {
+public class FlatRoofPage extends UnprotectedPage {
+    public FlatRoofPage(String pageName) {
         super(pageName);
     }
 

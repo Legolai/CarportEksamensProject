@@ -7,7 +7,6 @@ import dk.cphbusiness.dat.carporteksamensproject.model.dtos.*;
 import dk.cphbusiness.dat.carporteksamensproject.model.entities.*;
 import dk.cphbusiness.dat.carporteksamensproject.model.exceptions.DatabaseException;
 import dk.cphbusiness.dat.carporteksamensproject.model.persistence.ConnectionPool;
-import dk.cphbusiness.dat.carporteksamensproject.model.services.CarportAlgorithm;
 import dk.cphbusiness.dat.carporteksamensproject.model.services.CarportAlgorithmFactory;
 import dk.cphbusiness.dat.carporteksamensproject.model.services.ICarportAlgorithm;
 import dk.cphbusiness.dat.carporteksamensproject.model.services.facade.InquiryFacade;
@@ -20,7 +19,7 @@ import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class InquiryFlatRoofActionCommand implements Command {
+public class InquiryFlatRoofAction implements Command {
     @Override
     public PageDirect execute(HttpServletRequest request, HttpServletResponse response, ConnectionPool connectionPool) {
         String carportWidthString = request.getParameter("carport-width");

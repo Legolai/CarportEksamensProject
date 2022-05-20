@@ -1,6 +1,6 @@
 package dk.cphbusiness.dat.carporteksamensproject.control.commands.actions;
 
-import dk.cphbusiness.dat.carporteksamensproject.control.commands.pages.UnprotectedPageCommand;
+import dk.cphbusiness.dat.carporteksamensproject.control.commands.pages.UnprotectedPage;
 import dk.cphbusiness.dat.carporteksamensproject.control.webtypes.PageDirect;
 import dk.cphbusiness.dat.carporteksamensproject.control.webtypes.RedirectType;
 import dk.cphbusiness.dat.carporteksamensproject.model.dtos.CarportDTO;
@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-public class SVGCommand extends UnprotectedPageCommand {
+public class SVGCommand extends UnprotectedPage {
     public SVGCommand(String pageName) {
         super(pageName);
     }

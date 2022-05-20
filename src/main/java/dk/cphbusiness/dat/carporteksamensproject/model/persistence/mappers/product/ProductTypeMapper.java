@@ -45,6 +45,6 @@ public class ProductTypeMapper implements DataMapper<ProductType> {
 
     @Override
     public boolean update(ProductType productType) throws DatabaseException {
-        return entityManager.update(ProductType.class, productType);
+        return entityManager.updateEntity(ProductType.class, productType);
     }
 }
