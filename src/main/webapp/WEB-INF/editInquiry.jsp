@@ -12,7 +12,8 @@
     </jsp:attribute>
 
     <jsp:attribute name="header">
-            <h1> Ændringer for forespørgsel nr. ${requestScope.inquiry.inquiry().getId()}</h1>
+        <a class="btn btn-dark" href="${pageContext.request.contextPath}/fc/employee-dashboard-page">Tilbage</a>
+        <p class="h1"> Ændringer for forespørgsel nr. ${requestScope.inquiry.inquiry().getId()}</p>
     </jsp:attribute>
 
     <jsp:attribute name="footer">
@@ -34,11 +35,22 @@
                     shackLengthElem.disabled = true
                 }
             }
+
+            function calcPrice(priceElement) {
+                const inquiryPriceElement = document.getElementById(priceElement.id);
+                const materialPrice = document.getElementById("material-price").childNodes[0].textContent.replaceAll(".", "").replace("kr", "").trim().replace(",", ".");
+                const diffPriceElement = document.getElementById("diff-price");
+                const formatter = new Intl.NumberFormat('da-DK', {style: 'currency', currency: 'DKK'})
+                const diff = inquiryPriceElement.value - materialPrice
+                const diffString = formatter.format(diff);
+                diffPriceElement.replaceChildren(diffString)
+                diffPriceElement.style.color = diff >= 0 ? "black" : "red";
+            }
         </script>
     </jsp:attribute>
 
     <jsp:body>
-        <fmt:setLocale value = "da_DK"/>
+        <fmt:setLocale value="da_DK"/>
         <div class="row">
             <div class="col-lg-3 col-md-6">
                 <h4>Leveringsoplysninger</h4>
@@ -181,17 +193,55 @@
                     <div class="col">
                         <div class="row">
                             <div class="col">
-                                <button type="submit" class="btn btn-outline-primary w-100">Preview</button>
+                                <button type="submit" class="btn btn-outline-primary w-100">Preview Carport</button>
                             </div>
                             <div class="col">
-                                <button type="submit" class="btn btn-primary w-100">Opdater</button>
+                                <button type="submit" class="btn btn-primary w-100">Opdater Carport</button>
                             </div>
                         </div>
-
-
                     </div>
-
                 </form>
+
+                <h3>Pris ændring</h3>
+                <form>
+                    <c:set var="price" value="${requestScope.inquiry.billOfMaterial().get().calcTotalPrice()}"/>
+                    <div class="row mb-3">
+                        <div class="col">
+                            <label class="form-label" for="inquiry-price">Pris</label>
+                        </div>
+                        <div class="col">
+                            <h6>Materiale pris</h6>
+                        </div>
+                        <div class="col">
+                            <h6>Indtjening</h6>
+                        </div>
+                    </div>
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <div class="input-group">
+                                <input style="text-align: right" class="form-control" id="inquiry-price"
+                                       onchange="calcPrice(this)"
+                                       name="inquiry-price"
+                                       type="text" value="${requestScope.inquiry.inquiry().getPrice()}" pattern="\d">
+                                <span class="input-group-text">,00 kr.</span>
+                            </div>
+
+                        </div>
+                        <div class="col">
+                            <div id="material-price">
+                                <fmt:formatNumber value="${price}" type="currency"/>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div id="diff-price">
+                                0
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary mt-3" type="submit" name="">Opdater Pris</button>
+                </form>
+
+
             </div>
             <div class="col-lg-6">
                 <h3>Tegninger</h3>
@@ -200,7 +250,7 @@
                         <h2 class="accordion-header" id="headingOne">
                             <button class="accordion-button" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                Nuværende
+                                Nuværende Carport
                             </button>
                         </h2>
                         <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
@@ -229,7 +279,7 @@
                         <h2 class="accordion-header" id="headingTwo">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                Preview
+                                Preview Carport
                             </button>
                         </h2>
                         <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
@@ -261,33 +311,34 @@
 
         <h3>Stykliste</h3>
         <c:if test="${requestScope.inquiry.billOfMaterial().isPresent()}">
-            <table class="table">
-                <thead>
-                <tr>
-                    <th>Varebeskrivelse</th>
-                    <th>Størrelse</th>
-                    <th>Antal</th>
-                    <th>Enhed</th>
-                    <th>Stk. pris</th>
-                    <th>Pris</th>
-                    <th>Beskrivelse</th>
-                </tr>
-                </thead>
-                <tbody>
-                <c:forEach items="${requestScope.inquiry.billOfMaterial().get().lineItems()}" var="lineItem">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
                     <tr>
-                        <td>${lineItem.product().product().product().getDescription()}</td>
-                        <td>${lineItem.product().size().getDetail()} ${lineItem.product().size().getType().getValue()}</td>
-                        <td>${lineItem.lineItem().getAmount()}</td>
-                        <td>${lineItem.product().product().product().getAmountUnit().getValue()}</td>
-                        <td><fmt:formatNumber value = "${lineItem.product().getPrice()}" type = "currency"/></td>
-                        <td><fmt:formatNumber value = "${lineItem.getPrice()}" type = "currency"/></td>
-                        <td>${lineItem.lineItem().getComment()}</td>
+                        <th>Varebeskrivelse</th>
+                        <th>Størrelse</th>
+                        <th>Antal</th>
+                        <th>Enhed</th>
+                        <th>Stk. pris</th>
+                        <th>Pris</th>
+                        <th>Beskrivelse</th>
                     </tr>
-                </c:forEach>
-                </tbody>
-            </table>
-
+                    </thead>
+                    <tbody>
+                    <c:forEach items="${requestScope.inquiry.billOfMaterial().get().lineItems()}" var="lineItem">
+                        <tr>
+                            <td>${lineItem.product().product().product().getDescription()}</td>
+                            <td>${lineItem.product().size().getDetail()} ${lineItem.product().size().getType().getValue()}</td>
+                            <td>${lineItem.lineItem().getAmount()}</td>
+                            <td>${lineItem.product().product().product().getAmountUnit().getValue()}</td>
+                            <td><fmt:formatNumber value="${lineItem.product().getPrice()}" type="currency"/></td>
+                            <td><fmt:formatNumber value="${lineItem.getPrice()}" type="currency"/></td>
+                            <td>${lineItem.lineItem().getComment()}</td>
+                        </tr>
+                    </c:forEach>
+                    </tbody>
+                </table>
+            </div>
         </c:if>
 
     </jsp:body>
