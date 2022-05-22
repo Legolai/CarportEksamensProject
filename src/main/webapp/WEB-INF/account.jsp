@@ -24,7 +24,7 @@
 
 
         <h3 id="inquiryTable">Forespørgselsler</h3>
-        <table class="table table-striped table-hover" aria-describedby="inquiryTable">
+        <table class="table table-responsive table-hover" aria-describedby="inquiryTable">
             <thead>
             <tr>
                 <th scope="col">Forespørgselsnummer</th>
@@ -32,16 +32,13 @@
                 <th scope="col">Beskrivelse</th>
                 <th scope="col">Status</th>
                 <th scope="col">Totale beløb</th>
+                <th scope="col"></th>
             </tr>
             </thead>
-            <tbody class="table-group-divider">
+            <tbody class="table-group-divider align-middle">
             <c:forEach items="${requestScope.inquiries}" var="inquiry">
                 <tr>
-                    <th scope="row">
-                        <form action="${pageContext.request.contextPath}/fc/my-inquiry-page">
-                            <button style="background: none; border: none;" class="link-primary" type="submit" name="inquiry-ID" value="${inquiry.inquiry().getId()}">${inquiry.inquiry().getId()}</button>
-                        </form>
-                    </th>
+                    <th scope="row">${inquiry.inquiry().getId()}</th>
                     <td>${inquiry.inquiry().getCreated().toLocalDate()}</td>
                     <td>Carport med ${inquiry.carport().carport().getRoofType().getValue()}
                         (${inquiry.carport().carport().getWidth()} x ${inquiry.carport().carport().getLength()})
@@ -49,6 +46,11 @@
                     </td>
                     <td>${inquiry.inquiry().getInquiryStatus().name().toLowerCase()}</td>
                     <td>${inquiry.inquiry().getPrice()} kr.</td>
+                    <td>
+                        <form action="${pageContext.request.contextPath}/fc/my-inquiry-page">
+                            <button class="btn btn-outline-primary" type="submit" name="inquiry-ID" value="${inquiry.inquiry().getId()}">Se detaljer</button>
+                        </form>
+                    </td>
                 </tr>
             </c:forEach>
 

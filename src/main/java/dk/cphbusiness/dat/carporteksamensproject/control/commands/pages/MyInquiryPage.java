@@ -34,6 +34,10 @@ public class MyInquiryPage extends ProtectedPage {
 
         AccountDTO account = (AccountDTO) session.getAttribute("account");
 
+        if (inquiryIdString == null) {
+            return new PageDirect(RedirectType.COMMAND, "account-page");
+        }
+
         int inquiryId = Integer.parseInt(inquiryIdString);
 
         Optional<InquiryDTO> optional = InquiryFacade.find(Map.of("inquiry_ID", inquiryId), connectionPool);

@@ -1,6 +1,5 @@
 package dk.cphbusiness.dat.carporteksamensproject.model.persistence.mappers;
 
-import dk.cphbusiness.dat.carporteksamensproject.model.annotations.Column;
 import dk.cphbusiness.dat.carporteksamensproject.model.dtos.BillOfMaterialDTO;
 import dk.cphbusiness.dat.carporteksamensproject.model.dtos.BillOfMaterialLineItemDTO;
 import dk.cphbusiness.dat.carporteksamensproject.model.dtos.CarportDTO;
@@ -13,11 +12,10 @@ import dk.cphbusiness.dat.carporteksamensproject.model.persistence.manager.Entit
 import dk.cphbusiness.dat.carporteksamensproject.model.services.Search;
 import dk.cphbusiness.dat.carporteksamensproject.model.services.facade.PersonFacade;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -121,7 +119,17 @@ public class InquiryMapper implements DataMapper<InquiryDTO> {
         return false;
     }
 
+    public boolean updateInquiry(int inquiryId, Map<String, Object> properties) throws DatabaseException {
+        Map<String, Object> params = new HashMap<>(properties);
+        params.put("inquiry_updated", LocalDateTime.now().withNano(0));
+        return entityManager.updateProperties(Inquiry.class, inquiryId, params);
+    }
+
     public boolean updateStatus(int inquiryId, InquiryStatus newStatus) throws DatabaseException {
-        return entityManager.updateProperties(Inquiry.class, inquiryId, Map.of("inquiry_status", newStatus.name(), "inquiry_updated", LocalDateTime.now().withNano(0)));
+        return updateInquiry(inquiryId, Map.of("inquiry_status", newStatus.name()));
+    }
+
+    public boolean updatePrice(int inquiryId, int newPrice) throws DatabaseException {
+        return updateInquiry(inquiryId, Map.of("inquiry_price", newPrice));
     }
 }

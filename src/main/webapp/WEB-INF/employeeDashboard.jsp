@@ -58,7 +58,7 @@
             <c:if test="${inquiry.carport().shack().isPresent()}"> med skur</c:if>
           </td>
           <td>
-              <form method="post" id="statusChangeForm${inquiry.inquiry().getId()}" action="${pageContext.request.contextPath}/fc/update-inquiry-command">
+              <form method="post" id="statusChangeForm${inquiry.inquiry().getId()}" action="${pageContext.request.contextPath}/fc/update-inquiry-status-command">
                 <input hidden name="inquiry-ID" value="${inquiry.inquiry().getId()}">
                 <select name="inquiry-status" class="form-select" onchange="formSubmit('statusChangeForm${inquiry.inquiry().getId()}')">
                   <c:forEach items="${InquiryStatus.values()}" var="status">
@@ -77,10 +77,16 @@
             </c:if>
             <fmt:formatNumber value = "${price}" type = "currency"/>
           </td>
-          <td><fmt:formatNumber value = "${inquiry.inquiry().getPrice() - price}" type = "currency"/></td>
+          <td>
+            <c:set var="diffPrice" value="${inquiry.inquiry().getPrice() - price}"/>
+            <div id="diff-price" style="color: ${diffPrice < 0 ? "red" : "black"}">
+              <fmt:formatNumber value="${diffPrice}" type="currency"/>
+            </div>
+
+          </td>
           <td>
             <form action="${pageContext.request.contextPath}/fc/edit-inquiry-page">
-              <button class="btn btn-secondary" type="submit" name="inquiry-ID" value="${inquiry.inquiry().getId()}">Edit</button>
+              <button class="btn btn-outline-primary" type="submit" name="inquiry-ID" value="${inquiry.inquiry().getId()}">Edit</button>
             </form>
           </td>
         </tr>
