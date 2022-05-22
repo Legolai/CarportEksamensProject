@@ -13,7 +13,9 @@ public class LogoutAction implements Command {
     @Override
     public PageDirect execute(HttpServletRequest request, HttpServletResponse response, ConnectionPool connectionPool) {
         HttpSession session = request.getSession(false);
-        session.invalidate();
+        if (session != null) {
+            session.invalidate();
+        }
         return new PageDirect(RedirectType.REDIRECT, "index");
     }
 }

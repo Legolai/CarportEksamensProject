@@ -12,7 +12,7 @@
     </jsp:attribute>
 
     <jsp:attribute name="header">
-        <a class="btn btn-dark" href="${pageContext.request.contextPath}/fc/employee-dashboard-page">Tilbage</a>
+        <a class="btn btn-outline-primary" href="${pageContext.request.contextPath}/fc/employee-dashboard-page">Tilbage</a>
         <p class="h1"> Ændringer for forespørgsel nr. ${requestScope.inquiry.inquiry().getId()}</p>
     </jsp:attribute>
 
@@ -203,7 +203,8 @@
                 </form>
 
                 <h3>Pris ændring</h3>
-                <form>
+                <form method="post" action="${pageContext.request.contextPath}/fc/update-inquiry-price-command">
+                    <input hidden name="inquiry-ID" value="${requestScope.inquiry.inquiry().getId()}">
                     <c:set var="price" value="${requestScope.inquiry.billOfMaterial().get().calcTotalPrice()}"/>
                     <div class="row mb-3">
                         <div class="col">
@@ -222,7 +223,7 @@
                                 <input style="text-align: right" class="form-control" id="inquiry-price"
                                        onchange="calcPrice(this)"
                                        name="inquiry-price"
-                                       type="text" value="${requestScope.inquiry.inquiry().getPrice()}" pattern="\d">
+                                       type="text" value="${requestScope.inquiry.inquiry().getPrice()}" pattern="\d+">
                                 <span class="input-group-text">,00 kr.</span>
                             </div>
 
@@ -233,8 +234,9 @@
                             </div>
                         </div>
                         <div class="col">
-                            <div id="diff-price">
-                                0
+                            <c:set var="diffPrice" value="${requestScope.inquiry.inquiry().getPrice() - price}"/>
+                            <div id="diff-price" style="color: ${diffPrice < 0 ? "red" : "black"}">
+                                <fmt:formatNumber value="${diffPrice}" type="currency"/>
                             </div>
                         </div>
                     </div>

@@ -13,15 +13,15 @@
         <location>/error.jsp</location>
     </error-page>
 
-<!--    <filter>-->
-<!--        <filter-name>filter-Authentication</filter-name>-->
-<!--        <filter-class>dk.cphbusiness.dat.cupcakeproject.control.filters.AuthenticationFilter</filter-class>-->
-<!--    </filter>-->
+    <filter>
+        <filter-name>filter-Authentication</filter-name>
+        <filter-class>dk.cphbusiness.dat.carporteksamensproject.control.filters.AuthenticationFilter</filter-class>
+    </filter>
 
-<!--    <filter-mapping>-->
-<!--        <filter-name>filter-Authentication</filter-name>-->
-<!--        <url-pattern>/fc/*</url-pattern>-->
-<!--    </filter-mapping>-->
+    <filter-mapping>
+        <filter-name>filter-Authentication</filter-name>
+        <url-pattern>/fc/*</url-pattern>
+    </filter-mapping>
 
     <listener>
         <description>ApplicationStart</description>

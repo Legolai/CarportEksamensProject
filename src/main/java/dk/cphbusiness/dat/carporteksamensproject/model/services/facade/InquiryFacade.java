@@ -40,4 +40,9 @@ public class InquiryFacade {
         InquiryMapper inquiryMapper = new InquiryMapper(new EntityManager(connectionPool));
         return inquiryMapper.updateStatus(inquiryId, newStatus);
     }
+
+    public static boolean updatePrice(int inquiryId, int newPrice, ConnectionPool connectionPool) throws DatabaseException {
+        InquiryMapper inquiryMapper = new InquiryMapper(new EntityManager(connectionPool));
+        return inquiryMapper.updatePrice(inquiryId, newPrice);
+    }
 }

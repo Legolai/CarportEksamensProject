@@ -12,6 +12,7 @@
     </jsp:attribute>
 
     <jsp:attribute name="header">
+            <a class="btn btn-outline-primary" href="${pageContext.request.contextPath}/fc/account-page">Tilbage</a>
             <h1>Forespørgsel nr. ${requestScope.inquiry.inquiry().getId()}</h1>
     </jsp:attribute>
 

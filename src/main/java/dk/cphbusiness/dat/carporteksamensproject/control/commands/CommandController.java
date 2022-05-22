@@ -31,7 +31,8 @@ public class CommandController {
         commands.put("logout-command", new LogoutAction());
         commands.put("register-command", new RegisterAction());
         commands.put("inquiry-flatRoof-command", new InquiryFlatRoofAction());
-        commands.put("update-inquiry-command", new UpdateInquiryStatusAction(Role.EMPLOYEE));
+        commands.put("update-inquiry-status-command", new UpdateInquiryStatusAction(Role.EMPLOYEE));
+        commands.put("update-inquiry-price-command", new UpdateInquiryPriceAction(Role.EMPLOYEE));
         commands.put("update-carport-command", new UpdateCarportAction(Role.EMPLOYEE));
 
         commands.put("svgExperiments-page", new UnprotectedPage("svgExperiments"));
