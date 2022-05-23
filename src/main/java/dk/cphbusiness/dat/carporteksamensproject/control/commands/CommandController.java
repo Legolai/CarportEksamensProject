@@ -22,7 +22,8 @@ public class CommandController {
         commands.put("roofSloped-page", new UnprotectedPage("roofSloped"));
         commands.put("my-inquiry-page", new MyInquiryPage("myInquiry", Role.COSTUMER));
         commands.put("inquiry-page", new UnprotectedPage("inquiry"));
-        commands.put("account-page", new AccountPage("account", Role.COSTUMER));
+        commands.put("account-page", new ProtectedPage("account", Role.COSTUMER));
+        commands.put("my-inquiries-page", new MyInquiriesPage("myInquiries", Role.COSTUMER));
         commands.put("employee-dashboard-page", new EmployeeDashboardPage("employeeDashboard", Role.EMPLOYEE));
         commands.put("inquiriesAll-page", new InquiriesAllPage("inquiriesAll", Role.EMPLOYEE));
         commands.put("edit-inquiry-page", new EditInquiryPage("editInquiry", Role.EMPLOYEE));

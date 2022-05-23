@@ -18,8 +18,8 @@ import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class AccountPage extends ProtectedPage {
-    public AccountPage(String pageName, Role role) {
+public class MyInquiriesPage extends ProtectedPage {
+    public MyInquiriesPage(String pageName, Role role) {
         super(pageName, role);
     }
 
