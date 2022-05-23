@@ -26,15 +26,22 @@ public class EditInquiryPage extends ProtectedPage{
     }
 
     @Override
-    public PageDirect execute(HttpServletRequest request, HttpServletResponse response, ConnectionPool connectionPool) throws DatabaseException {
+    public PageDirect execute(HttpServletRequest request, HttpServletResponse response, ConnectionPool connectionPool) {
         String inquiryIdString = request.getParameter("inquiry-ID");
         int inquiryId = Integer.parseInt(inquiryIdString);
+        Optional<InquiryDTO> optional;
+        Optional<List<ProductDTO>> optionalFlatRoofs;
+        try{
+            optional = InquiryFacade.find(Map.of("inquiry_ID", inquiryId), connectionPool);
+            optionalFlatRoofs = ProductFacade.findAll(Map.of("product_type_name", "Tagplade"), connectionPool);
+        } catch (DatabaseException ex){
+            request.setAttribute("errormessage", ex.getMessage());
+            return new PageDirect(RedirectType.ERROR, "error");
+        }
 
-        Optional<InquiryDTO> optional = InquiryFacade.find(Map.of("inquiry_ID", inquiryId), connectionPool);
-        Optional<List<ProductDTO>> optionalFlatRoofs = ProductFacade.findAll(Map.of("product_type_name", "Tagplade"), connectionPool);
 
         if (optional.isEmpty() || optionalFlatRoofs.isEmpty()) {
-            return new PageDirect(RedirectType.ERROR, "");
+            return new PageDirect(RedirectType.ERROR, "error");
         }
 
         InquiryDTO inquiryDTO = optional.get();

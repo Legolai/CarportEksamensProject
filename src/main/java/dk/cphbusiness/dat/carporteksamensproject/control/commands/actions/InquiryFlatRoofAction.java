@@ -75,7 +75,7 @@ public class InquiryFlatRoofAction implements Command {
 
             request.setAttribute("inquiry", dbCreated);
 
-            return new PageDirect(RedirectType.DEFAULT, "inquiry");
+            return new PageDirect(RedirectType.DEFAULT, "pages/general/inquiry");
         } catch (NumberFormatException ex) {
             request.setAttribute("errormessage", "Could not handel sizes");
             Logger.getLogger("web").log(Level.SEVERE, "Could not parse string values to integers", ex);

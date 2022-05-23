@@ -6,8 +6,10 @@ import dk.cphbusiness.dat.carporteksamensproject.control.webtypes.RedirectType;
 import dk.cphbusiness.dat.carporteksamensproject.model.dtos.BillOfMaterialDTO;
 import dk.cphbusiness.dat.carporteksamensproject.model.dtos.BillOfMaterialLineItemDTO;
 import dk.cphbusiness.dat.carporteksamensproject.model.dtos.CarportDTO;
-import dk.cphbusiness.dat.carporteksamensproject.model.dtos.PersonDTO;
-import dk.cphbusiness.dat.carporteksamensproject.model.entities.*;
+import dk.cphbusiness.dat.carporteksamensproject.model.entities.Carport;
+import dk.cphbusiness.dat.carporteksamensproject.model.entities.Role;
+import dk.cphbusiness.dat.carporteksamensproject.model.entities.RoofType;
+import dk.cphbusiness.dat.carporteksamensproject.model.entities.Shack;
 import dk.cphbusiness.dat.carporteksamensproject.model.exceptions.DatabaseException;
 import dk.cphbusiness.dat.carporteksamensproject.model.persistence.ConnectionPool;
 import dk.cphbusiness.dat.carporteksamensproject.model.services.CarportAlgorithmFactory;
@@ -17,11 +19,7 @@ import dk.cphbusiness.dat.carporteksamensproject.model.services.facade.CarportFa
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,7 +30,7 @@ public class UpdateCarportAction extends ProtectedPage {
     }
 
     @Override
-    public PageDirect execute(HttpServletRequest request, HttpServletResponse response, ConnectionPool connectionPool) throws DatabaseException {
+    public PageDirect execute(HttpServletRequest request, HttpServletResponse response, ConnectionPool connectionPool)  {
 
         String inquiryIdString = request.getParameter("inquiry-ID");
 

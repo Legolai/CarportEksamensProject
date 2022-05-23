@@ -33,7 +33,7 @@ public class RegisterAction implements Command {
 
         if(!password.equals(confirmedPassword)){
             request.setAttribute("error", "Confirmed password does not match!");
-            return new PageDirect(RedirectType.DEFAULT, "register");
+            return new PageDirect(RedirectType.DEFAULT, "pages/general/register");
         }
 
         try{
@@ -48,10 +48,10 @@ public class RegisterAction implements Command {
             HttpSession session = request.getSession();
             session.setAttribute("account", accDTO);
 
-            return new PageDirect(RedirectType.DEFAULT, "index");
+            return new PageDirect(RedirectType.DEFAULT, "pages/general/index");
         } catch (DatabaseException ex) {
             request.setAttribute("error", "Email is already in use!");
-            return new PageDirect(RedirectType.DEFAULT, "register");
+            return new PageDirect(RedirectType.DEFAULT, "pages/general/register");
         }
     }
 }

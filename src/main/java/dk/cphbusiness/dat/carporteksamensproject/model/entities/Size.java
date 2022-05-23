@@ -20,13 +20,13 @@ public class Size {
     private SizeType type;
 
     @Column("size_deleted")
-    private boolean deleted;
+    private boolean isDeleted;
 
-    public Size(int id, int detail, SizeType type, boolean deleted) {
+    public Size(int id, int detail, SizeType type, boolean isDeleted) {
         this.id = id;
         this.detail = detail;
         this.type = type;
-        this.deleted = deleted;
+        this.isDeleted = isDeleted;
     }
 
     public int getId() {
@@ -42,7 +42,7 @@ public class Size {
     }
 
     public boolean isDeleted() {
-        return deleted;
+        return isDeleted;
     }
 
     public void setId(int id) {
@@ -58,7 +58,7 @@ public class Size {
     }
 
     public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
+        this.isDeleted = deleted;
     }
 
     @Override
@@ -67,7 +67,7 @@ public class Size {
                 "id=" + id +
                 ", detail=" + detail +
                 ", type=" + type +
-                ", deleted=" + deleted +
+                ", deleted=" + isDeleted +
                 '}';
     }
 

@@ -1,6 +1,7 @@
 package dk.cphbusiness.dat.carporteksamensproject.control.commands.pages;
 
 import dk.cphbusiness.dat.carporteksamensproject.control.webtypes.PageDirect;
+import dk.cphbusiness.dat.carporteksamensproject.control.webtypes.RedirectType;
 import dk.cphbusiness.dat.carporteksamensproject.model.dtos.InquiryDTO;
 import dk.cphbusiness.dat.carporteksamensproject.model.entities.Role;
 import dk.cphbusiness.dat.carporteksamensproject.model.exceptions.DatabaseException;
@@ -17,10 +18,14 @@ public class EmployeeDashboardPage extends ProtectedPage {
     }
 
     @Override
-    public PageDirect execute(HttpServletRequest request, HttpServletResponse response, ConnectionPool connectionPool) throws DatabaseException {
-
-        List<InquiryDTO> inquiryDTOS = InquiryFacade.getAll(connectionPool);
-        request.setAttribute("inquiries", inquiryDTOS);
+    public PageDirect execute(HttpServletRequest request, HttpServletResponse response, ConnectionPool connectionPool) {
+        try {
+            List<InquiryDTO> inquiryDTOS = InquiryFacade.getAll(connectionPool);
+            request.setAttribute("inquiries", inquiryDTOS);
+        } catch (DatabaseException ex) {
+            request.setAttribute("errormessage", ex.getMessage());
+            return new PageDirect(RedirectType.ERROR, "error");
+        }
         return super.execute(request, response, connectionPool);
     }
 }

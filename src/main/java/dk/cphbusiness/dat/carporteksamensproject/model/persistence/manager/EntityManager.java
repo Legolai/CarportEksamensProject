@@ -87,7 +87,7 @@ public record EntityManager(ConnectionPool connectionPool) {
 
     public <T> T insert(Class<T> entityClass, T entity) throws DatabaseException {
         if (entityClass.isAnnotationPresent(Entity.class)) {
-            return insertEntity(new EntityData<>(entityClass), entity);
+            return insertCheckedEntity(new EntityData<>(entityClass), entity);
         } else if (entityClass.isAnnotationPresent(JoinedEntity.class)) {
             return insertJoinedEntity(new JoinedEntityData<>(entityClass), entity);
         }
@@ -261,6 +261,9 @@ public record EntityManager(ConnectionPool connectionPool) {
                 String methodName = (field.getType().equals(Boolean.TYPE) ? name : "get" + name.substring(0, 1).toUpperCase() + name.substring(1));
                 Object value = entityData.getEntityClass().getMethod(methodName).invoke(entity);
                 if (value == null || (field.isAnnotationPresent(Id.class) && value.equals(0))) continue;
+                if (field.getType().isEnum()) {
+                    value = ((Enum<?>) value).name();
+                }
                 properties.put(field.getAnnotation(Column.class).value(), value);
             }
             catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException ex) {
@@ -268,7 +271,7 @@ public record EntityManager(ConnectionPool connectionPool) {
             }
         }
 
-        Optional<List<T>> objects = pagedFindEntities(entityData.getEntityClass(), properties, 0, 0);
+        Optional<List<T>> objects = findAll(entityData.getEntityClass(), properties);
         if (objects.isPresent()) {
             return objects.get().get(0);
         }

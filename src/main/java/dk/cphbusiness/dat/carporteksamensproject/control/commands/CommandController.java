@@ -15,28 +15,33 @@ public class CommandController {
     private final Map<String, Command> commands = new HashMap<>();
 
     private CommandController(){
-        commands.put("index", new UnprotectedPage("index"));
-        commands.put("login-page", new UnprotectedPage("login"));
-        commands.put("register-page", new UnprotectedPage("register"));
-        commands.put("roofFlat-page", new FlatRoofPage("roofFlat"));
-        commands.put("roofSloped-page", new UnprotectedPage("roofSloped"));
-        commands.put("my-inquiry-page", new MyInquiryPage("myInquiry", Role.COSTUMER));
-        commands.put("inquiry-page", new UnprotectedPage("inquiry"));
-        commands.put("account-page", new ProtectedPage("account", Role.COSTUMER));
-        commands.put("my-inquiries-page", new MyInquiriesPage("myInquiries", Role.COSTUMER));
-        commands.put("employee-dashboard-page", new EmployeeDashboardPage("employeeDashboard", Role.EMPLOYEE));
-        commands.put("inquiriesAll-page", new InquiriesAllPage("inquiriesAll", Role.EMPLOYEE));
-        commands.put("edit-inquiry-page", new EditInquiryPage("editInquiry", Role.EMPLOYEE));
+        commands.put("index", new UnprotectedPage("pages/general/index"));
+        commands.put("login-page", new UnprotectedPage("pages/general/login"));
+        commands.put("register-page", new UnprotectedPage("pages/general/register"));
+        commands.put("roofFlat-page", new FlatRoofPage("pages/general/roofFlat"));
+        commands.put("roofSloped-page", new UnprotectedPage("pages/general/roofSloped"));
+        commands.put("my-inquiry-page", new MyInquiryPage("pages/customer/myInquiry", Role.COSTUMER));
+        commands.put("inquiry-page", new UnprotectedPage("pages/general/inquiry"));
+        commands.put("account-page", new ProtectedPage("pages/general/account", Role.COSTUMER));
+        commands.put("my-inquiries-page", new MyInquiriesPage("pages/customer/myInquiries", Role.COSTUMER));
+        commands.put("employee-dashboard-page", new EmployeeDashboardPage("pages/company/employeeDashboard", Role.EMPLOYEE));
+        commands.put("materials-overview-page", new MaterialsPage("pages/company/materialsOverview", Role.ADMIN));
+        commands.put("edit-material-page", new EditMaterialPage("pages/company/editMaterial", Role.ADMIN));
+        commands.put("edit-inquiry-page", new EditInquiryPage("pages/company/editInquiry", Role.EMPLOYEE));
 
         commands.put("login-command", new LoginAction());
         commands.put("logout-command", new LogoutAction());
         commands.put("register-command", new RegisterAction());
         commands.put("inquiry-flatRoof-command", new InquiryFlatRoofAction());
+
         commands.put("update-inquiry-status-command", new UpdateInquiryStatusAction(Role.EMPLOYEE));
         commands.put("update-inquiry-price-command", new UpdateInquiryPriceAction(Role.EMPLOYEE));
         commands.put("update-carport-command", new UpdateCarportAction(Role.EMPLOYEE));
 
-        commands.put("svgExperiments-page", new UnprotectedPage("svgExperiments"));
+        commands.put("update-product-command", new UpdateProductAction(Role.ADMIN));
+        commands.put("create-product-variant-command", new CreateProductVariantAction(Role.ADMIN));
+
+        commands.put("svgExperiments-page", new UnprotectedPage("pages/general/svgExperiments"));
         commands.put("SVG-command", new SVGCommand(""));
     }
 

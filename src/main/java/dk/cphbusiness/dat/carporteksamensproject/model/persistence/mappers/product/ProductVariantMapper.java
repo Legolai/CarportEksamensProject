@@ -1,6 +1,8 @@
 package dk.cphbusiness.dat.carporteksamensproject.model.persistence.mappers.product;
 
 import dk.cphbusiness.dat.carporteksamensproject.model.dtos.ProductVariantDTO;
+import dk.cphbusiness.dat.carporteksamensproject.model.entities.ProductVariant;
+import dk.cphbusiness.dat.carporteksamensproject.model.entities.Size;
 import dk.cphbusiness.dat.carporteksamensproject.model.exceptions.DatabaseException;
 import dk.cphbusiness.dat.carporteksamensproject.model.persistence.mappers.DataMapper;
 import dk.cphbusiness.dat.carporteksamensproject.model.persistence.manager.EntityManager;
@@ -46,5 +48,16 @@ public class ProductVariantMapper implements DataMapper<ProductVariantDTO> {
     @Override
     public boolean update(ProductVariantDTO productVariantDTO) throws DatabaseException {
         return false;
+    }
+
+    public Optional<List<ProductVariantDTO>> findAllByProductId(int materialId) throws DatabaseException{
+        return findAll(Map.of("product_ID", materialId));
+    }
+
+    public boolean insertVariant(ProductVariant productVariant, Size size) throws DatabaseException {
+        Size dbSize = entityManager.insert(Size.class, size);
+        productVariant.setSizeId(dbSize.getId());
+        ProductVariant dbVariant = entityManager.insert(ProductVariant.class, productVariant);
+        return dbVariant.getId() != 0;
     }
 }

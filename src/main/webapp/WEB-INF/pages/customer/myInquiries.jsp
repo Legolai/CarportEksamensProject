@@ -1,29 +1,24 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@page errorPage="../error.jsp" isErrorPage="false" %>
+<%@page errorPage="../../../error.jsp" isErrorPage="false" %>
 
 <t:pagetemplate>
 
     <jsp:attribute name="title">
-        Fog Quickbyg - Account
+        Fog Quickbyg - Mine Forespørgselsler
     </jsp:attribute>
 
     <jsp:attribute name="header">
-       <h1> Welcome to the account side</h1>
+       <h1> Mine Forespørgselsler</h1>
     </jsp:attribute>
 
     <jsp:attribute name="footer">
-        Welcome to the account side
+        Mine Forespørgselsler
     </jsp:attribute>
 
     <jsp:body>
-        <h2>Hello ${sessionScope.account.personDTO().person().getForename()}</h2>
-
-        <p>This is your account side </p>
-
-
-        <h3 id="inquiryTable">Forespørgselsler</h3>
+        <h3 id="inquiryTable">Mine Forespørgselsler</h3>
         <table class="table table-responsive table-hover" aria-describedby="inquiryTable">
             <thead>
             <tr>

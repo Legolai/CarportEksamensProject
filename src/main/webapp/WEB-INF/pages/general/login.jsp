@@ -2,7 +2,7 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-<%@page errorPage="../error.jsp" isErrorPage="false" %>
+<%@page errorPage="../../../error.jsp" isErrorPage="false" %>
 
 <t:pagetemplate>
 
@@ -22,8 +22,8 @@
 
         <div class="container justify-content-center" style="width: clamp(200px, 100%, 700px)">
             <form class="row align-items-center" action="${pageContext.request.contextPath}/fc/login-command" method="post">
-                <c:if test="${requestScope.error != null || !requestScope.equals('')}">
-                    <span>${requestScope.error}</span>
+                <c:if test="${requestScope.error != null || requestScope.equals('')}">
+                    <span class="alert alert-warning" role="alert">${requestScope.error}</span>
                 </c:if>
                 <div class="col-12 mb-3">
                     <label class="form-label" for="email">E-mail: </label>
