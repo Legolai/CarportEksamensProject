@@ -10,6 +10,7 @@ object Person
 object Order
 object Inquiry
 object Carport
+object Shack
 object BillOfMaterial
 object BillOfMaterialLineItem
 object Product
@@ -17,9 +18,18 @@ object ProductVariant
 object ProductType
 object Size
 
+Carport : int length
+Carport : int width
+Carport : ENUM roofType
+Shack : int length
+Shack : int width
+BillOfMaterialLineItem : int Amount
+Product : String description
+Product : int unit price
+
 ProductVariant "m"*--"1" Product
 ProductVariant "m"*--"1" Size
-Product *-- ProductType
+Product "m"*--"1" ProductType
 
 Account "1"*--"1" Person
 Person "m"*--"1" Address
@@ -30,12 +40,13 @@ Inquiry "1" *-- "1" BillOfMaterial
 Inquiry "m" *-- "1" Person
 BillOfMaterial "1" *-- "m" BillOfMaterialLineItem
 BillOfMaterialLineItem "m" *-- "1" ProductVariant
+Carport "1" --* "1" Shack
 
 Order "m" *-- "1" Address
 Order "1" *-- "1" Inquiry
 
 Cart "1" *-- "m" CartLineItem
-CartLineItem "1" *-- "1" ProductVariant
+CartLineItem "m" *-- "1" ProductVariant
 
 
 @enduml

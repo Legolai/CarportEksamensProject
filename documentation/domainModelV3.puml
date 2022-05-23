@@ -1,0 +1,33 @@
+@startuml
+'https://plantuml.com/object-diagram
+
+object Address
+object Account
+object Person
+object Inquiry
+object Carport
+object Shack
+object BillOfMaterialLineItem
+object Product
+object ProductVariant
+object ProductType
+object Size
+
+BillOfMaterialLineItem : int amount
+
+ProductVariant "m"*--"1" Product
+ProductVariant "m"*--"1" Size
+Product "m"*--"1" ProductType
+
+Account "1"*--"1" Person
+Person "m"*--"1" Address
+Carport "1"*--"1" Shack
+
+Inquiry "1" *-- "1" Carport
+Inquiry "m" *-- "1" Person
+Inquiry "1" *-- "m" BillOfMaterialLineItem
+BillOfMaterialLineItem "m" *-- "1" ProductVariant
+
+
+
+@enduml
