@@ -30,12 +30,6 @@
             </div>
         </div>
 
-        <br>
-        <p>SVG experiments <a
-                href="${pageContext.request.contextPath}/fc/svgExperiments-page">SVGs</a>.</p>
-
-
-
     </jsp:body>
 
 </t:pagetemplate>
