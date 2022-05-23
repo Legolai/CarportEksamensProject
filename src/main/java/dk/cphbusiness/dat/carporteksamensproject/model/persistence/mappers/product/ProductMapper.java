@@ -1,6 +1,7 @@
 package dk.cphbusiness.dat.carporteksamensproject.model.persistence.mappers.product;
 
 import dk.cphbusiness.dat.carporteksamensproject.model.dtos.ProductDTO;
+import dk.cphbusiness.dat.carporteksamensproject.model.entities.Product;
 import dk.cphbusiness.dat.carporteksamensproject.model.exceptions.DatabaseException;
 import dk.cphbusiness.dat.carporteksamensproject.model.persistence.mappers.DataMapper;
 import dk.cphbusiness.dat.carporteksamensproject.model.persistence.manager.EntityManager;
@@ -45,6 +46,6 @@ public class ProductMapper implements DataMapper<ProductDTO> {
 
     @Override
     public boolean update(ProductDTO productDTO) throws DatabaseException {
-        return false;
+        return entityManager.updateEntity(Product.class, productDTO.product());
     }
 }

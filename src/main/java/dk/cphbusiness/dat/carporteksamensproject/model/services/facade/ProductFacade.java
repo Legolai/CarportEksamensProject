@@ -18,4 +18,19 @@ public class ProductFacade {
         ProductMapper productMapper = new ProductMapper(new EntityManager(connectionPool));
         return productMapper.findAll(properties);
     }
+
+    public static List<ProductDTO> getAll(ConnectionPool connectionPool) throws DatabaseException{
+        ProductMapper productMapper = new ProductMapper(new EntityManager(connectionPool));
+        return productMapper.getAll();
+    }
+
+    public static Optional<ProductDTO> findById(int materialId, ConnectionPool connectionPool) throws DatabaseException {
+        ProductMapper productMapper = new ProductMapper(new EntityManager(connectionPool));
+        return productMapper.find(Map.of("product_ID", materialId));
+    }
+
+    public static boolean update(ProductDTO productDTO, ConnectionPool connectionPool) throws DatabaseException {
+        ProductMapper productMapper = new ProductMapper(new EntityManager(connectionPool));
+        return productMapper.update(productDTO);
+    }
 }

@@ -16,7 +16,7 @@ public class Product {
     @Column("product_description")
     private String description;
     @Column("product_unit_price")
-    private int unitPrice;
+    private double unitPrice;
 
     @Column("product_unit")
     private Unit unit;
@@ -30,7 +30,7 @@ public class Product {
     @Column("product_deleted")
     private boolean isDeleted;
 
-    public Product(int id, String description, int unitPrice, Unit unit, AmountUnit amountUnit, int productTypeId, boolean isDeleted) {
+    public Product(int id, String description, double unitPrice, Unit unit, AmountUnit amountUnit, int productTypeId, boolean isDeleted) {
         this.id = id;
         this.description = description;
         this.unitPrice = unitPrice;
@@ -48,7 +48,7 @@ public class Product {
         return description;
     }
 
-    public int getUnitPrice() {
+    public double getUnitPrice() {
         return unitPrice;
     }
 
@@ -76,7 +76,7 @@ public class Product {
         this.description = description;
     }
 
-    public void setUnitPrice(int unitPrice) {
+    public void setUnitPrice(double unitPrice) {
         this.unitPrice = unitPrice;
     }
 

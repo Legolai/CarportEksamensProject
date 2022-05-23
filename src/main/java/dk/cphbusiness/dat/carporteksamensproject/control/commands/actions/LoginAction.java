@@ -23,7 +23,7 @@ public class LoginAction implements Command {
             Optional<AccountDTO> account = AccountFacade.login(email, password, connectionPool);
             if (account.isEmpty()) {
                 request.setAttribute("error", "Wrong username or password!");
-                return new PageDirect(RedirectType.DEFAULT, "login");
+                return new PageDirect(RedirectType.DEFAULT, "pages/general/login");
             }
 
             HttpSession session = request.getSession();
@@ -33,7 +33,7 @@ public class LoginAction implements Command {
         }
         catch (DatabaseException ex) {
             request.setAttribute("error", "An error has happened");
-            return new PageDirect(RedirectType.DEFAULT, "login");
+            return new PageDirect(RedirectType.DEFAULT, "pages/general/login");
         }
     }
 }

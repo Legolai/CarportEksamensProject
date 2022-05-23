@@ -24,11 +24,11 @@ public class MyInquiryPage extends ProtectedPage {
     }
 
     @Override
-    public PageDirect execute(HttpServletRequest request, HttpServletResponse response, ConnectionPool connectionPool) throws DatabaseException {
+    public PageDirect execute(HttpServletRequest request, HttpServletResponse response, ConnectionPool connectionPool) {
         String inquiryIdString = request.getParameter("inquiry-ID");
         HttpSession session = request.getSession(false);
 
-        if (session == null){
+        if (session == null) {
             return new PageDirect(RedirectType.REDIRECT, "index");
         }
 
@@ -40,7 +40,14 @@ public class MyInquiryPage extends ProtectedPage {
 
         int inquiryId = Integer.parseInt(inquiryIdString);
 
-        Optional<InquiryDTO> optional = InquiryFacade.find(Map.of("inquiry_ID", inquiryId), connectionPool);
+        Optional<InquiryDTO> optional;
+        try {
+            optional = InquiryFacade.find(Map.of("inquiry_ID", inquiryId), connectionPool);
+        }
+        catch (DatabaseException ex) {
+            request.setAttribute("errormessage", ex.getMessage());
+            return new PageDirect(RedirectType.ERROR, "error");
+        }
 
         if (optional.isEmpty()) {
             return new PageDirect(RedirectType.ERROR, "");
@@ -48,8 +55,7 @@ public class MyInquiryPage extends ProtectedPage {
 
         InquiryDTO inquiryDTO = optional.get();
 
-
-        if (!account.personDTO().person().getEmail().equals(inquiryDTO.person().person().getEmail())){
+        if (!account.personDTO().person().getEmail().equals(inquiryDTO.person().person().getEmail())) {
             request.setAttribute("errormessage", "You do not have rights to view this inquiry");
             return new PageDirect(RedirectType.ERROR, "error");
         }

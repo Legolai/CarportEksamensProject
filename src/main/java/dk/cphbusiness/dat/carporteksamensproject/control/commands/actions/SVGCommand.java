@@ -74,6 +74,6 @@ public class SVGCommand extends UnprotectedPage {
 
 
 
-        return new PageDirect(RedirectType.DEFAULT, "svgExperiments");
+        return new PageDirect(RedirectType.DEFAULT, "pages/general/svgExperiments");
     }
 }

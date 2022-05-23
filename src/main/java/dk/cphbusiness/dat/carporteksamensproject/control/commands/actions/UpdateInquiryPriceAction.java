@@ -17,17 +17,23 @@ public class UpdateInquiryPriceAction extends ProtectedPage {
     }
 
     @Override
-    public PageDirect execute(HttpServletRequest request, HttpServletResponse response, ConnectionPool connectionPool) throws DatabaseException {
+    public PageDirect execute(HttpServletRequest request, HttpServletResponse response, ConnectionPool connectionPool) {
         String newPriceString = request.getParameter("inquiry-price");
         String inquiryIdString = request.getParameter("inquiry-ID");
 
         int inquiryId = Integer.parseInt(inquiryIdString);
         int newPrice = Integer.parseInt(newPriceString);
 
-        if(!InquiryFacade.updatePrice(inquiryId, newPrice, connectionPool)){
-            request.setAttribute("errormessage", "Failed to update price of inquiry");
+        try {
+            if(!InquiryFacade.updatePrice(inquiryId, newPrice, connectionPool)){
+                request.setAttribute("errormessage", "Failed to update price of inquiry");
+                return new PageDirect(RedirectType.ERROR, "error");
+            }
+        } catch (DatabaseException ex) {
+            request.setAttribute("errormessage", ex.getMessage());
             return new PageDirect(RedirectType.ERROR, "error");
         }
+
         return new PageDirect(RedirectType.COMMAND, "edit-inquiry-page");
     }
 }
