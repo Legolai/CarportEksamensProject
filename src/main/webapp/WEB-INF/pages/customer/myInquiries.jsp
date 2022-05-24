@@ -43,7 +43,9 @@
                     <td>${inquiry.inquiry().getPrice()} kr.</td>
                     <td>
                         <form action="${pageContext.request.contextPath}/fc/my-inquiry-page">
-                            <button class="btn btn-outline-primary" type="submit" name="inquiry-ID" value="${inquiry.inquiry().getId()}">Se detaljer</button>
+                            <button class="btn btn-outline-primary" type="submit" name="inquiry-ID"
+                                    value="${inquiry.inquiry().getId()}">Se detaljer
+                            </button>
                         </form>
                     </td>
                 </tr>

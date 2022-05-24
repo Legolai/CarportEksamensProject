@@ -19,7 +19,8 @@
 
     <jsp:body>
         <p>Dit forespørgselsnummer er ${requestScope.inquiry.inquiry().getId()}</p>
-        <p>For at se status på din forespørgsel så <a href="${pageContext.request.contextPath}/fc/login-page">login</a> eller <a href="${pageContext.request.contextPath}/fc/register-page">opret en bruger</a></p>
+        <p>For at se status på din forespørgsel så <a href="${pageContext.request.contextPath}/fc/login-page">login</a>
+            eller <a href="${pageContext.request.contextPath}/fc/register-page">opret en bruger</a></p>
     </jsp:body>
 
 </t:pagetemplate>
