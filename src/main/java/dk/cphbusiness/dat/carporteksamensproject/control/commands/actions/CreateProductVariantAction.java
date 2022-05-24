@@ -34,7 +34,7 @@ public class CreateProductVariantAction extends ProtectedPage {
             SizeType sizeType = SizeType.valueOf(sizeTypeString);
 
             Size size = new Size(0, sizeDetail, sizeType, false);
-            ProductVariant productVariant = new ProductVariant(0, productId,0,false);
+            ProductVariant productVariant = new ProductVariant(0, productId, 0, false);
 
             ProductVariantFacade.createVariant(productVariant, size, connectionPool);
         } catch (DatabaseException | NumberFormatException ex) {

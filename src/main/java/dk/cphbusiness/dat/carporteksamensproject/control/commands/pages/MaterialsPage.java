@@ -24,8 +24,7 @@ public class MaterialsPage extends ProtectedPage {
         try {
             List<ProductDTO> productDTOS = ProductFacade.getAll(connectionPool);
             request.setAttribute("materials", productDTOS);
-        }
-        catch (DatabaseException ex) {
+        } catch (DatabaseException ex) {
             request.setAttribute("errormessage", ex.getMessage());
             return new PageDirect(RedirectType.ERROR, "error");
         }

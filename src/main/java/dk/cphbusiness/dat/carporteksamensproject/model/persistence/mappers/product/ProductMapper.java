@@ -3,8 +3,8 @@ package dk.cphbusiness.dat.carporteksamensproject.model.persistence.mappers.prod
 import dk.cphbusiness.dat.carporteksamensproject.model.dtos.ProductDTO;
 import dk.cphbusiness.dat.carporteksamensproject.model.entities.Product;
 import dk.cphbusiness.dat.carporteksamensproject.model.exceptions.DatabaseException;
-import dk.cphbusiness.dat.carporteksamensproject.model.persistence.mappers.DataMapper;
 import dk.cphbusiness.dat.carporteksamensproject.model.persistence.manager.EntityManager;
+import dk.cphbusiness.dat.carporteksamensproject.model.persistence.mappers.DataMapper;
 
 import java.util.List;
 import java.util.Map;

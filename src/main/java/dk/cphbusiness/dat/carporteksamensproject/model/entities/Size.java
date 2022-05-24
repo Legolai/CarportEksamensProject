@@ -33,28 +33,28 @@ public class Size {
         return id;
     }
 
-    public int getDetail() {
-        return detail;
-    }
-
-    public SizeType getType() {
-        return type;
-    }
-
-    public boolean isDeleted() {
-        return isDeleted;
-    }
-
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getDetail() {
+        return detail;
     }
 
     public void setDetail(int detail) {
         this.detail = detail;
     }
 
+    public SizeType getType() {
+        return type;
+    }
+
     public void setType(SizeType type) {
         this.type = type;
+    }
+
+    public boolean isDeleted() {
+        return isDeleted;
     }
 
     public void setDeleted(boolean deleted) {

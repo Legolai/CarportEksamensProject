@@ -39,44 +39,44 @@ public class Address {
         return id;
     }
 
-    public String getNumber() {
-        return number;
-    }
-
-    public String getStreetName() {
-        return streetName;
-    }
-
-    public String getFloor() {
-        return floor;
-    }
-
-    public String getZipcode() {
-        return zipcode;
-    }
-
-    public String getCityName() {
-        return cityName;
-    }
-
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getNumber() {
+        return number;
     }
 
     public void setNumber(String number) {
         this.number = number;
     }
 
+    public String getStreetName() {
+        return streetName;
+    }
+
     public void setStreetName(String streetName) {
         this.streetName = streetName;
+    }
+
+    public String getFloor() {
+        return floor;
     }
 
     public void setFloor(String floor) {
         this.floor = floor;
     }
 
+    public String getZipcode() {
+        return zipcode;
+    }
+
     public void setZipcode(String zipcode) {
         this.zipcode = zipcode;
+    }
+
+    public String getCityName() {
+        return cityName;
     }
 
     public void setCityName(String cityName) {

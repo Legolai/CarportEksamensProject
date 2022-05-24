@@ -3,7 +3,7 @@ package dk.cphbusiness.dat.carporteksamensproject.control;
 import dk.cphbusiness.dat.carporteksamensproject.control.commands.Command;
 import dk.cphbusiness.dat.carporteksamensproject.control.commands.CommandController;
 import dk.cphbusiness.dat.carporteksamensproject.control.commands.UnknownCommand;
-import dk.cphbusiness.dat.carporteksamensproject.control.webtypes.*;
+import dk.cphbusiness.dat.carporteksamensproject.control.webtypes.PageDirect;
 import dk.cphbusiness.dat.carporteksamensproject.model.config.ApplicationStart;
 import dk.cphbusiness.dat.carporteksamensproject.model.persistence.ConnectionPool;
 
@@ -20,6 +20,10 @@ import java.util.logging.Logger;
 public class FrontControllerServlet extends HttpServlet {
 
     private static ConnectionPool connectionPool;
+
+    public static ConnectionPool getConnectionPool() {
+        return connectionPool;
+    }
 
     @Override
     public void init() {
@@ -44,14 +48,12 @@ public class FrontControllerServlet extends HttpServlet {
                     String page = view.pageName();
                     response.sendRedirect(page);
                 }
-                case COMMAND ->
-                        request.getRequestDispatcher(view.pageName()).forward(request, response);
+                case COMMAND -> request.getRequestDispatcher(view.pageName()).forward(request, response);
                 case ERROR -> request.getRequestDispatcher("/" + view.pageName() + ".jsp").forward(request, response);
                 case DEFAULT ->
                         request.getRequestDispatcher("/WEB-INF/" + view.pageName() + ".jsp").forward(request, response);
             }
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             request.setAttribute("errormessage", ex.getMessage());
             Logger.getLogger("web").log(Level.SEVERE, ex.getMessage(), ex);
             request.getRequestDispatcher("/error.jsp").forward(request, response);
@@ -71,9 +73,5 @@ public class FrontControllerServlet extends HttpServlet {
     @Override
     public String getServletInfo() {
         return "FrontController for application";
-    }
-
-    public static ConnectionPool getConnectionPool() {
-        return connectionPool;
     }
 }

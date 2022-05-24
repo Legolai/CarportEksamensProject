@@ -3,16 +3,16 @@ package dk.cphbusiness.dat.carporteksamensproject.model.services;
 import dk.cphbusiness.dat.carporteksamensproject.model.dtos.CarportDTO;
 
 public class SVGSideView extends SVGAlgorithmsBase {
-    private double heightRatio;
-    private double widthRatio;
-    private int svgHeight;
-    private int svgWidth;
-    private int remHeight;
-    private int stolpeWidth;
-    private int overhangRatio;
-    private int shacklengthRatio;
-    private int stolpeY;
-    private int stolpeHeight;
+    private final double heightRatio;
+    private final double widthRatio;
+    private final int svgHeight;
+    private final int svgWidth;
+    private final int remHeight;
+    private final int stolpeWidth;
+    private final int overhangRatio;
+    private final int shacklengthRatio;
+    private final int stolpeY;
+    private final int stolpeHeight;
     private int stolpe1X;
     private int stolpe2X;
     private int stolpe3X;

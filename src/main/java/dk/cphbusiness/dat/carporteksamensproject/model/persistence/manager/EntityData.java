@@ -4,7 +4,6 @@ import dk.cphbusiness.dat.carporteksamensproject.model.annotations.Entity;
 import dk.cphbusiness.dat.carporteksamensproject.model.annotations.Id;
 import dk.cphbusiness.dat.carporteksamensproject.model.annotations.JoinedEntity;
 import dk.cphbusiness.dat.carporteksamensproject.model.annotations.Table;
-import dk.cphbusiness.dat.carporteksamensproject.model.exceptions.DatabaseException;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
@@ -27,7 +26,10 @@ public class EntityData<T> {
 
         this.tableName = entityClass.getAnnotation(Table.class).value();
         this.fields = new LinkedList<>(Arrays.asList(entityClass.getDeclaredFields()));
-        this.fieldForId = fields.stream().filter(field -> field.isAnnotationPresent(Id.class)).findFirst().orElseThrow(() -> new IllegalStateException("No ID is available on entity!"));
+        this.fieldForId = fields.stream()
+                .filter(field -> field.isAnnotationPresent(Id.class))
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("No ID is available on entity!"));
         this.constructorEmp = fields.stream().map(Field::getType).toArray(Class[]::new);
         this.entityClass = entityClass;
     }

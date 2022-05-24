@@ -25,7 +25,7 @@ public class UpdateInquiryPriceAction extends ProtectedPage {
         int newPrice = Integer.parseInt(newPriceString);
 
         try {
-            if(!InquiryFacade.updatePrice(inquiryId, newPrice, connectionPool)){
+            if (!InquiryFacade.updatePrice(inquiryId, newPrice, connectionPool)) {
                 request.setAttribute("errormessage", "Failed to update price of inquiry");
                 return new PageDirect(RedirectType.ERROR, "error");
             }

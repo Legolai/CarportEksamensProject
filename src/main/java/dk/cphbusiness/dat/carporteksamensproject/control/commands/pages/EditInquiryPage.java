@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class EditInquiryPage extends ProtectedPage{
+public class EditInquiryPage extends ProtectedPage {
 
     public EditInquiryPage(String pageName, Role role) {
         super(pageName, role);
@@ -31,10 +31,10 @@ public class EditInquiryPage extends ProtectedPage{
         int inquiryId = Integer.parseInt(inquiryIdString);
         Optional<InquiryDTO> optional;
         Optional<List<ProductDTO>> optionalFlatRoofs;
-        try{
+        try {
             optional = InquiryFacade.find(Map.of("inquiry_ID", inquiryId), connectionPool);
             optionalFlatRoofs = ProductFacade.findAll(Map.of("product_type_name", "Tagplade"), connectionPool);
-        } catch (DatabaseException ex){
+        } catch (DatabaseException ex) {
             request.setAttribute("errormessage", ex.getMessage());
             return new PageDirect(RedirectType.ERROR, "error");
         }

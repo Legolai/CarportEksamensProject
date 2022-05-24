@@ -30,7 +30,7 @@ public class UpdateCarportAction extends ProtectedPage {
     }
 
     @Override
-    public PageDirect execute(HttpServletRequest request, HttpServletResponse response, ConnectionPool connectionPool)  {
+    public PageDirect execute(HttpServletRequest request, HttpServletResponse response, ConnectionPool connectionPool) {
 
         String inquiryIdString = request.getParameter("inquiry-ID");
 
@@ -53,8 +53,8 @@ public class UpdateCarportAction extends ProtectedPage {
             int roofMaterial = Integer.parseInt(roofMaterialString);
             boolean hasShack = Boolean.parseBoolean(hasShackString);
             int shackID = 0;
-            if(shackIdString != null){
-                if(!(shackIdString.equals("") || shackIdString.equals("0"))){
+            if (shackIdString != null) {
+                if (!(shackIdString.equals("") || shackIdString.equals("0"))) {
                     shackID = Integer.parseInt(shackIdString);
                 }
             }
@@ -64,7 +64,7 @@ public class UpdateCarportAction extends ProtectedPage {
                 int shackWidth = Integer.parseInt(shackWidthString);
                 int shackLength = Integer.parseInt(shackLengthString);
                 Shack shack = new Shack(shackID, shackWidth, shackLength, true);
-                if (shackID == 0){
+                if (shackID == 0) {
                     Shack dbShack = CarportFacade.createShack(shack, connectionPool);
                     shackID = dbShack.getId();
                     optionalShack = Optional.of(dbShack);
@@ -76,7 +76,7 @@ public class UpdateCarportAction extends ProtectedPage {
             Carport carport = new Carport(carportID, carportWidth, carportLength, 210, RoofType.FLAT, roofMaterial, null, shackID);
 
             CarportDTO carportDTO = new CarportDTO(carport, optionalShack);
-            if(!CarportFacade.updateCarport(carportDTO, connectionPool)) {
+            if (!CarportFacade.updateCarport(carportDTO, connectionPool)) {
                 return new PageDirect(RedirectType.ERROR, "error");
             }
 
@@ -93,10 +93,10 @@ public class UpdateCarportAction extends ProtectedPage {
             return new PageDirect(RedirectType.COMMAND, "edit-inquiry-page");
 
         } catch (NumberFormatException ex) {
-                request.setAttribute("errormessage", "Could not handel sizes");
-                Logger.getLogger("web").log(Level.SEVERE, "Could not parse string values to integers", ex);
-                return new PageDirect(RedirectType.ERROR, "error");
-        }  catch (DatabaseException ex) {
+            request.setAttribute("errormessage", "Could not handel sizes");
+            Logger.getLogger("web").log(Level.SEVERE, "Could not parse string values to integers", ex);
+            return new PageDirect(RedirectType.ERROR, "error");
+        } catch (DatabaseException ex) {
             request.setAttribute("errormessage", "Could not update carport information");
             Logger.getLogger("web").log(Level.SEVERE, "Could not update carport information", ex);
             return new PageDirect(RedirectType.ERROR, "error");

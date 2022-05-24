@@ -4,8 +4,8 @@ import dk.cphbusiness.dat.carporteksamensproject.model.dtos.ProductVariantDTO;
 import dk.cphbusiness.dat.carporteksamensproject.model.entities.ProductVariant;
 import dk.cphbusiness.dat.carporteksamensproject.model.entities.Size;
 import dk.cphbusiness.dat.carporteksamensproject.model.exceptions.DatabaseException;
-import dk.cphbusiness.dat.carporteksamensproject.model.persistence.mappers.DataMapper;
 import dk.cphbusiness.dat.carporteksamensproject.model.persistence.manager.EntityManager;
+import dk.cphbusiness.dat.carporteksamensproject.model.persistence.mappers.DataMapper;
 
 import java.util.List;
 import java.util.Map;
@@ -50,7 +50,7 @@ public class ProductVariantMapper implements DataMapper<ProductVariantDTO> {
         return false;
     }
 
-    public Optional<List<ProductVariantDTO>> findAllByProductId(int materialId) throws DatabaseException{
+    public Optional<List<ProductVariantDTO>> findAllByProductId(int materialId) throws DatabaseException {
         return findAll(Map.of("product_ID", materialId));
     }
 

@@ -33,28 +33,28 @@ public class ProductVariant {
         return id;
     }
 
-    public int getProductId() {
-        return productId;
-    }
-
-    public int getSizeId() {
-        return sizeId;
-    }
-
-    public boolean isDeleted() {
-        return isDeleted;
-    }
-
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getProductId() {
+        return productId;
     }
 
     public void setProductId(int productId) {
         this.productId = productId;
     }
 
+    public int getSizeId() {
+        return sizeId;
+    }
+
     public void setSizeId(int sizeId) {
         this.sizeId = sizeId;
+    }
+
+    public boolean isDeleted() {
+        return isDeleted;
     }
 
     public void setDeleted(boolean deleted) {

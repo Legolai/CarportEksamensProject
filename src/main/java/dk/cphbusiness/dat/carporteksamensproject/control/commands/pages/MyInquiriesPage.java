@@ -31,10 +31,11 @@ public class MyInquiriesPage extends ProtectedPage {
         AccountDTO accountDTO = (AccountDTO) session.getAttribute("account");
 
         try {
-            Optional<List<InquiryDTO>> list = InquiryFacade.findAll(Map.of("person_email", accountDTO.personDTO().person().getEmail()), connectionPool);
+            Optional<List<InquiryDTO>> list = InquiryFacade.findAll(Map.of("person_email", accountDTO.personDTO()
+                    .person()
+                    .getEmail()), connectionPool);
             list.ifPresent(inquiryDTOS -> request.setAttribute("inquiries", inquiryDTOS));
-        }
-        catch (DatabaseException e) {
+        } catch (DatabaseException e) {
             Logger.getLogger("web").log(Level.SEVERE, "Failed to find inquiries for account!", e);
         }
 

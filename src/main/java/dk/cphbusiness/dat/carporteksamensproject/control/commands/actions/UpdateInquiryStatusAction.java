@@ -25,7 +25,7 @@ public class UpdateInquiryStatusAction extends ProtectedPage {
         int inquiryId = Integer.parseInt(inquiryIdString);
 
         try {
-            if(!InquiryFacade.updateStatus(inquiryId, InquiryStatus.valueOf(newStatus), connectionPool)){
+            if (!InquiryFacade.updateStatus(inquiryId, InquiryStatus.valueOf(newStatus), connectionPool)) {
                 request.setAttribute("errormessage", "Failed to change status of inquiry");
                 return new PageDirect(RedirectType.ERROR, "error");
             }

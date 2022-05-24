@@ -10,6 +10,7 @@ import java.lang.annotation.Target;
 @Target(value = {ElementType.TYPE})
 public @interface Join {
     Class<?> main();
+
     Class<?>[] join() default {};
 
 }
