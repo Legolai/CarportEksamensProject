@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.Set;
 
 
 @WebFilter(filterName = "AuthenticationFilter")
@@ -32,7 +33,7 @@ public class AuthenticationFilter implements Filter {
             Command command = CommandController.getInstance().fromPath(req);
             HttpSession session = req.getSession(false);
             if (command instanceof ProtectedPage protectedPageCommand) {
-                Role roleFromCommand = protectedPageCommand.getRole();
+                Set<Role> rolesFromCommand = protectedPageCommand.getRoles();
                 if (session == null || session.getAttribute("account") == null) {
                     handleIllegalAccess(
                             req,
@@ -44,7 +45,7 @@ public class AuthenticationFilter implements Filter {
                 } else {
                     AccountDTO account = (AccountDTO) session.getAttribute("account");
                     Role role = account.account().getRole();
-                    if (role == null || !(role.equals(Role.ADMIN) || role.equals(roleFromCommand))) {
+                    if (role == null || !rolesFromCommand.contains(role)) {
                         handleIllegalAccess(
                                 req,
                                 res,
@@ -74,10 +75,10 @@ public class AuthenticationFilter implements Filter {
             throws IOException, ServletException {
         if (fs == FailingStrategy.REDIRECT_TO_LOGIN) {
             req.setAttribute("errormessage", msg);
-            req.getRequestDispatcher("/WEB-INF/login.jsp").forward(req, res);
+            req.getRequestDispatcher("/WEB-INF/pages/general/login.jsp").forward(req, res);
         } else if (fs == FailingStrategy.REDIRECT_TO_HOME) {
             req.setAttribute("errormessage", msg);
-            req.getRequestDispatcher("/WEB-INF/index.jsp").forward(req, res);
+            req.getRequestDispatcher("/WEB-INF/pages/general/index.jsp").forward(req, res);
         } else {
             res.sendError(errCode);
         }

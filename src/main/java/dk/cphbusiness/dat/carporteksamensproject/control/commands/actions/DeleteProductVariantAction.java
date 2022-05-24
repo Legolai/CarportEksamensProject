@@ -9,8 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class DeleteProductVariantAction extends ProtectedPage {
-    public DeleteProductVariantAction(String pageName, Role role) {
-        super(pageName, role);
+    public DeleteProductVariantAction(Role... roles) {
+        super("", roles);
     }
 
     @Override

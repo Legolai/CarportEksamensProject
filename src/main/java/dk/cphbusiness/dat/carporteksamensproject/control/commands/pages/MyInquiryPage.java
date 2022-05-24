@@ -19,8 +19,8 @@ import java.util.Map;
 import java.util.Optional;
 
 public class MyInquiryPage extends ProtectedPage {
-    public MyInquiryPage(String pageName, Role role) {
-        super(pageName, role);
+    public MyInquiryPage(String pageName, Role... roles) {
+        super(pageName, roles);
     }
 
     @Override

@@ -12,8 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class UpdateInquiryPriceAction extends ProtectedPage {
-    public UpdateInquiryPriceAction(Role role) {
-        super("", role);
+    public UpdateInquiryPriceAction(Role... roles) {
+        super("", roles);
     }
 
     @Override

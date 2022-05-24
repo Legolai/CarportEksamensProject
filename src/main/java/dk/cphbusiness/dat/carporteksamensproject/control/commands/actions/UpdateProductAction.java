@@ -19,8 +19,8 @@ import java.util.logging.Logger;
 
 public class UpdateProductAction extends ProtectedPage {
 
-    public UpdateProductAction(Role role) {
-        super("", role);
+    public UpdateProductAction(Role... roles) {
+        super("", roles);
     }
 
     @Override

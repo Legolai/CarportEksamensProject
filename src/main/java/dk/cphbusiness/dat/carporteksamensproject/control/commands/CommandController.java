@@ -6,6 +6,7 @@ import dk.cphbusiness.dat.carporteksamensproject.model.entities.Role;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,21 +23,21 @@ public class CommandController {
         commands.put("roofSloped-page", new UnprotectedPage("pages/general/roofSloped"));
         commands.put("my-inquiry-page", new MyInquiryPage("pages/customer/myInquiry", Role.COSTUMER));
         commands.put("inquiry-page", new UnprotectedPage("pages/general/inquiry"));
-        commands.put("account-page", new ProtectedPage("pages/general/account", Role.COSTUMER));
+        commands.put("account-page", new ProtectedPage("pages/general/account", Role.COSTUMER, Role.EMPLOYEE, Role.ADMIN));
         commands.put("my-inquiries-page", new MyInquiriesPage("pages/customer/myInquiries", Role.COSTUMER));
-        commands.put("employee-dashboard-page", new EmployeeDashboardPage("pages/company/employeeDashboard", Role.EMPLOYEE));
+        commands.put("employee-dashboard-page", new EmployeeDashboardPage("pages/company/employeeDashboard", Role.EMPLOYEE, Role.ADMIN));
         commands.put("materials-overview-page", new MaterialsPage("pages/company/materialsOverview", Role.ADMIN));
         commands.put("edit-material-page", new EditMaterialPage("pages/company/editMaterial", Role.ADMIN));
-        commands.put("edit-inquiry-page", new EditInquiryPage("pages/company/editInquiry", Role.EMPLOYEE));
+        commands.put("edit-inquiry-page", new EditInquiryPage("pages/company/editInquiry", Role.EMPLOYEE, Role.ADMIN));
 
         commands.put("login-command", new LoginAction());
         commands.put("logout-command", new LogoutAction());
         commands.put("register-command", new RegisterAction());
         commands.put("inquiry-flatRoof-command", new InquiryFlatRoofAction());
 
-        commands.put("update-inquiry-status-command", new UpdateInquiryStatusAction(Role.EMPLOYEE));
-        commands.put("update-inquiry-price-command", new UpdateInquiryPriceAction(Role.EMPLOYEE));
-        commands.put("update-carport-command", new UpdateCarportAction(Role.EMPLOYEE));
+        commands.put("update-inquiry-status-command", new UpdateInquiryStatusAction(Role.EMPLOYEE, Role.ADMIN));
+        commands.put("update-inquiry-price-command", new UpdateInquiryPriceAction(Role.EMPLOYEE, Role.ADMIN));
+        commands.put("update-carport-command", new UpdateCarportAction(Role.EMPLOYEE, Role.ADMIN));
 
         commands.put("update-product-command", new UpdateProductAction(Role.ADMIN));
         commands.put("create-product-variant-command", new CreateProductVariantAction(Role.ADMIN));

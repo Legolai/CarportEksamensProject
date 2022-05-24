@@ -25,8 +25,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class UpdateCarportAction extends ProtectedPage {
-    public UpdateCarportAction(Role role) {
-        super("", role);
+    public UpdateCarportAction(Role... roles) {
+        super("", roles);
     }
 
     @Override
@@ -72,6 +72,8 @@ public class UpdateCarportAction extends ProtectedPage {
                     optionalShack = Optional.of(shack);
                 }
             }
+
+//            TODO: Remove shack from db when hasShask is false and shack ID is not null
 
             Carport carport = new Carport(carportID, carportWidth, carportLength, 210, RoofType.FLAT, roofMaterial, null, shackID);
 

@@ -17,8 +17,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class CreateProductVariantAction extends ProtectedPage {
-    public CreateProductVariantAction(Role role) {
-        super("", role);
+    public CreateProductVariantAction(Role... roles) {
+        super("", roles);
     }
 
     @Override
