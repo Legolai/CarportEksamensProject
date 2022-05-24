@@ -44,52 +44,52 @@ public class Product {
         return id;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public double getUnitPrice() {
-        return unitPrice;
-    }
-
-    public Unit getUnit() {
-        return unit;
-    }
-
-    public AmountUnit getAmountUnit() {
-        return amountUnit;
-    }
-
-    public int getProductTypeId() {
-        return productTypeId;
-    }
-
-    public boolean isDeleted() {
-        return isDeleted;
-    }
-
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public void setDescription(String description) {
         this.description = description;
     }
 
+    public double getUnitPrice() {
+        return unitPrice;
+    }
+
     public void setUnitPrice(double unitPrice) {
         this.unitPrice = unitPrice;
+    }
+
+    public Unit getUnit() {
+        return unit;
     }
 
     public void setUnit(Unit unit) {
         this.unit = unit;
     }
 
+    public AmountUnit getAmountUnit() {
+        return amountUnit;
+    }
+
     public void setAmountUnit(AmountUnit amountUnit) {
         this.amountUnit = amountUnit;
     }
 
+    public int getProductTypeId() {
+        return productTypeId;
+    }
+
     public void setProductTypeId(int productTypeId) {
         this.productTypeId = productTypeId;
+    }
+
+    public boolean isDeleted() {
+        return isDeleted;
     }
 
     public void setDeleted(boolean deleted) {

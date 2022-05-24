@@ -1,7 +1,7 @@
 package dk.cphbusiness.dat.carporteksamensproject.control.commands;
 
-import dk.cphbusiness.dat.carporteksamensproject.control.commands.pages.*;
 import dk.cphbusiness.dat.carporteksamensproject.control.commands.actions.*;
+import dk.cphbusiness.dat.carporteksamensproject.control.commands.pages.*;
 import dk.cphbusiness.dat.carporteksamensproject.model.entities.Role;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,7 +14,7 @@ public class CommandController {
     private static final CommandController INSTANCE = new CommandController();
     private final Map<String, Command> commands = new HashMap<>();
 
-    private CommandController(){
+    private CommandController() {
         commands.put("index", new UnprotectedPage("pages/general/index"));
         commands.put("login-page", new UnprotectedPage("pages/general/login"));
         commands.put("register-page", new UnprotectedPage("pages/general/register"));
@@ -45,7 +45,7 @@ public class CommandController {
         commands.put("SVG-command", new SVGCommand(""));
     }
 
-    public static CommandController getInstance(){
+    public static CommandController getInstance() {
         return INSTANCE;
     }
 
@@ -53,7 +53,7 @@ public class CommandController {
     public Command fromPath(HttpServletRequest request) {
         String route = request.getPathInfo().replaceAll("^/+", "");
 
-        String msg =  "--> " + route;
+        String msg = "--> " + route;
         String loggerName = "CommandController";
         Logger.getLogger(loggerName).log(Level.SEVERE, msg);
 

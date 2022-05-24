@@ -33,13 +33,11 @@ public class EditMaterialPage extends ProtectedPage {
             Optional<ProductDTO> productDTO = ProductFacade.findById(materialId, connectionPool);
             productDTO.ifPresent(material -> request.setAttribute("material", material));
             productVariants.ifPresent(list -> request.setAttribute("materialVariants", list));
-        }
-        catch (NumberFormatException ex) {
+        } catch (NumberFormatException ex) {
             request.setAttribute("errormessage", "Material code is not available");
             Logger.getLogger("web").log(Level.SEVERE, ex.getMessage());
             return new PageDirect(RedirectType.ERROR, "error");
-        }
-        catch (DatabaseException ex) {
+        } catch (DatabaseException ex) {
             request.setAttribute("errormessage", ex.getMessage());
             Logger.getLogger("web").log(Level.SEVERE, ex.getMessage());
             return new PageDirect(RedirectType.ERROR, "error");

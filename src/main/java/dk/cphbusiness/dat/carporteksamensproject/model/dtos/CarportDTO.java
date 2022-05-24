@@ -4,11 +4,7 @@ import dk.cphbusiness.dat.carporteksamensproject.model.annotations.Join;
 import dk.cphbusiness.dat.carporteksamensproject.model.annotations.JoinView;
 import dk.cphbusiness.dat.carporteksamensproject.model.annotations.JoinedEntity;
 import dk.cphbusiness.dat.carporteksamensproject.model.entities.Carport;
-import dk.cphbusiness.dat.carporteksamensproject.model.entities.Product;
-import dk.cphbusiness.dat.carporteksamensproject.model.entities.ProductType;
-import dk.cphbusiness.dat.carporteksamensproject.model.entities.ProductVariant;
 import dk.cphbusiness.dat.carporteksamensproject.model.entities.Shack;
-import dk.cphbusiness.dat.carporteksamensproject.model.entities.Size;
 import dk.cphbusiness.dat.carporteksamensproject.model.interfaces.IForeignKey;
 
 import java.util.Optional;

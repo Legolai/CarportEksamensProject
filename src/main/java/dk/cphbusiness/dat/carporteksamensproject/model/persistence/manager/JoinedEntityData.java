@@ -1,11 +1,12 @@
 package dk.cphbusiness.dat.carporteksamensproject.model.persistence.manager;
 
-import dk.cphbusiness.dat.carporteksamensproject.model.annotations.Join;
 import dk.cphbusiness.dat.carporteksamensproject.model.annotations.JoinView;
-import dk.cphbusiness.dat.carporteksamensproject.model.annotations.JoinedEntity;
 
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 public class JoinedEntityData<T> {
     private final String joinView;

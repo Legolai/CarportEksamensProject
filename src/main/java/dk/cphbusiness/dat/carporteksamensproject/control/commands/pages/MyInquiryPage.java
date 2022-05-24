@@ -43,8 +43,7 @@ public class MyInquiryPage extends ProtectedPage {
         Optional<InquiryDTO> optional;
         try {
             optional = InquiryFacade.find(Map.of("inquiry_ID", inquiryId), connectionPool);
-        }
-        catch (DatabaseException ex) {
+        } catch (DatabaseException ex) {
             request.setAttribute("errormessage", ex.getMessage());
             return new PageDirect(RedirectType.ERROR, "error");
         }

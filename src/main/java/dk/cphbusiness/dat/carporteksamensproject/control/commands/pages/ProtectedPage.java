@@ -8,12 +8,10 @@ import dk.cphbusiness.dat.carporteksamensproject.model.persistence.ConnectionPoo
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class ProtectedPage extends UnprotectedPage
-{
+public class ProtectedPage extends UnprotectedPage {
     private final Role role;
 
-    public ProtectedPage(String pageName, Role role)
-    {
+    public ProtectedPage(String pageName, Role role) {
         super(pageName);
         this.role = role;
     }
@@ -23,8 +21,7 @@ public class ProtectedPage extends UnprotectedPage
         return new PageDirect(RedirectType.DEFAULT, getPageName());
     }
 
-    public Role getRole()
-    {
+    public Role getRole() {
         return role;
     }
 }

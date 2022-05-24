@@ -32,36 +32,36 @@ public class BillOfMaterialLineItem {
         return id;
     }
 
-    public int getInquiryId() {
-        return inquiryId;
-    }
-
-    public int getAmount() {
-        return amount;
-    }
-
-    public String getComment() {
-        return comment;
-    }
-
-    public int getProductId() {
-        return productId;
-    }
-
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getInquiryId() {
+        return inquiryId;
     }
 
     public void setInquiryId(int inquiryId) {
         this.inquiryId = inquiryId;
     }
 
+    public int getAmount() {
+        return amount;
+    }
+
     public void setAmount(int amount) {
         this.amount = amount;
     }
 
+    public String getComment() {
+        return comment;
+    }
+
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public int getProductId() {
+        return productId;
     }
 
     public void setProductId(int productId) {

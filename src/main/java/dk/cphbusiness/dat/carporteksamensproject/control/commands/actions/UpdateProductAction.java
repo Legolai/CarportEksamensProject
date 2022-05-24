@@ -57,11 +57,9 @@ public class UpdateProductAction extends ProtectedPage {
                 request.setAttribute("errormessage", "Failed to update values for product");
                 return new PageDirect(RedirectType.ERROR, "error");
             }
-        }
-        catch (NumberFormatException | ParseException ex) {
+        } catch (NumberFormatException | ParseException ex) {
             Logger.getLogger("web").log(Level.SEVERE, ex.getMessage());
-        }
-        catch (DatabaseException ex) {
+        } catch (DatabaseException ex) {
             request.setAttribute("errormessage", ex.getMessage());
             return new PageDirect(RedirectType.ERROR, "error");
         }

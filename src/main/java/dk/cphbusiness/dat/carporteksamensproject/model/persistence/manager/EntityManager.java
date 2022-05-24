@@ -1,9 +1,9 @@
 package dk.cphbusiness.dat.carporteksamensproject.model.persistence.manager;
 
-import dk.cphbusiness.dat.carporteksamensproject.model.interfaces.FunctionWithThrows;
-import dk.cphbusiness.dat.carporteksamensproject.model.interfaces.IForeignKey;
 import dk.cphbusiness.dat.carporteksamensproject.model.annotations.*;
 import dk.cphbusiness.dat.carporteksamensproject.model.exceptions.DatabaseException;
+import dk.cphbusiness.dat.carporteksamensproject.model.interfaces.FunctionWithThrows;
+import dk.cphbusiness.dat.carporteksamensproject.model.interfaces.IForeignKey;
 import dk.cphbusiness.dat.carporteksamensproject.model.persistence.ConnectionPool;
 
 import java.lang.reflect.Field;
@@ -17,8 +17,7 @@ public record EntityManager(ConnectionPool connectionPool) {
     private <R> R makeConnection(FunctionWithThrows<Connection, R> query) throws DatabaseException {
         try (Connection connection = connectionPool.getConnection()) {
             return query.apply(connection);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             throw new DatabaseException(e.getMessage());
         }
     }
@@ -28,7 +27,10 @@ public record EntityManager(ConnectionPool connectionPool) {
             List<Field> fields = entityData.getFields();
             for (int i = 1; i <= fields.size(); ++i) {
                 String fieldName = fields.get(i - 1).getName();
-                String methodName = (fields.get(i - 1).getType().equals(Boolean.TYPE) ? fieldName : "get" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1));
+                String methodName = (fields.get(i - 1)
+                        .getType()
+                        .equals(Boolean.TYPE) ? fieldName : "get" + fieldName.substring(0, 1)
+                        .toUpperCase() + fieldName.substring(1));
                 Object value = entityData.getEntityClass().getDeclaredMethod(methodName).invoke(entity);
                 if (fields.get(i - 1).getType().isEnum()) {
                     value = ((Enum<?>) value).name();
@@ -38,8 +40,7 @@ public record EntityManager(ConnectionPool connectionPool) {
             int rowsAffected = ps.executeUpdate();
             ResultData<T> managerResult = new ResultData<>(rowsAffected, ps.getGeneratedKeys(), entityData, entity);
             return queryHandler.apply(managerResult);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             throw new DatabaseException(e.getMessage());
         }
     }
@@ -51,8 +52,7 @@ public record EntityManager(ConnectionPool connectionPool) {
             }
             Integer rowsAffected = ps.executeUpdate();
             return queryHandler.apply(rowsAffected);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             throw new DatabaseException(e.getMessage());
         }
     }
@@ -63,8 +63,7 @@ public record EntityManager(ConnectionPool connectionPool) {
                 ps.setObject(i, params[i - 1]);
             }
             return queryHandler.apply(ps.executeQuery());
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             throw new DatabaseException(e.getMessage());
         }
     }
@@ -73,7 +72,9 @@ public record EntityManager(ConnectionPool connectionPool) {
         EntityData<T> entityData = new EntityData<>(entityClass);
 
         entityData.getFields().remove(entityData.getFieldForId());
-        String sqlColumns = entityData.getFields().stream().map(f -> f.getAnnotation(Column.class).value()).collect(Collectors.joining(", "));
+        String sqlColumns = entityData.getFields().stream()
+                .map(f -> f.getAnnotation(Column.class).value())
+                .collect(Collectors.joining(", "));
         entityData.getFields().add(entityData.getFieldForId());
 
         String idColumn = entityData.getFieldForId().getAnnotation(Column.class).value();
@@ -99,7 +100,9 @@ public record EntityManager(ConnectionPool connectionPool) {
         try {
             for (Iterator<Field> it = joinedEntityData.descendingFieldsIterator(); it.hasNext(); ) {
                 Field field = it.next();
-                Object fieldEntity = joinedEntityData.getEntityClass().getDeclaredMethod(field.getName()).invoke(entity);
+                Object fieldEntity = joinedEntityData.getEntityClass()
+                        .getDeclaredMethod(field.getName())
+                        .invoke(entity);
                 Object baseEntity;
                 if (field.getType().isAnnotationPresent(JoinedEntity.class)) {
                     baseEntity = insertJoinedEntity(new JoinedEntityData<>(field.getType()), fieldEntity);
@@ -123,10 +126,11 @@ public record EntityManager(ConnectionPool connectionPool) {
 
             }
             Collections.reverse(constArgs);
-            return joinedEntityData.getEntityClass().getConstructor(joinedEntityData.getConstructorEmp()).newInstance(constArgs.toArray());
-        }
-        catch (NoSuchMethodException | InvocationTargetException | InstantiationException |
-               IllegalAccessException | DatabaseException ex) {
+            return joinedEntityData.getEntityClass()
+                    .getConstructor(joinedEntityData.getConstructorEmp())
+                    .newInstance(constArgs.toArray());
+        } catch (NoSuchMethodException | InvocationTargetException | InstantiationException |
+                 IllegalAccessException | DatabaseException ex) {
             throw new DatabaseException(ex.getMessage());
         }
     }
@@ -155,8 +159,7 @@ public record EntityManager(ConnectionPool connectionPool) {
                 Field field = fields[0];
                 Object baseEntity = o.getClass().getMethod(field.getName()).invoke(o);
                 subList.add(baseEntity);
-            }
-            catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException ex) {
+            } catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException ex) {
                 throw new DatabaseException(ex.getMessage());
             }
         }
@@ -177,17 +180,17 @@ public record EntityManager(ConnectionPool connectionPool) {
             for (Field field : joinedEntityData.getFields().subList(1, joinedEntityData.getFields().size())) {
                 try {
                     constArgs.add(t.getClass().getDeclaredMethod(field.getName()).invoke(t));
-                }
-                catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+                } catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
                     throw new DatabaseException(e.getMessage());
                 }
             }
             try {
-                list.add(joinedEntityData.getEntityClass().getConstructor(joinedEntityData.getConstructorEmp()).newInstance(constArgs.toArray()));
+                list.add(joinedEntityData.getEntityClass()
+                        .getConstructor(joinedEntityData.getConstructorEmp())
+                        .newInstance(constArgs.toArray()));
                 constArgs.clear();
-            }
-            catch (InstantiationException | IllegalAccessException | NoSuchMethodException |
-                   InvocationTargetException ex) {
+            } catch (InstantiationException | IllegalAccessException | NoSuchMethodException |
+                     InvocationTargetException ex) {
                 throw new DatabaseException(ex.getMessage());
             }
         }
@@ -229,8 +232,7 @@ public record EntityManager(ConnectionPool connectionPool) {
                 }
                 list.addAll(sendBatch(ps, entityData, batch, list.size()));
                 return list;
-            }
-            catch (SQLException ex) {
+            } catch (SQLException ex) {
                 throw new DatabaseException(ex.getMessage());
             }
         };
@@ -258,15 +260,15 @@ public record EntityManager(ConnectionPool connectionPool) {
         for (Field field : entityData.getFields()) {
             try {
                 String name = field.getName();
-                String methodName = (field.getType().equals(Boolean.TYPE) ? name : "get" + name.substring(0, 1).toUpperCase() + name.substring(1));
+                String methodName = (field.getType().equals(Boolean.TYPE) ? name : "get" + name.substring(0, 1)
+                        .toUpperCase() + name.substring(1));
                 Object value = entityData.getEntityClass().getMethod(methodName).invoke(entity);
                 if (value == null || (field.isAnnotationPresent(Id.class) && value.equals(0))) continue;
                 if (field.getType().isEnum()) {
                     value = ((Enum<?>) value).name();
                 }
                 properties.put(field.getAnnotation(Column.class).value(), value);
-            }
-            catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException ex) {
+            } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException ex) {
                 throw new DatabaseException(ex.getMessage());
             }
         }
@@ -382,7 +384,8 @@ public record EntityManager(ConnectionPool connectionPool) {
                 list.add(createJoinedEntity(resultSet, joinedEntityData));
             return list.isEmpty() ? null : list;
         };
-        return Optional.ofNullable(makeConnection(connection -> newQuery(connection, sql, handler, properties.values().toArray())));
+        return Optional.ofNullable(makeConnection(connection -> newQuery(connection, sql, handler, properties.values()
+                .toArray())));
     }
 
     private <T> Optional<List<T>> pagedFindEntities(Class<T> entityClass, Map<String, Object> properties, int offset, int rowCount) throws DatabaseException {
@@ -399,7 +402,8 @@ public record EntityManager(ConnectionPool connectionPool) {
                 list.add(createEntity(resultSet, entityData));
             return list.isEmpty() ? null : list;
         };
-        return Optional.ofNullable(makeConnection(connection -> newQuery(connection, sql, handler, properties.values().toArray())));
+        return Optional.ofNullable(makeConnection(connection -> newQuery(connection, sql, handler, properties.values()
+                .toArray())));
     }
 
     private <T> T extractIdFromQueryUpdate(ResultData<T> managerResult) throws DatabaseException {
@@ -412,13 +416,18 @@ public record EntityManager(ConnectionPool connectionPool) {
                 String methodName = "set" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
                 Object value = managerResult.getResultSet().getObject(1);
                 if (fieldForId.getType().equals(Integer.TYPE)) {
-                    managerResult.getEntityData().getEntityClass().getMethod(methodName, fieldForId.getType()).invoke(newEntity, Integer.parseInt(value.toString()));
+                    managerResult.getEntityData()
+                            .getEntityClass()
+                            .getMethod(methodName, fieldForId.getType())
+                            .invoke(newEntity, Integer.parseInt(value.toString()));
                 } else {
-                    managerResult.getEntityData().getEntityClass().getMethod(methodName, fieldForId.getType()).invoke(newEntity, value);
+                    managerResult.getEntityData()
+                            .getEntityClass()
+                            .getMethod(methodName, fieldForId.getType())
+                            .invoke(newEntity, value);
                 }
             }
-        }
-        catch (SQLException | NoSuchMethodException | InvocationTargetException | IllegalAccessException ex) {
+        } catch (SQLException | NoSuchMethodException | InvocationTargetException | IllegalAccessException ex) {
             throw new DatabaseException(ex.getMessage());
         }
 
@@ -451,10 +460,11 @@ public record EntityManager(ConnectionPool connectionPool) {
                 return null;
             }
 
-            return entityData.getEntityClass().getConstructor(entityData.getConstructorEmp()).newInstance(constArgs.toArray());
-        }
-        catch (SQLException | NoSuchMethodException | InvocationTargetException | InstantiationException |
-               IllegalAccessException ex) {
+            return entityData.getEntityClass()
+                    .getConstructor(entityData.getConstructorEmp())
+                    .newInstance(constArgs.toArray());
+        } catch (SQLException | NoSuchMethodException | InvocationTargetException | InstantiationException |
+                 IllegalAccessException ex) {
             throw new DatabaseException(ex.getMessage());
         }
     }
@@ -473,10 +483,11 @@ public record EntityManager(ConnectionPool connectionPool) {
                     constArgs.add(createEntity(rs, new EntityData<>(field.getType())));
                 }
             }
-            return joinedEntityData.getEntityClass().getConstructor(joinedEntityData.getConstructorEmp()).newInstance(constArgs.toArray());
-        }
-        catch (NoSuchMethodException | InvocationTargetException | InstantiationException |
-               IllegalAccessException | DatabaseException ex) {
+            return joinedEntityData.getEntityClass()
+                    .getConstructor(joinedEntityData.getConstructorEmp())
+                    .newInstance(constArgs.toArray());
+        } catch (NoSuchMethodException | InvocationTargetException | InstantiationException |
+                 IllegalAccessException | DatabaseException ex) {
             throw new DatabaseException(ex.getMessage());
         }
     }
@@ -489,20 +500,22 @@ public record EntityManager(ConnectionPool connectionPool) {
 
         String sql = "DELETE FROM " + entityData.getTableName() + " WHERE " + options + ";";
 
-        FunctionWithThrows<Integer, Integer> handler = rowsAffected ->  rowsAffected;
+        FunctionWithThrows<Integer, Integer> handler = rowsAffected -> rowsAffected;
 
         return makeConnection(connection -> newQueryUpdate(connection, sql, handler, conditions.values().toArray()));
     }
 
-    public <T> boolean updateProperties(Class<T> entityClass, Object primaryKey,  Map<String, Object> properties) throws DatabaseException {
+    public <T> boolean updateProperties(Class<T> entityClass, Object primaryKey, Map<String, Object> properties) throws DatabaseException {
         EntityData<T> entityData = new EntityData<>(entityClass);
 
         String sqlColumns = String.join(", ", properties.keySet());
         String options = sqlColumns.replaceAll("\\b(?!,\\b)\\w+", "$0 = ?");
 
-        String sql = "UPDATE " + entityData.getTableName() + " SET " + options + " WHERE " + entityData.getFieldForId().getAnnotation(Column.class).value() + " = ?;";
+        String sql = "UPDATE " + entityData.getTableName() + " SET " + options + " WHERE " + entityData.getFieldForId()
+                .getAnnotation(Column.class)
+                .value() + " = ?;";
 
-        FunctionWithThrows<Integer, Boolean> handler = rowsAffected ->  rowsAffected == 1;
+        FunctionWithThrows<Integer, Boolean> handler = rowsAffected -> rowsAffected == 1;
 
         List<Object> params = new ArrayList<>(properties.values());
         params.add(primaryKey);

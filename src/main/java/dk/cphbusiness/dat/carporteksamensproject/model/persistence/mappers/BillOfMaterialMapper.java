@@ -4,7 +4,6 @@ import dk.cphbusiness.dat.carporteksamensproject.model.dtos.BillOfMaterialDTO;
 import dk.cphbusiness.dat.carporteksamensproject.model.dtos.BillOfMaterialLineItemDTO;
 import dk.cphbusiness.dat.carporteksamensproject.model.entities.BillOfMaterialLineItem;
 import dk.cphbusiness.dat.carporteksamensproject.model.exceptions.DatabaseException;
-import dk.cphbusiness.dat.carporteksamensproject.model.persistence.ConnectionPool;
 import dk.cphbusiness.dat.carporteksamensproject.model.persistence.manager.EntityManager;
 
 import java.util.List;

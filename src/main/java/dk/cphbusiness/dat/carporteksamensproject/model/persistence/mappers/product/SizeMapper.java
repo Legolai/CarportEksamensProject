@@ -2,8 +2,8 @@ package dk.cphbusiness.dat.carporteksamensproject.model.persistence.mappers.prod
 
 import dk.cphbusiness.dat.carporteksamensproject.model.entities.Size;
 import dk.cphbusiness.dat.carporteksamensproject.model.exceptions.DatabaseException;
-import dk.cphbusiness.dat.carporteksamensproject.model.persistence.mappers.DataMapper;
 import dk.cphbusiness.dat.carporteksamensproject.model.persistence.manager.EntityManager;
+import dk.cphbusiness.dat.carporteksamensproject.model.persistence.mappers.DataMapper;
 
 import java.util.List;
 import java.util.Map;
@@ -11,7 +11,7 @@ import java.util.Optional;
 
 public class SizeMapper implements DataMapper<Size> {
 
-    private EntityManager entityManager;
+    private final EntityManager entityManager;
 
     public SizeMapper(EntityManager entityManager) {
         this.entityManager = entityManager;

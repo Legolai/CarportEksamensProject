@@ -29,20 +29,20 @@ public class ProductType {
         return id;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public boolean isDeleted() {
-        return isDeleted;
-    }
-
     public void setId(int id) {
         this.id = id;
     }
 
+    public String getType() {
+        return type;
+    }
+
     public void setType(String type) {
         this.type = type;
+    }
+
+    public boolean isDeleted() {
+        return isDeleted;
     }
 
     public void setDeleted(boolean deleted) {

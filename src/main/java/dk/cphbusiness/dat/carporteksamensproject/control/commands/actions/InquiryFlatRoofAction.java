@@ -52,7 +52,7 @@ public class InquiryFlatRoofAction implements Command {
             PersonDTO personDTO = new PersonDTO(person, address);
 
             Optional<Shack> optionalShack = Optional.empty();
-            if(hasShack) {
+            if (hasShack) {
                 int shackWidth = Integer.parseInt(shackWidthString);
                 int shackLength = Integer.parseInt(shackLengthString);
                 Shack shack = new Shack(0, shackWidth, shackLength, true);
@@ -80,7 +80,7 @@ public class InquiryFlatRoofAction implements Command {
             request.setAttribute("errormessage", "Could not handel sizes");
             Logger.getLogger("web").log(Level.SEVERE, "Could not parse string values to integers", ex);
             return new PageDirect(RedirectType.ERROR, "error");
-        }  catch (DatabaseException ex) {
+        } catch (DatabaseException ex) {
             request.setAttribute("errormessage", "Could not create inquiry");
             Logger.getLogger("web").log(Level.SEVERE, "Could not create inquiry", ex);
             return new PageDirect(RedirectType.ERROR, "error");

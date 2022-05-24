@@ -34,28 +34,28 @@ public class Shack {
         return id;
     }
 
-    public int getWidth() {
-        return width;
-    }
-
-    public int getLength() {
-        return length;
-    }
-
-    public boolean isLeftAligned() {
-        return isLeftAligned;
-    }
-
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getWidth() {
+        return width;
     }
 
     public void setWidth(int width) {
         this.width = width;
     }
 
+    public int getLength() {
+        return length;
+    }
+
     public void setLength(int length) {
         this.length = length;
+    }
+
+    public boolean isLeftAligned() {
+        return isLeftAligned;
     }
 
     public void setLeftAligned(boolean leftAligned) {

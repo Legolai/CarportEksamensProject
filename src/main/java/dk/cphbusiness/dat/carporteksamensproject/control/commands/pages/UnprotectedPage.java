@@ -8,17 +8,14 @@ import dk.cphbusiness.dat.carporteksamensproject.model.persistence.ConnectionPoo
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class UnprotectedPage implements Command
-{
+public class UnprotectedPage implements Command {
     private final String pageName;
 
-    public UnprotectedPage(String pageName)
-    {
+    public UnprotectedPage(String pageName) {
         this.pageName = pageName;
     }
 
-    public String getPageName()
-    {
+    public String getPageName() {
         return pageName;
     }
 

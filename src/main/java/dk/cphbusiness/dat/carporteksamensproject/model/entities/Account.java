@@ -39,36 +39,36 @@ public class Account {
         return id;
     }
 
-    public LocalDateTime getCreated() {
-        return created;
-    }
-
-    public int getPersonId() {
-        return personId;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
     public void setId(int id) {
         this.id = id;
+    }
+
+    public LocalDateTime getCreated() {
+        return created;
     }
 
     public void setCreated(LocalDateTime created) {
         this.created = created;
     }
 
+    public int getPersonId() {
+        return personId;
+    }
+
     public void setPersonId(int personId) {
         this.personId = personId;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Role getRole() {
+        return role;
     }
 
     public void setRole(Role role) {

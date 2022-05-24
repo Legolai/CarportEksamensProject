@@ -4,7 +4,6 @@ import dk.cphbusiness.dat.carporteksamensproject.model.dtos.CarportDTO;
 import dk.cphbusiness.dat.carporteksamensproject.model.entities.Carport;
 import dk.cphbusiness.dat.carporteksamensproject.model.entities.Shack;
 import dk.cphbusiness.dat.carporteksamensproject.model.exceptions.DatabaseException;
-import dk.cphbusiness.dat.carporteksamensproject.model.persistence.ConnectionPool;
 import dk.cphbusiness.dat.carporteksamensproject.model.persistence.manager.EntityManager;
 
 import java.time.LocalDateTime;
@@ -49,7 +48,7 @@ public class CarportMapper implements DataMapper<CarportDTO> {
     public boolean update(CarportDTO carportDTO) throws DatabaseException {
         carportDTO.carport().setUpdated(LocalDateTime.now().withNano(0));
         boolean carportUpdated = entityManager.updateEntity(Carport.class, carportDTO.carport());
-        if (carportDTO.shack().isEmpty()){
+        if (carportDTO.shack().isEmpty()) {
             return carportUpdated;
         }
         Shack shack = carportDTO.shack().get();

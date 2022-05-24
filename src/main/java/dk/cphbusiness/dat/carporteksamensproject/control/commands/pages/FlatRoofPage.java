@@ -24,9 +24,9 @@ public class FlatRoofPage extends UnprotectedPage {
     public PageDirect execute(HttpServletRequest request, HttpServletResponse response, ConnectionPool connectionPool) {
         try {
             Optional<List<ProductDTO>> productDTOS = ProductFacade.findAll(Map.of("Product_type_name", "Tagplade"), connectionPool);
-            productDTOS.ifPresentOrElse(list -> request.setAttribute("roofs", list), () -> Logger.getLogger("web").log(Level.SEVERE, "Could not find flat roofs"));
-        }
-        catch (DatabaseException ex) {
+            productDTOS.ifPresentOrElse(list -> request.setAttribute("roofs", list), () -> Logger.getLogger("web")
+                    .log(Level.SEVERE, "Could not find flat roofs"));
+        } catch (DatabaseException ex) {
             request.setAttribute("errormessage", ex.getMessage());
             return new PageDirect(RedirectType.ERROR, "error");
         }
