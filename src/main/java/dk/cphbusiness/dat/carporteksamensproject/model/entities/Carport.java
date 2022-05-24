@@ -44,28 +44,56 @@ public class Carport {
         return id;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public int getWidth() {
         return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
     }
 
     public int getLength() {
         return length;
     }
 
+    public void setLength(int length) {
+        this.length = length;
+    }
+
     public int getHeight() {
         return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
     }
 
     public RoofType getRoofType() {
         return roofType;
     }
 
+    public void setRoofType(RoofType roofType) {
+        this.roofType = roofType;
+    }
+
     public int getRoofMaterialId() {
         return roofMaterialId;
     }
 
+    public void setRoofMaterialId(int roofMaterialId) {
+        this.roofMaterialId = roofMaterialId;
+    }
+
     public LocalDateTime getUpdated() {
         return updated;
+    }
+
+    public void setUpdated(LocalDateTime updated) {
+        this.updated = updated;
     }
 
     public int getShackId() {
@@ -74,34 +102,6 @@ public class Carport {
 
     public void setShackId(int shackId) {
         this.shackId = shackId;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setWidth(int width) {
-        this.width = width;
-    }
-
-    public void setLength(int length) {
-        this.length = length;
-    }
-
-    public void setHeight(int height) {
-        this.height = height;
-    }
-
-    public void setRoofType(RoofType roofType) {
-        this.roofType = roofType;
-    }
-
-    public void setRoofMaterialId(int roofMaterialId) {
-        this.roofMaterialId = roofMaterialId;
-    }
-
-    public void setUpdated(LocalDateTime updated) {
-        this.updated = updated;
     }
 
     @Override

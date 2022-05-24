@@ -30,7 +30,6 @@ public class Inquiry {
     private LocalDateTime updated;
 
 
-
     public Inquiry(int id, InquiryStatus inquiryStatus, String comment, int personId, int carportId, int price, LocalDateTime created, LocalDateTime updated) {
         this.id = id;
         this.inquiryStatus = inquiryStatus;

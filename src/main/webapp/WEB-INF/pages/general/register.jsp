@@ -2,7 +2,7 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-<%@page errorPage="../error.jsp" isErrorPage="false" %>
+<%@page errorPage="../../../error.jsp" isErrorPage="false" %>
 
 <t:pagetemplate>
 
@@ -23,6 +23,9 @@
         <div class="container justify-content-center" style="width: clamp(200px, 100%, 700px)">
             <h3 style="text-align: center">Her kan du oprette en bruger</h3>
             <form class="row g-3 mb-3" action="${pageContext.request.contextPath}/fc/register-command" method="post">
+                <c:if test="${requestScope.error != null || requestScope.equals('')}">
+                    <span class="alert alert-warning" role="alert">${requestScope.error}</span>
+                </c:if>
                 <div class="col-md-6">
                     <label for="firstName" class="form-label">Fornavn</label>
                     <input type="text" class="form-control" id="firstName" name="firstName">
@@ -60,11 +63,12 @@
                     <input class="form-control" type="text" id="zip" name="zip"/>
                 </div>
                 <div class="col-12">
-                    <input class="col-12 btn btn-primary" type="submit"  value="Opret bruger"/>
+                    <input class="col-12 btn btn-primary" type="submit" value="Opret bruger"/>
                 </div>
             </form>
             <div class="row mb-3">
-                <p>Har du allerede en bruger, så login <a href="${pageContext.request.contextPath}/fc/login-page">her</a>.</p>
+                <p>Har du allerede en bruger, så login <a
+                        href="${pageContext.request.contextPath}/fc/login-page">her</a>.</p>
             </div>
         </div>
     </jsp:body>

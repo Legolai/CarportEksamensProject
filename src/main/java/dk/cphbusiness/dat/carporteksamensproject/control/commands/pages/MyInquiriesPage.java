@@ -18,8 +18,8 @@ import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class AccountPageCommand extends ProtectedPageCommand{
-    public AccountPageCommand(String pageName, Role role) {
+public class MyInquiriesPage extends ProtectedPage {
+    public MyInquiriesPage(String pageName, Role role) {
         super(pageName, role);
     }
 
@@ -31,10 +31,11 @@ public class AccountPageCommand extends ProtectedPageCommand{
         AccountDTO accountDTO = (AccountDTO) session.getAttribute("account");
 
         try {
-            Optional<List<InquiryDTO>> list = InquiryFacade.findAll(Map.of("person_email", accountDTO.personDTO().person().getEmail()), connectionPool);
+            Optional<List<InquiryDTO>> list = InquiryFacade.findAll(Map.of("person_email", accountDTO.personDTO()
+                    .person()
+                    .getEmail()), connectionPool);
             list.ifPresent(inquiryDTOS -> request.setAttribute("inquiries", inquiryDTOS));
-        }
-        catch (DatabaseException e) {
+        } catch (DatabaseException e) {
             Logger.getLogger("web").log(Level.SEVERE, "Failed to find inquiries for account!", e);
         }
 

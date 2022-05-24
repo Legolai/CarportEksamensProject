@@ -2,7 +2,7 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-<%@page errorPage="../error.jsp" isErrorPage="false" %>
+<%@page errorPage="../../../error.jsp" isErrorPage="false" %>
 
 <t:pagetemplate>
 
@@ -21,16 +21,17 @@
     <jsp:body>
 
         <div class="container justify-content-center" style="width: clamp(200px, 100%, 700px)">
-            <form class="row align-items-center" action="${pageContext.request.contextPath}/fc/login-command" method="post">
-                <c:if test="${requestScope.error != null || !requestScope.equals('')}">
-                    <span>${requestScope.error}</span>
+            <form class="row align-items-center" action="${pageContext.request.contextPath}/fc/login-command"
+                  method="post">
+                <c:if test="${requestScope.error != null || requestScope.equals('')}">
+                    <span class="alert alert-warning" role="alert">${requestScope.error}</span>
                 </c:if>
                 <div class="col-12 mb-3">
                     <label class="form-label" for="email">E-mail: </label>
                     <input class="form-control" type="text" id="email" name="email"/>
                 </div>
                 <div class="col-12 mb-3">
-                    <label class="form-label" for="password" >Password: </label>
+                    <label class="form-label" for="password">Password: </label>
                     <input class="form-control" type="password" id="password" name="password"/>
                 </div>
                 <div class="col-12 mb-3">
@@ -38,12 +39,10 @@
                 </div>
             </form>
             <div class="row">
-                <p>Hvis du ikke har en bruger, kan du oprette en <a href="${pageContext.request.contextPath}/fc/register-page">her</a>.</p>
+                <p>Hvis du ikke har en bruger, kan du oprette en <a
+                        href="${pageContext.request.contextPath}/fc/register-page">her</a>.</p>
             </div>
         </div>
-
-
-
 
 
     </jsp:body>

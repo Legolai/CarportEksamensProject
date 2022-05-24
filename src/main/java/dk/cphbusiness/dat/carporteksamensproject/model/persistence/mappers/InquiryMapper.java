@@ -1,24 +1,16 @@
 package dk.cphbusiness.dat.carporteksamensproject.model.persistence.mappers;
 
-import dk.cphbusiness.dat.carporteksamensproject.model.annotations.Column;
-import dk.cphbusiness.dat.carporteksamensproject.model.dtos.BillOfMaterialDTO;
-import dk.cphbusiness.dat.carporteksamensproject.model.dtos.BillOfMaterialLineItemDTO;
-import dk.cphbusiness.dat.carporteksamensproject.model.dtos.CarportDTO;
-import dk.cphbusiness.dat.carporteksamensproject.model.dtos.InquiryDTO;
-import dk.cphbusiness.dat.carporteksamensproject.model.dtos.PersonDTO;
+import dk.cphbusiness.dat.carporteksamensproject.model.dtos.*;
 import dk.cphbusiness.dat.carporteksamensproject.model.entities.Inquiry;
+import dk.cphbusiness.dat.carporteksamensproject.model.entities.InquiryStatus;
 import dk.cphbusiness.dat.carporteksamensproject.model.exceptions.DatabaseException;
 import dk.cphbusiness.dat.carporteksamensproject.model.persistence.manager.EntityManager;
 import dk.cphbusiness.dat.carporteksamensproject.model.services.Search;
 import dk.cphbusiness.dat.carporteksamensproject.model.services.facade.PersonFacade;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.time.LocalDateTime;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class InquiryMapper implements DataMapper<InquiryDTO> {
@@ -44,19 +36,26 @@ public class InquiryMapper implements DataMapper<InquiryDTO> {
         List<BillOfMaterialLineItemDTO> billOfMaterialLineItemDTOS = entityManager.getAll(BillOfMaterialLineItemDTO.class);
 
         Map<Integer, BillOfMaterialDTO> bill = inquiries.stream().map(inquiry -> {
-            List<BillOfMaterialLineItemDTO> lineItems = billOfMaterialLineItemDTOS.parallelStream().filter(billOfMaterialLineItemDTO -> billOfMaterialLineItemDTO.lineItem().getInquiryId() == inquiry.getId()).toList();
+            List<BillOfMaterialLineItemDTO> lineItems = billOfMaterialLineItemDTOS.parallelStream()
+                    .filter(billOfMaterialLineItemDTO -> billOfMaterialLineItemDTO.lineItem()
+                            .getInquiryId() == inquiry.getId())
+                    .toList();
             return Map.entry(inquiry.getId(), new BillOfMaterialDTO(lineItems));
         }).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
 
         for (Inquiry inquiry : inquiries) {
-            Optional<PersonDTO> personDTO = personDTOS.stream().filter(personDTO1 -> personDTO1.person().getId() == inquiry.getPersonId()).findFirst();
-            if (personDTO.isEmpty()){
+            Optional<PersonDTO> personDTO = personDTOS.stream()
+                    .filter(personDTO1 -> personDTO1.person().getId() == inquiry.getPersonId())
+                    .findFirst();
+            if (personDTO.isEmpty()) {
                 throw new DatabaseException(String.format("Person for inquiry numbered %s could not be found!", inquiry.getId()));
             }
 
-            Optional<CarportDTO> carportDTO = carportDTOS.stream().filter(carportDTO1 -> carportDTO1.carport().getId() == inquiry.getCarportId()).findFirst();
-            if (carportDTO.isEmpty()){
+            Optional<CarportDTO> carportDTO = carportDTOS.stream()
+                    .filter(carportDTO1 -> carportDTO1.carport().getId() == inquiry.getCarportId())
+                    .findFirst();
+            if (carportDTO.isEmpty()) {
                 throw new DatabaseException(String.format("Carport for inquiry numbered %s could not be found!", inquiry.getId()));
             }
 
@@ -72,9 +71,9 @@ public class InquiryMapper implements DataMapper<InquiryDTO> {
     public Optional<List<InquiryDTO>> findAll(Map<String, Object> properties) throws DatabaseException {
         List<InquiryDTO> list = getAll();
         List<InquiryDTO> returnList = new ArrayList<>();
-        for (Map.Entry<String, Object> p: properties.entrySet()) {
+        for (Map.Entry<String, Object> p : properties.entrySet()) {
             for (InquiryDTO inquiryDTO : list) {
-                try{
+                try {
                     Object value = Search.deepSearch(p.getKey(), inquiryDTO);
                     if (p.getValue().equals(value))
                         returnList.add(inquiryDTO);
@@ -98,12 +97,13 @@ public class InquiryMapper implements DataMapper<InquiryDTO> {
         Inquiry dbInquiry = entityManager.insert(Inquiry.class, inquiryDTO.inquiry());
 
         Optional<BillOfMaterialDTO> bill = inquiryDTO.billOfMaterial();
-        if (bill.isEmpty()){
+        if (bill.isEmpty()) {
             return new InquiryDTO(dbInquiry, dbPerson, Optional.empty(), dbCarport);
         }
 
         bill.get().updateForeignKey(dbInquiry);
-        List<BillOfMaterialLineItemDTO> lineItems = entityManager.insertBatch(BillOfMaterialLineItemDTO.class, bill.get().lineItems());
+        List<BillOfMaterialLineItemDTO> lineItems = entityManager.insertBatch(BillOfMaterialLineItemDTO.class, bill.get()
+                .lineItems());
         BillOfMaterialDTO dbBill = new BillOfMaterialDTO(lineItems);
 
         return new InquiryDTO(dbInquiry, dbPerson, Optional.of(dbBill), dbCarport);
@@ -117,5 +117,19 @@ public class InquiryMapper implements DataMapper<InquiryDTO> {
     @Override
     public boolean update(InquiryDTO inquiryDTO) throws DatabaseException {
         return false;
+    }
+
+    public boolean updateInquiry(int inquiryId, Map<String, Object> properties) throws DatabaseException {
+        Map<String, Object> params = new HashMap<>(properties);
+        params.put("inquiry_updated", LocalDateTime.now().withNano(0));
+        return entityManager.updateProperties(Inquiry.class, inquiryId, params);
+    }
+
+    public boolean updateStatus(int inquiryId, InquiryStatus newStatus) throws DatabaseException {
+        return updateInquiry(inquiryId, Map.of("inquiry_status", newStatus.name()));
+    }
+
+    public boolean updatePrice(int inquiryId, int newPrice) throws DatabaseException {
+        return updateInquiry(inquiryId, Map.of("inquiry_price", newPrice));
     }
 }

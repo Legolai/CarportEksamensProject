@@ -2,11 +2,11 @@ package dk.cphbusiness.dat.carporteksamensproject.model.services;
 
 public class SVG {
     StringBuilder svgBuilder;
-    private int x;
-    private int y;
-    private String viewBox;
-    private String width;
-    private String height;
+    private final int x;
+    private final int y;
+    private final String viewBox;
+    private final String width;
+    private final String height;
 
     private final int defaultDashDistance;
     private final int defaultDashSpacing;

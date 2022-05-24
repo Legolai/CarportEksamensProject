@@ -16,7 +16,7 @@ public class Product {
     @Column("product_description")
     private String description;
     @Column("product_unit_price")
-    private int unitPrice;
+    private double unitPrice;
 
     @Column("product_unit")
     private Unit unit;
@@ -30,7 +30,7 @@ public class Product {
     @Column("product_deleted")
     private boolean isDeleted;
 
-    public Product(int id, String description, int unitPrice, Unit unit, AmountUnit amountUnit, int productTypeId, boolean isDeleted) {
+    public Product(int id, String description, double unitPrice, Unit unit, AmountUnit amountUnit, int productTypeId, boolean isDeleted) {
         this.id = id;
         this.description = description;
         this.unitPrice = unitPrice;
@@ -44,52 +44,52 @@ public class Product {
         return id;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public int getUnitPrice() {
-        return unitPrice;
-    }
-
-    public Unit getUnit() {
-        return unit;
-    }
-
-    public AmountUnit getAmountUnit() {
-        return amountUnit;
-    }
-
-    public int getProductTypeId() {
-        return productTypeId;
-    }
-
-    public boolean isDeleted() {
-        return isDeleted;
-    }
-
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public void setDescription(String description) {
         this.description = description;
     }
 
-    public void setUnitPrice(int unitPrice) {
+    public double getUnitPrice() {
+        return unitPrice;
+    }
+
+    public void setUnitPrice(double unitPrice) {
         this.unitPrice = unitPrice;
+    }
+
+    public Unit getUnit() {
+        return unit;
     }
 
     public void setUnit(Unit unit) {
         this.unit = unit;
     }
 
+    public AmountUnit getAmountUnit() {
+        return amountUnit;
+    }
+
     public void setAmountUnit(AmountUnit amountUnit) {
         this.amountUnit = amountUnit;
     }
 
+    public int getProductTypeId() {
+        return productTypeId;
+    }
+
     public void setProductTypeId(int productTypeId) {
         this.productTypeId = productTypeId;
+    }
+
+    public boolean isDeleted() {
+        return isDeleted;
     }
 
     public void setDeleted(boolean deleted) {

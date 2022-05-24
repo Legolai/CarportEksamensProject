@@ -7,7 +7,6 @@ import dk.cphbusiness.dat.carporteksamensproject.model.dtos.*;
 import dk.cphbusiness.dat.carporteksamensproject.model.entities.*;
 import dk.cphbusiness.dat.carporteksamensproject.model.exceptions.DatabaseException;
 import dk.cphbusiness.dat.carporteksamensproject.model.persistence.ConnectionPool;
-import dk.cphbusiness.dat.carporteksamensproject.model.services.CarportAlgorithm;
 import dk.cphbusiness.dat.carporteksamensproject.model.services.CarportAlgorithmFactory;
 import dk.cphbusiness.dat.carporteksamensproject.model.services.ICarportAlgorithm;
 import dk.cphbusiness.dat.carporteksamensproject.model.services.facade.InquiryFacade;
@@ -20,7 +19,7 @@ import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class InquiryFlatRoofActionCommand implements Command {
+public class InquiryFlatRoofAction implements Command {
     @Override
     public PageDirect execute(HttpServletRequest request, HttpServletResponse response, ConnectionPool connectionPool) {
         String carportWidthString = request.getParameter("carport-width");
@@ -53,7 +52,7 @@ public class InquiryFlatRoofActionCommand implements Command {
             PersonDTO personDTO = new PersonDTO(person, address);
 
             Optional<Shack> optionalShack = Optional.empty();
-            if(hasShack) {
+            if (hasShack) {
                 int shackWidth = Integer.parseInt(shackWidthString);
                 int shackLength = Integer.parseInt(shackLengthString);
                 Shack shack = new Shack(0, shackWidth, shackLength, true);
@@ -76,12 +75,12 @@ public class InquiryFlatRoofActionCommand implements Command {
 
             request.setAttribute("inquiry", dbCreated);
 
-            return new PageDirect(RedirectType.DEFAULT, "inquiry");
+            return new PageDirect(RedirectType.DEFAULT, "pages/general/inquiry");
         } catch (NumberFormatException ex) {
             request.setAttribute("errormessage", "Could not handel sizes");
             Logger.getLogger("web").log(Level.SEVERE, "Could not parse string values to integers", ex);
             return new PageDirect(RedirectType.ERROR, "error");
-        }  catch (DatabaseException ex) {
+        } catch (DatabaseException ex) {
             request.setAttribute("errormessage", "Could not create inquiry");
             Logger.getLogger("web").log(Level.SEVERE, "Could not create inquiry", ex);
             return new PageDirect(RedirectType.ERROR, "error");

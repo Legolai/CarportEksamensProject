@@ -38,8 +38,6 @@ delete from Size;
 delete from Product;
 delete from Product_type;
 
-
-
 ALTER TABLE Product_type DISABLE KEYS;
 ALTER TABLE Product_type  AUTO_INCREMENT = 1;
 INSERT INTO Product_type (product_type_name) values ('Stolpe'), ('Spærtræ'), ('Brædt'), ('Træ'),

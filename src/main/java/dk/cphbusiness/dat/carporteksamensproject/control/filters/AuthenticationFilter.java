@@ -2,7 +2,7 @@ package dk.cphbusiness.dat.carporteksamensproject.control.filters;
 
 import dk.cphbusiness.dat.carporteksamensproject.control.commands.Command;
 import dk.cphbusiness.dat.carporteksamensproject.control.commands.CommandController;
-import dk.cphbusiness.dat.carporteksamensproject.control.commands.pages.ProtectedPageCommand;
+import dk.cphbusiness.dat.carporteksamensproject.control.commands.pages.ProtectedPage;
 import dk.cphbusiness.dat.carporteksamensproject.model.dtos.AccountDTO;
 import dk.cphbusiness.dat.carporteksamensproject.model.entities.Role;
 
@@ -15,15 +15,7 @@ import java.io.IOException;
 
 
 @WebFilter(filterName = "AuthenticationFilter")
-public class AuthenticationFilter implements Filter
-{
-    private enum FailingStrategy
-    {
-        REDIRECT_TO_LOGIN,
-        REDIRECT_TO_HOME,
-        HARD_ERROR
-    }
-
+public class AuthenticationFilter implements Filter {
     @Override
     public void init(FilterConfig fConfig) {
         ServletContext context = fConfig.getServletContext();
@@ -31,21 +23,17 @@ public class AuthenticationFilter implements Filter
     }
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws ServletException, IOException
-    {
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws ServletException, IOException {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
 
         String servletPath = req.getServletPath();
-        if (servletPath != null && servletPath.equals("/fc"))
-        {
+        if (servletPath != null && servletPath.equals("/fc")) {
             Command command = CommandController.getInstance().fromPath(req);
             HttpSession session = req.getSession(false);
-            if (command instanceof ProtectedPageCommand protectedPageCommand)
-            {
+            if (command instanceof ProtectedPage protectedPageCommand) {
                 Role roleFromCommand = protectedPageCommand.getRole();
-                if (session == null || session.getAttribute("account") == null)
-                {
+                if (session == null || session.getAttribute("account") == null) {
                     handleIllegalAccess(
                             req,
                             res,
@@ -53,12 +41,10 @@ public class AuthenticationFilter implements Filter
                             "You are not authenticated. Please login first",
                             401);
                     return;
-                } else
-                {
+                } else {
                     AccountDTO account = (AccountDTO) session.getAttribute("account");
                     Role role = account.account().getRole();
-                    if (role == null || !(role.equals(Role.ADMIN) || role.equals(roleFromCommand)))
-                    {
+                    if (role == null || !(role.equals(Role.ADMIN) || role.equals(roleFromCommand))) {
                         handleIllegalAccess(
                                 req,
                                 res,
@@ -85,10 +71,8 @@ public class AuthenticationFilter implements Filter
             HttpServletResponse res,
             FailingStrategy fs,
             String msg, int errCode)
-            throws IOException, ServletException
-    {
-        if (fs == FailingStrategy.REDIRECT_TO_LOGIN)
-        {
+            throws IOException, ServletException {
+        if (fs == FailingStrategy.REDIRECT_TO_LOGIN) {
             req.setAttribute("errormessage", msg);
             req.getRequestDispatcher("/WEB-INF/login.jsp").forward(req, res);
         } else if (fs == FailingStrategy.REDIRECT_TO_HOME) {
@@ -97,6 +81,12 @@ public class AuthenticationFilter implements Filter
         } else {
             res.sendError(errCode);
         }
+    }
+
+    private enum FailingStrategy {
+        REDIRECT_TO_LOGIN,
+        REDIRECT_TO_HOME,
+        HARD_ERROR
     }
 
 }

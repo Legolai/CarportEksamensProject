@@ -20,45 +20,45 @@ public class Size {
     private SizeType type;
 
     @Column("size_deleted")
-    private boolean deleted;
+    private boolean isDeleted;
 
-    public Size(int id, int detail, SizeType type, boolean deleted) {
+    public Size(int id, int detail, SizeType type, boolean isDeleted) {
         this.id = id;
         this.detail = detail;
         this.type = type;
-        this.deleted = deleted;
+        this.isDeleted = isDeleted;
     }
 
     public int getId() {
         return id;
     }
 
-    public int getDetail() {
-        return detail;
-    }
-
-    public SizeType getType() {
-        return type;
-    }
-
-    public boolean isDeleted() {
-        return deleted;
-    }
-
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getDetail() {
+        return detail;
     }
 
     public void setDetail(int detail) {
         this.detail = detail;
     }
 
+    public SizeType getType() {
+        return type;
+    }
+
     public void setType(SizeType type) {
         this.type = type;
     }
 
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
     public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
+        this.isDeleted = deleted;
     }
 
     @Override
@@ -67,7 +67,7 @@ public class Size {
                 "id=" + id +
                 ", detail=" + detail +
                 ", type=" + type +
-                ", deleted=" + deleted +
+                ", deleted=" + isDeleted +
                 '}';
     }
 

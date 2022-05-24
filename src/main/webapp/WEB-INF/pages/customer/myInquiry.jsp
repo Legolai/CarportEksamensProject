@@ -2,8 +2,8 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-<%@ page import="dk.cphbusiness.dat.carporteksamensproject.model.entities.InquiryStatus"%>
-<%@page errorPage="../error.jsp" isErrorPage="false" %>
+<%@ page import="dk.cphbusiness.dat.carporteksamensproject.model.entities.InquiryStatus" %>
+<%@page errorPage="../../../error.jsp" isErrorPage="false" %>
 
 <t:pagetemplate>
 
@@ -12,6 +12,7 @@
     </jsp:attribute>
 
     <jsp:attribute name="header">
+            <a class="btn btn-outline-primary" href="${pageContext.request.contextPath}/fc/account-page">Tilbage</a>
             <h1>Forespørgsel nr. ${requestScope.inquiry.inquiry().getId()}</h1>
     </jsp:attribute>
 
@@ -26,20 +27,20 @@
                 <h4>Kundeoplysninger</h4>
                 <p>
                     <strong>${sessionScope.account.personDTO().person().getForename()} ${sessionScope.account.personDTO().person().getSurname()}</strong><br>
-                    ${sessionScope.account.personDTO().address().getNumber()} ${sessionScope.account.personDTO().address().getFloor()} ${sessionScope.account.personDTO().address().getStreetName()}<br>
-                    ${sessionScope.account.personDTO().address().getZipcode()} ${sessionScope.account.personDTO().address().getCityName()}<br>
+                        ${sessionScope.account.personDTO().address().getNumber()} ${sessionScope.account.personDTO().address().getFloor()} ${sessionScope.account.personDTO().address().getStreetName()}<br>
+                        ${sessionScope.account.personDTO().address().getZipcode()} ${sessionScope.account.personDTO().address().getCityName()}<br>
                 </p>
 
                 <p>
-                    ${requestScope.inquiry.person().person().getEmail()} <br>
+                        ${requestScope.inquiry.person().person().getEmail()} <br>
                     mobil: ${requestScope.inquiry.person().person().getPhoneNumber()}
                 </p>
             </div>
             <div class="col-md-4">
                 <h4>Leveringsoplysninger</h4>
                 <p>
-                    ${requestScope.inquiry.person().address().getNumber()} ${requestScope.inquiry.person().address().getFloor()} ${requestScope.inquiry.person().address().getStreetName()}<br>
-                    ${requestScope.inquiry.person().address().getZipcode()} ${requestScope.inquiry.person().address().getCityName()}<br>
+                        ${requestScope.inquiry.person().address().getNumber()} ${requestScope.inquiry.person().address().getFloor()} ${requestScope.inquiry.person().address().getStreetName()}<br>
+                        ${requestScope.inquiry.person().address().getZipcode()} ${requestScope.inquiry.person().address().getCityName()}<br>
                     Danmark
                 </p>
 
@@ -80,7 +81,7 @@
                     <h5>Carport set fra siden</h5>
                 </div>
                 <div class="row justify-content-center align-items-center h-100">
-                    ${requestScope.svgSide}
+                        ${requestScope.svgSide}
                 </div>
             </div>
             <div class="col-md-6">
@@ -88,7 +89,7 @@
                     <h5>Carport set oppe fra</h5>
                 </div>
                 <div class="row justify-content-center align-items-center h-100">
-                    ${requestScope.svgTop}
+                        ${requestScope.svgTop}
                 </div>
             </div>
         </div>

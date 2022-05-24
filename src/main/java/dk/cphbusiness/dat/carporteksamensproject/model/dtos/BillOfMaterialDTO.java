@@ -15,7 +15,7 @@ public record BillOfMaterialDTO(List<BillOfMaterialLineItemDTO> lineItems) imple
         }
     }
 
-    public double calcTotalPrice(){
+    public double calcTotalPrice() {
         return lineItems.stream().filter(Objects::nonNull).mapToDouble(BillOfMaterialLineItemDTO::getPrice).sum();
     }
 }

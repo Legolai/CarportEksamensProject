@@ -1,7 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@page errorPage="../error.jsp" isErrorPage="false" %>
+<%@page errorPage="../../../error.jsp" isErrorPage="false" %>
 
 <t:pagetemplate>
     <jsp:attribute name="header">
@@ -24,7 +24,6 @@
         ${requestScope.SVG4}<br>
         ${requestScope.SVG4side}<br>
         <p>Note: just preliminary experiment</p>
-
 
 
         <br><br>
@@ -69,9 +68,9 @@
             <rect x="750" y="30" height="540" width="10"
                   style="stroke:#000000; fill: none"/>
             <line x1="55" y1="40" x2="540" y2="560"
-                  style="stroke: #000000; fill:none; stroke-width: 4px; stroke-dasharray: 10 5"  />
+                  style="stroke: #000000; fill:none; stroke-width: 4px; stroke-dasharray: 10 5"/>
             <line x1="540" y1="40" x2="55" y2="560"
-                  style="stroke: #000000; fill:none; stroke-width: 4px; stroke-dasharray: 10 5"  />
+                  style="stroke: #000000; fill:none; stroke-width: 4px; stroke-dasharray: 10 5"/>
 
 
             <rect x="100" y="30" height="11" width="11"

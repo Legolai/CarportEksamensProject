@@ -2,7 +2,6 @@ package dk.cphbusiness.dat.carporteksamensproject.model.persistence.mappers.pers
 
 import dk.cphbusiness.dat.carporteksamensproject.model.dtos.AccountDTO;
 import dk.cphbusiness.dat.carporteksamensproject.model.exceptions.DatabaseException;
-import dk.cphbusiness.dat.carporteksamensproject.model.persistence.mappers.DataMapper;
 import dk.cphbusiness.dat.carporteksamensproject.model.persistence.manager.EntityManager;
 
 import java.util.List;
@@ -37,16 +36,18 @@ public class AccountMapper implements IAccountMapper {
 
     @Override
     public AccountDTO insert(AccountDTO accountDTO) throws DatabaseException {
+        if (find(Map.of("person_email", accountDTO.personDTO().person().getEmail())).isPresent())
+            throw new DatabaseException("Email is already in use");
         return entityManager.insert(AccountDTO.class, accountDTO);
     }
 
     @Override
     public boolean delete(AccountDTO accountDTO) throws DatabaseException {
-        return entityManager.delete(AccountDTO.class, accountDTO);
+        return entityManager.delete(AccountDTO.class, Map.of("account_ID", accountDTO.account().getId())) == 1;
     }
 
     @Override
     public boolean update(AccountDTO accountDTO) throws DatabaseException {
-        return entityManager.update(AccountDTO.class, accountDTO);
+        return false;
     }
 }

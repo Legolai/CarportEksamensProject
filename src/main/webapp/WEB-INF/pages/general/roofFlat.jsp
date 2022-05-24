@@ -1,7 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@page errorPage="../error.jsp" isErrorPage="false" %>
+<%@page errorPage="../../../error.jsp" isErrorPage="false" %>
 
 <t:carportInquriyTemplate>
     <jsp:attribute name="header">
@@ -14,17 +14,19 @@
 
     <jsp:attribute name="links">
         <a class="btn btn-primary" href="${pageContext.request.contextPath}/fc/roofFlat-page">Carport med fladt tag</a>
-        <a class="btn btn-outline-primary" href="${pageContext.request.contextPath}/fc/roofSloped-page">Carport med rejsning</a>
+        <a class="btn btn-outline-primary" href="${pageContext.request.contextPath}/fc/roofSloped-page">Carport med
+            rejsning</a>
         <a class="btn btn-outline-primary">Standard carporte</a>
     </jsp:attribute>
 
     <jsp:attribute name="inquiryForm">
-        <form class="row g-3 mb-3" action="${pageContext.request.contextPath}/fc/inquiry-flatRoof-command" method="post">
+        <form class="row g-3 mb-3" action="${pageContext.request.contextPath}/fc/inquiry-flatRoof-command"
+              method="post">
             <div class="col-md-12">
                 <label for="carport-width" class="form-label">Carport bredde</label>
                 <select id="carport-width" name="carport-width" class="form-select form-select-md mb3" required>
                     <option disabled hidden selected>Vælg bredde</option>
-                    <c:forEach var = "i" begin = "240" end = "600" step="30">
+                    <c:forEach var="i" begin="240" end="600" step="30">
                         <option value="${i}">${i} cm</option>
                     </c:forEach>
                 </select>
@@ -33,7 +35,7 @@
                 <label for="carport-length" class="form-label">Carport længde</label>
                 <select id="carport-length" name="carport-length" class="form-select form-select-md mb3" required>
                     <option disabled hidden selected>Vælg længde</option>
-                    <c:forEach var = "i" begin = "240" end = "780" step="30">
+                    <c:forEach var="i" begin="240" end="780" step="30">
                         <option value="${i}">${i} cm</option>
                     </c:forEach>
                 </select>
@@ -42,7 +44,7 @@
                 <label for="roof-material" class="form-label">Tag</label>
                 <select id="roof-material" name="roof-material" class="form-select form-select-md mb3" required>
                     <option disabled hidden selected>Vælg tag</option>
-                    <c:forEach var = "roof" items="${requestScope.roofs}">
+                    <c:forEach var="roof" items="${requestScope.roofs}">
                         <option value="${roof.product().getId()}">${roof.product().getDescription()}</option>
                     </c:forEach>
                 </select>
@@ -54,7 +56,8 @@
 
             <div class="col-md-12">
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="has-shack" name="has-shack" onchange="wishShack(this)" value="true">
+                    <input class="form-check-input" type="checkbox" id="has-shack" name="has-shack"
+                           onchange="wishShack(this)" value="true">
                     <label for="has-shack" class="form-label">Ønsker Redskabsrum</label>
                 </div>
             </div>
@@ -63,7 +66,7 @@
                 <label for="shack-width" class="form-label">Redskabsrum bredde</label>
                 <select disabled id="shack-width" name="shack-width" class="form-select form-select-md mb3" required>
                     <option disabled hidden selected>Ønsker ikke redskabsrum</option>
-                    <c:forEach var = "i" begin = "210" end = "720" step="30">
+                    <c:forEach var="i" begin="210" end="720" step="30">
                         <option value="${i}">${i} cm</option>
                     </c:forEach>
                 </select>
@@ -72,7 +75,7 @@
                 <label for="shack-length" class="form-label">Redskabsrum længde</label>
                 <select disabled id="shack-length" name="shack-length" class="form-select form-select-md mb3" required>
                     <option disabled hidden selected>Ønsker ikke redskabsrum</option>
-                    <c:forEach var = "i" begin = "150" end = "690" step="30">
+                    <c:forEach var="i" begin="150" end="690" step="30">
                         <option value="${i}">${i} cm</option>
                     </c:forEach>
                 </select>
@@ -127,7 +130,7 @@
 
     <jsp:attribute name="script">
         <script>
-            function wishShack(ckType){
+            function wishShack(ckType) {
                 const shackWidthElem = document.getElementById("shack-width");
                 const shackLengthElem = document.getElementById("shack-length");
                 const checked = document.getElementById(ckType.id);
