@@ -23,7 +23,7 @@ public class RegisterAction implements Command {
     public PageDirect execute(HttpServletRequest request, HttpServletResponse response, ConnectionPool connectionPool) {
         String firstName = request.getParameter("firstName");
         String lastName = request.getParameter("lastName");
-        String email = request.getParameter("email");
+        String email = request.getParameter("email").toLowerCase();
         String password = request.getParameter("password");
         String confirmedPassword = request.getParameter("confirmedPassword");
         String street = request.getParameter("street");
@@ -31,14 +31,14 @@ public class RegisterAction implements Command {
         String zip = request.getParameter("zip");
         String city = request.getParameter("city");
 
-        if(!password.equals(confirmedPassword)){
+        if (!password.equals(confirmedPassword)) {
             request.setAttribute("error", "Confirmed password does not match!");
             return new PageDirect(RedirectType.DEFAULT, "pages/general/register");
         }
 
-        try{
-            Address address = new Address(0, streetNumber, street,null, zip, city);
-            Person person = new Person(0, firstName, lastName,email, null, 0, false);
+        try {
+            Address address = new Address(0, streetNumber, street, null, zip, city);
+            Person person = new Person(0, firstName, lastName, email, null, 0, false);
             Account acc = new Account(0, LocalDateTime.now().withNano(0), 0, password, Role.COSTUMER);
             PersonDTO personDTO = new PersonDTO(person, address);
             AccountDTO accDTO = new AccountDTO(acc, personDTO);

@@ -16,7 +16,7 @@ import java.util.Optional;
 public class LoginAction implements Command {
     @Override
     public PageDirect execute(HttpServletRequest request, HttpServletResponse response, ConnectionPool connectionPool) {
-        String email = request.getParameter("email");
+        String email = request.getParameter("email").toLowerCase();
         String password = request.getParameter("password");
 
         try {
@@ -30,8 +30,7 @@ public class LoginAction implements Command {
             session.setAttribute("account", account.get());
 
             return new PageDirect(RedirectType.REDIRECT, "index");
-        }
-        catch (DatabaseException ex) {
+        } catch (DatabaseException ex) {
             request.setAttribute("error", "An error has happened");
             return new PageDirect(RedirectType.DEFAULT, "pages/general/login");
         }
