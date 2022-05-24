@@ -20,12 +20,14 @@
     <jsp:body>
 
         <p>Med vores quickbyg tilbud kan du lynhurtigt få et specialiseret tilbud for din drømme carport.
-        <br>Tilbud og skitsetegningen fremsendes til din email hurtigst muligt.</p>
+            <br>Tilbud og skitsetegningen fremsendes til din email hurtigst muligt.</p>
 
         <div class="col-lg-3">
             <div class="btn-group-vertical w-100" role="group">
-                <a class="btn btn-outline-primary" href="${pageContext.request.contextPath}/fc/roofFlat-page">Carport med fladt tag</a>
-                <a class="btn btn-outline-primary" href="${pageContext.request.contextPath}/fc/roofSloped-page">Carport med rejsning</a>
+                <a class="btn btn-outline-primary" href="${pageContext.request.contextPath}/fc/roofFlat-page">Carport
+                    med fladt tag</a>
+                <a class="btn btn-outline-primary" href="${pageContext.request.contextPath}/fc/roofSloped-page">Carport
+                    med rejsning</a>
                 <a class="btn btn-outline-primary">Standard carporte</a>
             </div>
         </div>

@@ -63,11 +63,12 @@
                     <input class="form-control" type="text" id="zip" name="zip"/>
                 </div>
                 <div class="col-12">
-                    <input class="col-12 btn btn-primary" type="submit"  value="Opret bruger"/>
+                    <input class="col-12 btn btn-primary" type="submit" value="Opret bruger"/>
                 </div>
             </form>
             <div class="row mb-3">
-                <p>Har du allerede en bruger, så login <a href="${pageContext.request.contextPath}/fc/login-page">her</a>.</p>
+                <p>Har du allerede en bruger, så login <a
+                        href="${pageContext.request.contextPath}/fc/login-page">her</a>.</p>
             </div>
         </div>
     </jsp:body>
