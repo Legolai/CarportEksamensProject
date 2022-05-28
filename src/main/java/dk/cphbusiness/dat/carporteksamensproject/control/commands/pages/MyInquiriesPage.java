@@ -19,8 +19,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class MyInquiriesPage extends ProtectedPage {
-    public MyInquiriesPage(String pageName, Role role) {
-        super(pageName, role);
+    public MyInquiriesPage(String pageName, Role... roles) {
+        super(pageName, roles);
     }
 
     @Override

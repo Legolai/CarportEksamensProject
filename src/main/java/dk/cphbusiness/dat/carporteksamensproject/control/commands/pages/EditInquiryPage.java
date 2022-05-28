@@ -21,8 +21,8 @@ import java.util.Optional;
 
 public class EditInquiryPage extends ProtectedPage {
 
-    public EditInquiryPage(String pageName, Role role) {
-        super(pageName, role);
+    public EditInquiryPage(String pageName, Role... roles) {
+        super(pageName, roles);
     }
 
     @Override

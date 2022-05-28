@@ -18,8 +18,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class EditMaterialPage extends ProtectedPage {
-    public EditMaterialPage(String pageName, Role role) {
-        super(pageName, role);
+    public EditMaterialPage(String pageName, Role... roles) {
+        super(pageName, roles);
     }
 
     @Override

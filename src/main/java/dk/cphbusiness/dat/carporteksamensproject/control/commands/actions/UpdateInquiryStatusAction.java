@@ -13,8 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class UpdateInquiryStatusAction extends ProtectedPage {
-    public UpdateInquiryStatusAction(Role role) {
-        super("", role);
+    public UpdateInquiryStatusAction(Role... roles) {
+        super("", roles);
     }
 
     @Override

@@ -7,13 +7,16 @@ import dk.cphbusiness.dat.carporteksamensproject.model.persistence.ConnectionPoo
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class ProtectedPage extends UnprotectedPage {
-    private final Role role;
+    private final Set<Role> roles;
 
-    public ProtectedPage(String pageName, Role role) {
+    public ProtectedPage(String pageName, Role... roles) {
         super(pageName);
-        this.role = role;
+        this.roles = new HashSet<>(List.of(roles));
     }
 
     @Override
@@ -21,7 +24,7 @@ public class ProtectedPage extends UnprotectedPage {
         return new PageDirect(RedirectType.DEFAULT, getPageName());
     }
 
-    public Role getRole() {
-        return role;
+    public Set<Role> getRoles() {
+        return roles;
     }
 }

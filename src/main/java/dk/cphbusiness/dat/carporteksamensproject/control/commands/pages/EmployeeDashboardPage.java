@@ -13,8 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 public class EmployeeDashboardPage extends ProtectedPage {
-    public EmployeeDashboardPage(String pageName, Role role) {
-        super(pageName, role);
+    public EmployeeDashboardPage(String pageName, Role... roles) {
+        super(pageName, roles);
     }
 
     @Override

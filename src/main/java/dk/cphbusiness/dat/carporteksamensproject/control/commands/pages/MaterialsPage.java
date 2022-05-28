@@ -14,8 +14,8 @@ import java.util.List;
 
 public class MaterialsPage extends ProtectedPage {
 
-    public MaterialsPage(String pageName, Role role) {
-        super(pageName, role);
+    public MaterialsPage(String pageName, Role... roles) {
+        super(pageName, roles);
     }
 
     @Override
