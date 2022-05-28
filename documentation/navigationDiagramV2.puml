@@ -1,15 +1,24 @@
 @startuml
 'https://plantuml.com/state-diagram
 
-Title Fog website
-
+Title Navigationsdiagram for Fog website v2
 
 
 State index.jsp
-State login.jsp
-State register.jsp
 State navigationbar
-
+note left of navigationbar
+    When a user is not logged in,
+    the user can then always access
+    the jsps in LoginOrRegister state
+end note
+note bottom of navigationbar
+    When a user is logged on,
+    the user can then always access
+    the jsps inside of LoggedOn state
+    and also the ones inside
+    LoggedOnAsEmployeeOrAdmin if
+    the user is an employee or admin
+end note
 
 [*] --> index.jsp
 index.jsp --> navigationbar
@@ -21,47 +30,49 @@ carportFlatRoof.jsp --> carportSlopeRoof.jsp
 carportSlopeRoof.jsp --> carportFlatRoof.jsp
 navigationbar --> index.jsp
 
-index.jsp --> login.jsp
-note on link
-    login.jsp and register.jsp
-    also have access to the navigationbar
-    No arrows, because too messy
-end note
-index.jsp --> register.jsp
 
-login.jsp --> login.jsp: Log på [fejl]
-login.jsp --> LoggedOn: Log på [ok]
-register.jsp --> register.jsp: Registrer [fejl]
-register.jsp --> LoggedOn: Registrer [ok]
+State LoginOrRegister {
+    State exit <<exitPoint>>
+    State login.jsp
+    State register.jsp
 
-navigationbar --> LoggedOnAsEmployeeOrAdmin
-LoggedOnAsEmployeeOrAdmin --> navigationbar
+    login.jsp --> login.jsp: Log på [fejl]
+    login.jsp --> exit: Log på [ok]
+    register.jsp --> register.jsp: Registrer [fejl]
+    register.jsp --> exit: Registrer [ok]
 
-
-State LoggedOn {
-    State account.jsp
-    [*] --> index.jsp: Bruger går til index når der logges ind
-    navigationbar --> account.jsp
-    account.jsp --> navigationbar
-
-    note bottom of account.jsp
-        This jsp is reachable
-        ONLY if the user has logged in
-    end note
 }
 
-note top of LoggedOnAsEmployeeOrAdmin
+
+note right of LoggedOn
+    This state is reachable
+    ONLY if the user has logged in
+end note
+state LoggedOn {
+    State account.jsp
+    State logout.jsp
+    State myInquires.jsp
+    [H] --> index.jsp: Bruger dirigeres til index \n når der logges ind
+    logout --> index.jsp: Bruger dirigeres til \n index efter udlogning
+}
+exit --> LoggedOn[H]
+
+
+note bottom of LoggedOnAsEmployeeOrAdmin
     This state is reachable
     ONLY if the user has logged in
     AND has the role Admin or Employee
 end note
-
 State LoggedOnAsEmployeeOrAdmin {
-    State admin.jsp
-    [*] --> admin.jsp
-    note bottom of admin.jsp
+    State employeeDashboard.jsp
+    State materialer.jsp
+    note bottom of employeeDashboard.jsp
             Seller views and processes
             inquiries here
+    end note
+    note bottom of materialer.jsp
+                Admin sees and
+                edits materials here
     end note
 }
 

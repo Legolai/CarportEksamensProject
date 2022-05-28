@@ -18,28 +18,20 @@ object ProductVariant
 object ProductType
 object Size
 
-Carport : int length
-Carport : int width
-Carport : ENUM roofType
-Shack : int length
-Shack : int width
-BillOfMaterialLineItem : int Amount
-Product : String description
-Product : int unit price
 
 ProductVariant "m"*--"1" Product
-ProductVariant "m"*--"1" Size
+ProductVariant "m" *--"1" Size
 Product "m"*--"1" ProductType
 
-Account "1"*--"1" Person
+Account "1" o-- "1" Person
 Person "m"*--"1" Address
 Address "m"*--"1" City
 
 Inquiry "1" *-- "1" Carport
 Inquiry "1" *-- "1" BillOfMaterial
-Inquiry "m" *-- "1" Person
+Inquiry "m" o-- "1" Person
 BillOfMaterial "1" *-- "m" BillOfMaterialLineItem
-BillOfMaterialLineItem "m" *-- "1" ProductVariant
+BillOfMaterialLineItem "m" o-- "1" ProductVariant
 Carport "1" --* "1" Shack
 
 Order "m" *-- "1" Address
