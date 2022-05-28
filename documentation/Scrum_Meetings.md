@@ -3,7 +3,7 @@ Dagbog over vores scrum meetings
 
 UGE 1
 
-Dag 1 (5/2 mandag)
+Dag 1 (5/2 mandag)   
 TODO:  
 - Opsætning af startkode
 - Domæne model (måske en smule EER diagram)
@@ -12,7 +12,7 @@ TODO:
 
 Dag 2 (5/3 tirsdag)
 Opsamling:
-- Vi have lavet TODO for dag 1
+- Vi have lavet TODO for dag 1   
 TODO:  
 - SWOT og VPC for Fog
 - Skrive start USE cases/stories
@@ -21,7 +21,7 @@ TODO:
 
 Dag 3 (5/4 onsdag)
 Opsamling:
-- Vi have lavet TODO for dag 2
+- Vi have lavet TODO for dag 2   
   TODO:  
 - Time med nikolaj
 - Finpudse EER
