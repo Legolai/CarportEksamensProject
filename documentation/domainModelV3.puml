@@ -13,7 +13,6 @@ object ProductVariant
 object ProductType
 object Size
 
-BillOfMaterialLineItem : int amount
 
 ProductVariant "m"*--"1" Product
 ProductVariant "m"*--"1" Size
