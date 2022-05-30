@@ -99,7 +99,7 @@
                                 <div class="input-group-text p-0 bg-white">
                                     <select id="size-type" name="size-type"
                                             class="form-select form-select-md mb3 border-0" required>
-                                        <option selected disabled>Vælg enhed</option>
+                                        <option hidden selected disabled value="">Vælg enhed</option>
                                         <c:forEach items="${SizeType.values()}" var="type">
                                             <option value="${type}">${type.getValue()}</option>
                                         </c:forEach>

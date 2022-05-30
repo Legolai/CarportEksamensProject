@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 class UserStory6Test extends SetupDatabaseTest {
 
     @Test
-    void GetAllInquiriesHasNone() throws DatabaseException {
+    void GetAllInquiriesITest() throws DatabaseException {
         List<InquiryDTO> inquiries = InquiryFacade.getAll(getConnectionPool());
 
         assertFalse(inquiries.isEmpty());

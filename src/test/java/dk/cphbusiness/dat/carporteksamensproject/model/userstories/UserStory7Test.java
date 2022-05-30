@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class UserStory7Test extends SetupDatabaseTest {
 
     @Test
-    void updateBOM() throws DatabaseException {
+    void updateBOMTest() throws DatabaseException {
         Shack shack = new Shack(0, 600, 210, true);
         Carport carport = new Carport(0, 600, 700, 210, RoofType.FLAT, 8, getTime(), 0);
 
@@ -33,8 +33,10 @@ class UserStory7Test extends SetupDatabaseTest {
         CarportAlgorithmFactory factory = new CarportAlgorithmFactory();
         ICarportAlgorithm algorithm = factory.createCarportAlgorithm(carportDTO);
         List<BillOfMaterialLineItemDTO> lineItems = algorithm.calcCarport(carportDTO);
+
         BillOfMaterialDTO bom = new BillOfMaterialDTO(lineItems);
         bom.lineItems().forEach(lineItem -> lineItem.lineItem().setInquiryId(1));
+
         boolean hasUpdated = BillOfMaterialFacade.resetBillForInquiry(1, bom, getConnectionPool());
         assertTrue(hasUpdated);
     }

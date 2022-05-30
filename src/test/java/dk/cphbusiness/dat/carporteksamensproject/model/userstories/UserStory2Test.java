@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class UserStory2Test extends SetupDatabaseTest {
 
     @Test
-    void makeInquiry() throws DatabaseException {
+    void makeInquiryITest() throws DatabaseException {
         Address address = new Address(0, "10", "testby", null, "4242", "testby");
         Person person = new Person(0, "test", "test", "test@email.com", null, 0, false);
         PersonDTO personDTO = new PersonDTO(person, address);

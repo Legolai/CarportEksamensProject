@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class UserStory1Test extends SetupDatabaseTest {
 
     @Test
-    void createAccount() throws DatabaseException {
+    void createAccountITest() throws DatabaseException {
         Address newAddress = new Address(0, "10", "drømmegade", null, "4000", "andeby");
         Person newPerson = new Person(0, "anders", "and", "anders.and@gmail.com", null, 0, false);
         LocalDateTime time = LocalDateTime.now().withNano(0);
@@ -41,7 +41,7 @@ class UserStory1Test extends SetupDatabaseTest {
     }
 
     @Test
-    void login() throws DatabaseException {
+    void loginITest() throws DatabaseException {
         Address address = new Address(1, "12", "drømmegade", null, "4000", "andeby");
         Person person = new Person(1, "andersine", "and", "andersine.and@email.com", null, 1, false);
         Account account = new Account(1, getTime(), 1, "tomcat1234", Role.EMPLOYEE);
@@ -56,7 +56,7 @@ class UserStory1Test extends SetupDatabaseTest {
     }
 
     @Test
-    void insertAndLogin() throws DatabaseException {
+    void insertAndLoginITest() throws DatabaseException {
         Address newAddress = new Address(0, "10", "drømmegade", null, "4000", "andeby");
         Person newPerson = new Person(0, "anders", "and", "anders.and@gmail.com", null, 0, false);
         LocalDateTime time = LocalDateTime.now().withNano(0);

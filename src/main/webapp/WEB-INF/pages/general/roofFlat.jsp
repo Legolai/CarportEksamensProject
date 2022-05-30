@@ -52,6 +52,7 @@
 
             <div class="col-md-12">
                 <h3>Redskabsrum:</h3>
+                <p>OBS: Redskabsrummet skal være min. 30 cm af mindre end målene på carporten!</p>
             </div>
 
             <div class="col-md-12">

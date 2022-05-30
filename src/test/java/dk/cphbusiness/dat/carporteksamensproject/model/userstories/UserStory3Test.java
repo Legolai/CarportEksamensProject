@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class UserStory3Test extends SetupDatabaseTest {
 
     @Test
-    void GetMyInquiriesHasNone() throws DatabaseException {
+    void GetMyInquiriesITest() throws DatabaseException {
         Optional<AccountDTO> accountDTO = AccountFacade.login("andersine.and@email.com", "tomcat1234", getConnectionPool());
 
         assertTrue(accountDTO.isPresent());
