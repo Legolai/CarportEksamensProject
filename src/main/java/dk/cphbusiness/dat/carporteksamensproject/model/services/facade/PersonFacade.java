@@ -12,14 +12,15 @@ import java.util.Optional;
 
 public class PersonFacade {
 
-    private PersonFacade(){}
+    private PersonFacade() {
+    }
 
     public static List<PersonDTO> getAll(ConnectionPool connectionPool) throws DatabaseException {
         PersonMapper personMapper = new PersonMapper(new EntityManager(connectionPool));
         return personMapper.getAll();
     }
 
-    public static Optional<List<PersonDTO>> findAll(Map<String,Object> properties, ConnectionPool connectionPool) throws DatabaseException {
+    public static Optional<List<PersonDTO>> findAll(Map<String, Object> properties, ConnectionPool connectionPool) throws DatabaseException {
         PersonMapper personMapper = new PersonMapper(new EntityManager(connectionPool));
         return personMapper.findAll(properties);
     }

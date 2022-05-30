@@ -8,8 +8,8 @@ public class CarportAlgorithmFactory {
         if (carportDTO == null)
             return null;
         return switch (carportDTO.carport().getRoofType()) {
-            case FLAT ->  new FlatRoofAlgorithm();
-            case SLOPE ->  new FlatRoofAlgorithm();
+            case FLAT -> new FlatRoofAlgorithm();
+            case SLOPE -> new FlatRoofAlgorithm();
         };
     }
 }

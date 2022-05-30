@@ -13,14 +13,15 @@ import java.util.Optional;
 
 public class ProductVariantFacade {
 
-    private ProductVariantFacade() {}
+    private ProductVariantFacade() {
+    }
 
     public static Optional<List<ProductVariantDTO>> findAllByProductId(int materialId, ConnectionPool connectionPool) throws DatabaseException {
         ProductVariantMapper productVariantMapper = new ProductVariantMapper(new EntityManager(connectionPool));
         return productVariantMapper.findAllByProductId(materialId);
     }
 
-    public static boolean createVariant(ProductVariant productVariant, Size size, ConnectionPool connectionPool) throws DatabaseException{
+    public static boolean createVariant(ProductVariant productVariant, Size size, ConnectionPool connectionPool) throws DatabaseException {
         ProductVariantMapper productVariantMapper = new ProductVariantMapper(new EntityManager(connectionPool));
         return productVariantMapper.insertVariant(productVariant, size);
     }

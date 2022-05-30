@@ -8,7 +8,8 @@ import dk.cphbusiness.dat.carporteksamensproject.model.persistence.mappers.BillO
 
 public class BillOfMaterialFacade {
 
-    private BillOfMaterialFacade() {}
+    private BillOfMaterialFacade() {
+    }
 
     public static boolean resetBillForInquiry(int inquiryId, BillOfMaterialDTO bill, ConnectionPool connectionPool) throws DatabaseException {
         BillOfMaterialMapper billOfMaterialMapper = new BillOfMaterialMapper(new EntityManager(connectionPool));

@@ -9,7 +9,9 @@ import dk.cphbusiness.dat.carporteksamensproject.model.persistence.mappers.Carpo
 
 public class CarportFacade {
 
-    private CarportFacade(){}
+    private CarportFacade() {
+    }
+
     public static boolean updateCarport(CarportDTO carportDTO, ConnectionPool connectionPool) throws DatabaseException {
         CarportMapper carportMapper = new CarportMapper(new EntityManager(connectionPool));
         return carportMapper.update(carportDTO);

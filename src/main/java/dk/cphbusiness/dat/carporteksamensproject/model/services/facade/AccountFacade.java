@@ -11,7 +11,8 @@ import java.util.Optional;
 
 public class AccountFacade {
 
-    private AccountFacade(){}
+    private AccountFacade() {
+    }
 
     public static Optional<AccountDTO> login(String email, String password, ConnectionPool connectionPool) throws DatabaseException {
         IAccountMapper accountMapper = new AccountMapper(new EntityManager(connectionPool));

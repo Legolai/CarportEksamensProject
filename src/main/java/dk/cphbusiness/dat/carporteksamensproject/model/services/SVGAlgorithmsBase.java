@@ -23,12 +23,12 @@ public class SVGAlgorithmsBase {
         width = carportDTO.carport().getWidth();
         length = carportDTO.carport().getLength();
         this.carportDTO = carportDTO;
-        if (carportDTO.shack().isPresent()){
+        if (carportDTO.shack().isPresent()) {
             shackwidth = carportDTO.shack().get().getWidth();
             shacklength = carportDTO.shack().get().getLength();
         }
-        spaerAmounts = (int) Math.ceil(length/56.5-0.35) + 1;
-        lengthBetween = (int) Math.ceil((length - 10)/(spaerAmounts-1));
+        spaerAmounts = (int) Math.ceil(length / 56.5 - 0.35) + 1;
+        lengthBetween = (int) Math.ceil((length - 10) / (spaerAmounts - 1));
     }
 
 

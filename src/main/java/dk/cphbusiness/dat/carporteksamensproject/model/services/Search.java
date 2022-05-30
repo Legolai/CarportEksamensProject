@@ -16,7 +16,9 @@ public interface Search {
             Object fieldEntity = entity.getClass().getDeclaredMethod(f.getName()).invoke(entity);
             if (f.getType().isAnnotationPresent(Entity.class)) {
                 for (Field entityField : fieldEntity.getClass().getDeclaredFields()) {
-                    if (entityField.isAnnotationPresent(Column.class) && entityField.getAnnotation(Column.class).value().equals(column)) {
+                    if (entityField.isAnnotationPresent(Column.class) && entityField.getAnnotation(Column.class)
+                            .value()
+                            .equals(column)) {
                         String fieldName = entityField.getName();
                         String methodName = "get" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
                         value = fieldEntity.getClass().getDeclaredMethod(methodName).invoke(fieldEntity);
@@ -24,13 +26,13 @@ public interface Search {
                     }
                 }
             } else {
-                if (f.getType().isAnnotationPresent(JoinedEntity.class)){
+                if (f.getType().isAnnotationPresent(JoinedEntity.class)) {
                     value = deepSearch(column, fieldEntity);
                 } else if (f.getType().equals(Optional.class) && ((Optional<?>) fieldEntity).isPresent()) {
                     value = deepSearch(column, ((Optional<?>) fieldEntity).get());
                 }
             }
-            if (value != null){
+            if (value != null) {
                 break;
             }
         }

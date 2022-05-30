@@ -12,14 +12,15 @@ import java.util.Optional;
 
 public class ProductFacade {
 
-    private ProductFacade(){}
+    private ProductFacade() {
+    }
 
     public static Optional<List<ProductDTO>> findAll(Map<String, Object> properties, ConnectionPool connectionPool) throws DatabaseException {
         ProductMapper productMapper = new ProductMapper(new EntityManager(connectionPool));
         return productMapper.findAll(properties);
     }
 
-    public static List<ProductDTO> getAll(ConnectionPool connectionPool) throws DatabaseException{
+    public static List<ProductDTO> getAll(ConnectionPool connectionPool) throws DatabaseException {
         ProductMapper productMapper = new ProductMapper(new EntityManager(connectionPool));
         return productMapper.getAll();
     }

@@ -13,7 +13,8 @@ import java.util.Optional;
 
 public class InquiryFacade {
 
-    private InquiryFacade() {}
+    private InquiryFacade() {
+    }
 
     public static List<InquiryDTO> getAll(ConnectionPool connectionPool) throws DatabaseException {
         InquiryMapper inquiryMapper = new InquiryMapper(new EntityManager(connectionPool));

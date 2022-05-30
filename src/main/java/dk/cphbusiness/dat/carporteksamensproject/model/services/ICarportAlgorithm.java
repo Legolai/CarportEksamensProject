@@ -7,9 +7,14 @@ import java.util.List;
 
 public interface ICarportAlgorithm {
     List<BillOfMaterialLineItemDTO> calcCarport(CarportDTO carportDTO);
+
     List<BillOfMaterialLineItemDTO> calcRoof(CarportDTO carportDTO);
+
     List<BillOfMaterialLineItemDTO> calcBase(CarportDTO carportDTO);
+
     List<BillOfMaterialLineItemDTO> calcSterns(CarportDTO carportDTO);
+
     List<BillOfMaterialLineItemDTO> calcShack(CarportDTO carportDTO);
+
     List<BillOfMaterialLineItemDTO> calcFittingsAndScrews(CarportDTO carportDTO);
 }

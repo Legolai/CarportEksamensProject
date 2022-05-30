@@ -1,18 +1,6 @@
 package dk.cphbusiness.dat.carporteksamensproject.model.services;
 
 public class SVG {
-    StringBuilder svgBuilder;
-    private final int x;
-    private final int y;
-    private final String viewBox;
-    private final String width;
-    private final String height;
-
-    private final int defaultDashDistance;
-    private final int defaultDashSpacing;
-    private boolean hasStartArrow;
-    private boolean hasEndArrow;
-    private String textStyle = "14px";
     private static final String HEADER_TEMPLATE = "<svg height=\"%s\" width=\"%s\" x=\"%s\" y=\"%s\" viewBox=\"%s\" preserveAspectRatio=\"xMinYMin\">";
     private static final String DOT_RECT_TEMPLATE = "<rect x=\"%d\" y=\"%d\" width=\"%d\" height=\"%d\" stroke=\"black\" stroke-width=\"%d\" stroke-dasharray=\"%d %d\" fill=\"White\" />";
     private static final String DOT_LINE_TEMPLATE = "<Line x1=\"%d\" y1=\"%d\" x2=\"%d\" y2=\"%d\" stroke=\"black\" stroke-width=\"%d\" stroke-dasharray=\"%d %d\" style=\"%s\"/>";
@@ -29,6 +17,18 @@ public class SVG {
                     <polygon points="0 0, 4 2, 0 4" fill="black" />
                 </marker>
             </defs>""";
+    private final int x;
+    private final int y;
+    private final String viewBox;
+    private final String width;
+    private final String height;
+    private final int defaultDashDistance;
+    private final int defaultDashSpacing;
+    StringBuilder svgBuilder;
+    private boolean hasStartArrow;
+    private boolean hasEndArrow;
+    private String textStyle = "14px";
+
     public SVG(int x, int y, String viewBox, String width, String height) {
         this.x = x;
         this.y = y;
@@ -63,7 +63,7 @@ public class SVG {
     }
 
     public SVG addEndArrow(int x1, int y1, int x2, int y2, int stroke) {
-        if (!hasEndArrow){
+        if (!hasEndArrow) {
             svgBuilder.append(END_ARROW_DEFINITION);
             hasEndArrow = true;
         }
@@ -73,7 +73,7 @@ public class SVG {
     }
 
     public SVG addStartArrow(int x1, int y1, int x2, int y2, int stroke) {
-        if(!hasStartArrow) {
+        if (!hasStartArrow) {
             svgBuilder.append(START_ARROW_DEFINITION);
             hasStartArrow = true;
         }
@@ -86,7 +86,7 @@ public class SVG {
             svgBuilder.append(END_ARROW_DEFINITION);
             hasEndArrow = true;
         }
-        if(!hasStartArrow) {
+        if (!hasStartArrow) {
             svgBuilder.append(START_ARROW_DEFINITION);
             hasStartArrow = true;
         }
@@ -94,10 +94,11 @@ public class SVG {
         return this;
     }
 
-    public SVG addText(String text, int x, int y, int rotation){
+    public SVG addText(String text, int x, int y, int rotation) {
         svgBuilder.append(String.format(TEXT_TEMPLATE, textStyle, x, y, rotation, text));
         return this;
     }
+
     public void setTextStyle(String textStyle) {
         this.textStyle = textStyle;
     }
