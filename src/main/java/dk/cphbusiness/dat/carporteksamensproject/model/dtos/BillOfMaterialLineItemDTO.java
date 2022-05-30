@@ -18,6 +18,6 @@ public record BillOfMaterialLineItemDTO(BillOfMaterialLineItem lineItem,
     }
 
     public double getPrice() {
-        return (double) lineItem.getAmount() * product.getPrice();
+        return lineItem.getAmount() * product.getPrice();
     }
 }

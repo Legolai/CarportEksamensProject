@@ -38,7 +38,7 @@ class CarportAlgorithmTest {
                                 new Product(8, "Plastmo Ecolite blåtonet", 0.15, Unit.METER, AmountUnit.PIECE, 0, false),
                                 new ProductType(6, "Tagplade", false)
                         ),
-                        new Size (14, 600, SizeType.LENGTH, false)
+                        new Size(14, 600, SizeType.LENGTH, false)
                 )
         ));
         expected.add(new BillOfMaterialLineItemDTO(
@@ -49,7 +49,7 @@ class CarportAlgorithmTest {
                                 new Product(0, "Plastmo Ecolite blåtonet", 10, Unit.METER, AmountUnit.PIECE, 0, false),
                                 new ProductType(0, "Tagplade", false)
                         ),
-                        new Size (0, 360, SizeType.LENGTH, false)
+                        new Size(0, 360, SizeType.LENGTH, false)
                 )
         ));
         expected.add(new BillOfMaterialLineItemDTO(
@@ -60,7 +60,7 @@ class CarportAlgorithmTest {
                                 new Product(8, "45x195 mm. spærtræ ubh.", 12, Unit.METER, AmountUnit.PIECE, 0, false),
                                 new ProductType(0, "Spærtræ", false)
                         ),
-                        new Size (14, 600, SizeType.LENGTH, false)
+                        new Size(14, 600, SizeType.LENGTH, false)
                 )
         ));
 
@@ -73,6 +73,7 @@ class CarportAlgorithmTest {
         assertEquals(expected.get(1), actual.get(1));
         assertEquals(expected.get(2), actual.get(2));
     }
+
     @Test
     void testBaseItemList() {
 //
@@ -85,7 +86,7 @@ class CarportAlgorithmTest {
                                 new Product(0, "97x97 mm. trykimp. Stolpe", 15, Unit.METER, AmountUnit.PIECE, 0, false),
                                 new ProductType(0, "Stolpe", false)
                         ),
-                        new Size (0, 300, SizeType.LENGTH, false)
+                        new Size(0, 300, SizeType.LENGTH, false)
                 )
         ));
 
@@ -97,7 +98,7 @@ class CarportAlgorithmTest {
                                 new Product(0, "45x195 mm. spærtræ ubh.", 10, Unit.METER, AmountUnit.PIECE, 0, false),
                                 new ProductType(0, "Spærtre", false)
                         ),
-                        new Size (0, 600, SizeType.LENGTH, false)
+                        new Size(0, 600, SizeType.LENGTH, false)
                 )
         ));
         expected.add(new BillOfMaterialLineItemDTO(
@@ -108,7 +109,7 @@ class CarportAlgorithmTest {
                                 new Product(0, "45x195 mm. spærtræ ubh.", 10, Unit.METER, AmountUnit.PIECE, 0, false),
                                 new ProductType(0, "Spærtre", false)
                         ),
-                        new Size (0, 480, SizeType.LENGTH, false)
+                        new Size(0, 480, SizeType.LENGTH, false)
                 )
         ));
 
@@ -121,6 +122,7 @@ class CarportAlgorithmTest {
         assertEquals(expected.get(1), actual.get(1));
         assertEquals(expected.get(2), actual.get(2));
     }
+
     @Test
     void testShackItemList() {
 
@@ -133,7 +135,7 @@ class CarportAlgorithmTest {
                                 new Product(0, "38x73 mm. Lægte ubh.", 15, Unit.METER, AmountUnit.PIECE, 0, false),
                                 new ProductType(0, "Lægte", false)
                         ),
-                        new Size (0, 420, SizeType.LENGTH, false)
+                        new Size(0, 420, SizeType.LENGTH, false)
                 )
         ));
 
@@ -145,7 +147,7 @@ class CarportAlgorithmTest {
                                 new Product(0, "45x95 mm. Reglar ub.", 10, Unit.METER, AmountUnit.PIECE, 0, false),
                                 new ProductType(0, "Træ", false)
                         ),
-                        new Size (0, 270, SizeType.LENGTH, false)
+                        new Size(0, 270, SizeType.LENGTH, false)
                 )
         ));
         expected.add(new BillOfMaterialLineItemDTO(
@@ -156,7 +158,7 @@ class CarportAlgorithmTest {
                                 new Product(0, "45x95 mm. Reglar ub.", 10, Unit.METER, AmountUnit.PIECE, 0, false),
                                 new ProductType(0, "Træ", false)
                         ),
-                        new Size (0, 240, SizeType.LENGTH, false)
+                        new Size(0, 240, SizeType.LENGTH, false)
                 )
         ));
         expected.add(new BillOfMaterialLineItemDTO(
@@ -167,7 +169,7 @@ class CarportAlgorithmTest {
                                 new Product(0, "19x100 mm. trykimp. Brædt", 10, Unit.METER, AmountUnit.PIECE, 0, false),
                                 new ProductType(0, "Brædt", false)
                         ),
-                        new Size (0, 210, SizeType.LENGTH, false)
+                        new Size(0, 210, SizeType.LENGTH, false)
                 )
         ));
         expected.add(new BillOfMaterialLineItemDTO(
@@ -178,7 +180,7 @@ class CarportAlgorithmTest {
                                 new Product(0, "stalddørsgreb 50x75", 10, Unit.PIECE, AmountUnit.SET, 0, false),
                                 new ProductType(0, "Træ", false)
                         ),
-                        new Size (0, 1, SizeType.PIECES, false)
+                        new Size(0, 1, SizeType.PIECES, false)
                 )
         ));
         expected.add(new BillOfMaterialLineItemDTO(
@@ -189,7 +191,7 @@ class CarportAlgorithmTest {
                                 new Product(0, "t hængsel 390 mm", 10, Unit.PIECE, AmountUnit.PIECE, 0, false),
                                 new ProductType(0, "Hængsel", false)
                         ),
-                        new Size (0, 1, SizeType.PIECES, false)
+                        new Size(0, 1, SizeType.PIECES, false)
                 )
         ));
         expected.add(new BillOfMaterialLineItemDTO(
@@ -200,11 +202,9 @@ class CarportAlgorithmTest {
                                 new Product(0, "vinkelbeslag 35", 10, Unit.PIECE, AmountUnit.PIECE, 0, false),
                                 new ProductType(0, "Beslag", false)
                         ),
-                        new Size (0, 1, SizeType.PIECES, false)
+                        new Size(0, 1, SizeType.PIECES, false)
                 )
         ));
-
-
 
 
         CarportAlgorithmFactory factory = new CarportAlgorithmFactory();
@@ -232,7 +232,7 @@ class CarportAlgorithmTest {
                                 new Product(0, "38x73 mm. Lægte ubh.", 15, Unit.METER, AmountUnit.PIECE, 0, false),
                                 new ProductType(0, "Lægte", false)
                         ),
-                        new Size (0, 420, SizeType.LENGTH, false)
+                        new Size(0, 420, SizeType.LENGTH, false)
                 )
         ));
         CarportAlgorithmFactory factory = new CarportAlgorithmFactory();
@@ -243,9 +243,6 @@ class CarportAlgorithmTest {
         assertEquals(expected.get(1), actual.get(1));
 
     }
-
-
-
 
 
 }

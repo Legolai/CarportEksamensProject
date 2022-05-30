@@ -16,7 +16,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public class SetupTestDatabase {
+public class SetupDatabaseTest {
     private final static String USER = "teacher";
     private final static String PASSWORD = "rootuser";
     private final static String URL = "jdbc:mysql://localhost:3306/carportprojecttestdb?serverTimezone=CET&allowPublicKeyRetrieval=true&useSSL=false";
@@ -27,6 +27,14 @@ public class SetupTestDatabase {
     @BeforeAll
     public static void setUpClass() {
         connectionPool = new ConnectionPool(USER, PASSWORD, URL);
+    }
+
+    public static ConnectionPool getConnectionPool() {
+        return connectionPool;
+    }
+
+    public static LocalDateTime getTime() {
+        return time;
     }
 
     @BeforeEach
@@ -103,7 +111,7 @@ public class SetupTestDatabase {
                                 "VALUES (210, 700, 600, 'FLAT', '" + time + "', 1, 8);");
                         case "Inquiry" -> stmt.execute("INSERT INTO `Inquiry` (`inquiry_comment`,`person_ID`," +
                                 "`inquiry_created`,`inquiry_updated`,`inquiry_status`,`carport_ID`,`inquiry_price`)" +
-                                "VALUES ('', 1, '" + time + "', '"+ time +"', 'OPEN', 1, 30000);");
+                                "VALUES ('', 1, '" + time + "', '" + time + "', 'OPEN', 1, 30000);");
 
                     }
                     stmt.execute("ALTER TABLE " + s + " ENABLE KEYS");
@@ -122,13 +130,5 @@ public class SetupTestDatabase {
         if (connection != null) {
             connection.close();
         }
-    }
-
-    public static ConnectionPool getConnectionPool() {
-        return connectionPool;
-    }
-
-    public static LocalDateTime getTime() {
-        return time;
     }
 }

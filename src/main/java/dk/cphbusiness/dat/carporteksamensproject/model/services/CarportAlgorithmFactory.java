@@ -9,7 +9,7 @@ public class CarportAlgorithmFactory {
             return null;
         return switch (carportDTO.carport().getRoofType()) {
             case FLAT -> new FlatRoofAlgorithm();
-            case SLOPE -> new FlatRoofAlgorithm();
+            case SLOPE -> null;
         };
     }
 }

@@ -53,10 +53,8 @@ public class UpdateCarportAction extends ProtectedPage {
             int roofMaterial = Integer.parseInt(roofMaterialString);
             boolean hasShack = Boolean.parseBoolean(hasShackString);
             int shackID = 0;
-            if (shackIdString != null) {
-                if (!(shackIdString.equals("") || shackIdString.equals("0"))) {
-                    shackID = Integer.parseInt(shackIdString);
-                }
+            if (shackIdString != null && (!(shackIdString.equals("") || shackIdString.equals("0")))) {
+                shackID = Integer.parseInt(shackIdString);
             }
 
             Optional<Shack> optionalShack = Optional.empty();

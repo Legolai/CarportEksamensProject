@@ -8,15 +8,16 @@ import dk.cphbusiness.dat.carporteksamensproject.model.entities.Person;
 import dk.cphbusiness.dat.carporteksamensproject.model.entities.Role;
 import dk.cphbusiness.dat.carporteksamensproject.model.exceptions.DatabaseException;
 import dk.cphbusiness.dat.carporteksamensproject.model.persistence.manager.EntityManager;
-import dk.cphbusiness.dat.carporteksamensproject.model.userstories.SetupTestDatabase;
+import dk.cphbusiness.dat.carporteksamensproject.model.userstories.SetupDatabaseTest;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class AccountMapperTest extends SetupTestDatabase {
+class AccountMapperTest extends SetupDatabaseTest {
 
     @Test
     void insert() throws DatabaseException {

@@ -6,7 +6,7 @@ import dk.cphbusiness.dat.carporteksamensproject.model.dtos.PersonDTO;
 import dk.cphbusiness.dat.carporteksamensproject.model.entities.*;
 import dk.cphbusiness.dat.carporteksamensproject.model.exceptions.DatabaseException;
 import dk.cphbusiness.dat.carporteksamensproject.model.services.facade.InquiryFacade;
-import dk.cphbusiness.dat.carporteksamensproject.model.userstories.SetupTestDatabase;
+import dk.cphbusiness.dat.carporteksamensproject.model.userstories.SetupDatabaseTest;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
@@ -17,7 +17,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class InquiryMapperTest extends SetupTestDatabase {
+class InquiryMapperTest extends SetupDatabaseTest {
 
     @Test
     void insertWithoutBill() throws DatabaseException {
@@ -40,7 +40,7 @@ class InquiryMapperTest extends SetupTestDatabase {
         Person person = new Person(0, firstName, lastName, email, null, 0, false);
         PersonDTO personDTO = new PersonDTO(person, address);
 
-        Optional<Shack> optionalShack = Optional.of(new Shack(0,0,0, false));
+        Optional<Shack> optionalShack = Optional.of(new Shack(0, 0, 0, false));
 
         LocalDateTime time = LocalDateTime.now().withNano(0);
         Carport carport = new Carport(0, carportWidth, carportLength, 210, RoofType.FLAT, roofMaterial, time, 0);
@@ -53,7 +53,7 @@ class InquiryMapperTest extends SetupTestDatabase {
         Person person1 = new Person(2, firstName, lastName, email, null, 3, false);
         PersonDTO personDTO1 = new PersonDTO(person1, address1);
 
-        Optional<Shack> optionalShack1 = Optional.of(new Shack(2,0,0,false));
+        Optional<Shack> optionalShack1 = Optional.of(new Shack(2, 0, 0, false));
 
         Carport carport1 = new Carport(2, carportWidth, carportLength, 210, RoofType.FLAT, roofMaterial, time, 2);
         CarportDTO carportDTO1 = new CarportDTO(carport1, optionalShack1);

@@ -14,11 +14,14 @@ import dk.cphbusiness.dat.carporteksamensproject.model.services.facade.BillOfMat
 import dk.cphbusiness.dat.carporteksamensproject.model.services.facade.InquiryFacade;
 import org.junit.jupiter.api.Test;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class UserStory7 extends SetupTestDatabase{
+class UserStory7Test extends SetupDatabaseTest {
 
     @Test
     void updateBOM() throws DatabaseException {

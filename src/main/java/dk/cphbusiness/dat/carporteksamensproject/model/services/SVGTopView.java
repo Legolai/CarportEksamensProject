@@ -28,13 +28,13 @@ public class SVGTopView extends SVGAlgorithmsBase {     // Is mapper needed for 
         calcSVGCarport(carportDTO, carportSVG);
         svg.addSVG(carportSVG);
 
-        calcSVGCarportArrows(carportDTO, svg);
+        calcSVGCarportArrows(svg);
 
 
         return svg;
     }
 
-    private void calcSVGCarportArrows(CarportDTO carportDTO, SVG svg) {
+    private void calcSVGCarportArrows(SVG svg) {
         int height = width;   //600
         int width = length;   //780
         int heightoffset = (int) (height * 0.075);
@@ -43,16 +43,16 @@ public class SVGTopView extends SVGAlgorithmsBase {     // Is mapper needed for 
         //bottom arrow
         svg.addDoubleArrow(widthoffset, height - heightoffset / 2 + 5, width - 5, height - heightoffset / 2 + 5, 1);
         svg.addText("" + width / 100.0, widthoffset + ((width - widthoffset) / 2), height - heightoffset / 2, 0);
-        svg.addLine(widthoffset, height - heightoffset * 5 / 6 + 5, widthoffset, height - heightoffset * 1 / 6 + 1, 1);
-        svg.addLine(width - 5, height - heightoffset * 5 / 6 + 5, width - 5, height - heightoffset * 1 / 6 + 1, 1);
+        svg.addLine(widthoffset, height - heightoffset * 5 / 6 + 5, widthoffset, height - heightoffset / 6 + 1, 1);
+        svg.addLine(width - 5, height - heightoffset * 5 / 6 + 5, width - 5, height - heightoffset / 6 + 1, 1);
 
         //big side arrow
         svg.addDoubleArrow(widthoffset / 3, heightoffset, widthoffset / 3, height - heightoffset, 1);
         svg.addText("" + height / 100.0, widthoffset / 3 - 5, height / 2, -90);
-        svg.addLine(widthoffset * 1 / 6, heightoffset, widthoffset * 5 / 6, heightoffset, 1);
-        svg.addLine(widthoffset * 1 / 6, height - heightoffset, widthoffset * 5 / 6, height - heightoffset, 1);
+        svg.addLine(widthoffset / 6, heightoffset, widthoffset * 5 / 6, heightoffset, 1);
+        svg.addLine(widthoffset / 6, height - heightoffset, widthoffset * 5 / 6, height - heightoffset, 1);
 
-        //smaller side arrow (int) (600*(0.075+(30.0/600.0*0.85)));
+        //smaller side arrow
         int rempos = (int) ((double) (overhang) * 0.85);
         svg.addDoubleArrow(widthoffset * 2 / 3, heightoffset + rempos, widthoffset * 2 / 3, height - heightoffset - rempos, 1);
         svg.addText("" + (height - overhang * 2) / 100.0 + "**", widthoffset * 2 / 3 - 5, height / 2, -90);
@@ -138,8 +138,6 @@ public class SVGTopView extends SVGAlgorithmsBase {     // Is mapper needed for 
         } else if (postAmounts - stolperUsed == 2 + 1) {
             svg.addRect(overhang, overhang - 1, stolpeDim, stolpeDim, 2);
             svg.addRect(overhang, width - overhang - 1, stolpeDim, stolpeDim, 2);
-        } else {
-            //error
         }
     }
 
@@ -170,15 +168,12 @@ public class SVGTopView extends SVGAlgorithmsBase {     // Is mapper needed for 
             svg.addRect(length - stolpeDist, overhang - 1, stolpeDim, stolpeDim, 2);
             svg.addRect(stolpeDist, width - overhang - 1, stolpeDim, stolpeDim, 2);
             svg.addRect(length - stolpeDist, width - overhang - 1, stolpeDim, stolpeDim, 2);
-        } else {
-            //error
         }
-
     }
 
     private int calcStolper() {
         int stolperAmounts = 4 + 1;  // + 1 for an extra
-        if (!carportDTO.shack().isPresent()) {   //no shack
+        if (carportDTO.shack().isEmpty()) {   //no shack
             if (length > 510) {
                 stolperAmounts += 2;
             }

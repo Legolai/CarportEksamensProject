@@ -8,9 +8,9 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Optional;
 
-public interface Search {
+public class Search {
 
-    static <T> Object deepSearch(String column, T entity) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+    public static <T> Object deepSearch(String column, T entity) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
         Object value = null;
         for (Field f : entity.getClass().getDeclaredFields()) {
             Object fieldEntity = entity.getClass().getDeclaredMethod(f.getName()).invoke(entity);

@@ -13,7 +13,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class UserStory3 extends SetupTestDatabase{
+class UserStory3Test extends SetupDatabaseTest {
 
     @Test
     void GetMyInquiriesHasNone() throws DatabaseException {

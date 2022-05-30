@@ -37,14 +37,14 @@ public class FlatRoofAlgorithm implements ICarportAlgorithm {
     @Override
     public List<BillOfMaterialLineItemDTO> calcRoof(CarportDTO carportDTO) {
         List<BillOfMaterialLineItemDTO> list = new ArrayList<>();
-        int roofPlateOverlay = 120;     //TODO: This was just arbitarily selected
+        int roofPlateOverlay = 120;     // This was just arbitarily selected
 
         int width = carportDTO.carport().getWidth();
         int length = carportDTO.carport().getLength();
         int tagpladeAmounts = (int) Math.ceil(width / 100);
-        // (width - overlap) / (109 - overlap) = tagpladeAmounts
+
         int tagpladeLength = length;
-        //int tagpladeAmounts2 = tagpladeAmounts;
+
         int tagpladeLength2 = 0;
         if (length > 600) {             // if length > 600, tagpladeAmounts * 2;
             tagpladeLength = 600;       // tagpladeLength = 600 if length <= 600 else needs 180 overlap.
@@ -200,7 +200,7 @@ public class FlatRoofAlgorithm implements ICarportAlgorithm {
         list.addAll(getFromDB("product_description", "19x100 mm. trykimp. Brædt", skackBeklaedningLength, skackBeklaedning, "Til beklædning af skur 1 på 2"));
 
 
-        int laegteForDoor = 1;     //TODO: for the z on door, amount can be adjusted directly?
+        int laegteForDoor = 1;     // for the z on door, amount can not be adjusted directly
         int laegteForDoorLength = 420; // I think this is just constant
         int doergreb = laegteForDoor;  // maybe people can choose how many doors they want?
         int doerHaengsel = laegteForDoor * 2;
@@ -231,7 +231,8 @@ public class FlatRoofAlgorithm implements ICarportAlgorithm {
             postAmounts += 2;
             if (length - carportDTO.shack().get().getLength() > 330) {
                 postAmounts += 2;
-            } else if (carportDTO.shack().get().getLength() > 270) {
+            }
+            if (carportDTO.shack().get().getLength() > 270) {
                 postAmounts += 2;
             }
             if (carportDTO.shack().get().getWidth() > 270) {
@@ -275,7 +276,6 @@ public class FlatRoofAlgorithm implements ICarportAlgorithm {
 
 
     public List<BillOfMaterialLineItemDTO> getFromDB(String in, String name, int compare1, int amount, String comment) {
-        //list.addAll(getFromDB("product_description","97x97 mm. trykimp. Stolpe", postHeight, postAmounts, "Stolper nedgraves 90 cm. i jord"));
 
         List<BillOfMaterialLineItemDTO> list = new ArrayList<>();
         Optional<List<ProductVariantDTO>> toGet;

@@ -33,19 +33,16 @@ public class SVGSideView extends SVGAlgorithmsBase {
         shacklengthRatio = (int) (shacklength * widthRatio);
         stolpeY = remHeight * 2 + 2;
         stolpeHeight = svgHeight - stolpeY - 1;
-
-        //TODO: remove System.out.println("heigh and width ratio is: "+heightRatio+ " and "+widthRatio);
     }
 
     public SVG calcSVG() {
 
         SVG svg = new SVG(0, 0, "0 0 " + svgWidth + " " + svgHeight, "" + svgWidth, "" + svgHeight);
-        //svg.addRect(0,0, svgWidth, svgHeight,2); // rect to show svg dimensions
 
-        int widthoffset = (int) (svgWidth * 0.2);
+        int widthOffset = (int) (svgWidth * 0.2);
 
-        SVG carportSVG = new SVG((int) (widthoffset * 0.6), 1, "0 0 " + svgWidth + " " + svgHeight, "80%", "80%");
-        //carportSVG.addRect(0,0, svgWidth, svgHeight,2); //rect to show the carportSVG dimensions
+        SVG carportSVG = new SVG((int) (widthOffset * 0.6), 1, "0 0 " + svgWidth + " " + svgHeight, "80%", "80%");
+
         calcSVGCarport(carportDTO, carportSVG);
         svg.addSVG(carportSVG);
 
@@ -168,7 +165,7 @@ public class SVGSideView extends SVGAlgorithmsBase {
         //shack sides
         int gap = (int) (shacklengthRatio * 0.4);
         int side = shacklengthRatio - gap;
-        int gapx = (int) (Math.ceil(shacklength / 30 * 1.5));
+        int gapx = (int) (Math.ceil(shacklength / 30f * 1.5));
         int sidex = gapx - 1;
         svg.addRect(stolpe2X + 6, stolpeY - 6, shacklengthRatio, stolpeHeight + 4, 1);
         for (int i = 0; i < gapx; i++) {
@@ -197,8 +194,6 @@ public class SVGSideView extends SVGAlgorithmsBase {
         } else if (postAmounts - stolperUsed == 2 + 1) {
             stolpe3X = overhangRatio;
             svg.addRect(stolpe3X, stolpeY, stolpeWidth, stolpeHeight, 2);
-        } else {
-            //error
         }
     }
 
@@ -227,17 +222,15 @@ public class SVGSideView extends SVGAlgorithmsBase {
             svg.addRect(stolpe1X, stolpeY, stolpeWidth, stolpeHeight, 2);
             svg.addRect(stolpe3X, stolpeY, stolpeWidth, stolpeHeight, 2);
 
-            stolpe2X = (int) ((length / 2) * widthRatio);
+            stolpe2X = (int) ((length / 2f) * widthRatio);
             svg.addRect(stolpe2X, stolpeY, stolpeWidth, stolpeHeight, 2);
 
-        } else {
-            //error
         }
     }
 
     private int calcStolper() {
         int stolperAmounts = 4 + 1;  // + 1 for an extra
-        if (!carportDTO.shack().isPresent()) {   //no shack
+        if (carportDTO.shack().isEmpty()) {   //no shack
             if (length > 510) {
                 stolperAmounts += 2;
             }

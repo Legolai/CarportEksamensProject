@@ -5,12 +5,12 @@ import dk.cphbusiness.dat.carporteksamensproject.model.exceptions.DatabaseExcept
 import dk.cphbusiness.dat.carporteksamensproject.model.services.facade.InquiryFacade;
 import org.junit.jupiter.api.Test;
 
-import java.util.*;
+import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
-public class UserStory6 extends SetupTestDatabase{
+class UserStory6Test extends SetupDatabaseTest {
 
     @Test
     void GetAllInquiriesHasNone() throws DatabaseException {

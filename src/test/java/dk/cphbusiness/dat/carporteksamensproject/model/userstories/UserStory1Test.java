@@ -13,9 +13,10 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class UserStory1 extends SetupTestDatabase {
+class UserStory1Test extends SetupDatabaseTest {
 
     @Test
     void createAccount() throws DatabaseException {
@@ -49,7 +50,7 @@ public class UserStory1 extends SetupTestDatabase {
         AccountDTO expected = new AccountDTO(account, personDTO);
 
 
-        Optional<AccountDTO> actual = AccountFacade.login("andersine.and@email.com","tomcat1234", getConnectionPool());
+        Optional<AccountDTO> actual = AccountFacade.login("andersine.and@email.com", "tomcat1234", getConnectionPool());
         assertTrue(actual.isPresent());
         assertEquals(expected, actual.get());
     }

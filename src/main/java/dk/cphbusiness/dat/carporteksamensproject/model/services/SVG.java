@@ -17,11 +17,6 @@ public class SVG {
                     <polygon points="0 0, 4 2, 0 4" fill="black" />
                 </marker>
             </defs>""";
-    private final int x;
-    private final int y;
-    private final String viewBox;
-    private final String width;
-    private final String height;
     private final int defaultDashDistance;
     private final int defaultDashSpacing;
     StringBuilder svgBuilder;
@@ -30,11 +25,6 @@ public class SVG {
     private String textStyle = "14px";
 
     public SVG(int x, int y, String viewBox, String width, String height) {
-        this.x = x;
-        this.y = y;
-        this.viewBox = viewBox;
-        this.width = width;
-        this.height = height;
         this.hasStartArrow = false;
         this.hasEndArrow = false;
         this.defaultDashDistance = 10;
