@@ -57,32 +57,6 @@ public class FlatRoofAlgorithm implements ICarportAlgorithm{
             list.addAll(getFromDB("product_description","Plastmo Ecolite blåtonet", tagpladeLength2, tagpladeAmounts, "tagplader monteres på spær"));
         }
 
-//        Optional<List<ProductVariantDTO>> tagplader;
-//        try {
-//            tagplader = mapper.findAll(Map.of("product_description", "Plastmo Ecolite blåtonet"));
-//            if (tagplader.isPresent()) {
-//                List<ProductVariantDTO> sorted = tagplader.get();
-//                sorted.sort(Comparator.comparingInt(a -> a.size().getDetail()));
-//                boolean added1 = false;
-//                boolean added2 = false;
-//                for (ProductVariantDTO plader : sorted) {
-//                    if (plader.size().getDetail() >= tagpladeLength && added1 == false) {
-//                        BillOfMaterialLineItem tagpladeLineItem1 = new BillOfMaterialLineItem(0, 0, tagpladeAmounts, "tagplader monteres på spær", plader.variant().getId());
-//                        list.add(new BillOfMaterialLineItemDTO(tagpladeLineItem1, plader));
-//                        added1 = true;
-//                    }
-//                    if (plader.size().getDetail() >= tagpladeLength2 && tagpladeLength2 != 0 && added2 == false) {
-//                        BillOfMaterialLineItem tagpladeLineItem2  = new BillOfMaterialLineItem(0, 0, tagpladeAmounts, "tagplader monteres på spær", plader.variant().getId());
-//                        list.add(new BillOfMaterialLineItemDTO(tagpladeLineItem2, plader));
-//                        added2 = true;
-//                    }
-//                }
-//            }
-//        } catch (DatabaseException ex) {
-//            ex.printStackTrace();
-//        }
-
-
         int spaerAmounts = (int) Math.ceil(length/56.5-0.35) + 1; // længde skal være lig med width
         int spaerLength = width;    // space between spaer is Math.ceil((length-10)/(spaerAmounts-1))
 

@@ -41,9 +41,6 @@ public class CommandController {
 
         commands.put("update-product-command", new UpdateProductAction(Role.ADMIN));
         commands.put("create-product-variant-command", new CreateProductVariantAction(Role.ADMIN));
-
-        commands.put("svgExperiments-page", new UnprotectedPage("pages/general/svgExperiments"));
-        commands.put("SVG-command", new SVGCommand(""));
     }
 
     public static CommandController getInstance() {

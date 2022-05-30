@@ -22,7 +22,8 @@ public record EntityManager(ConnectionPool connectionPool) {
         }
     }
 
-    private <T, R> R newQueryUpdate(Connection connection, String sql, EntityData<T> entityData, T entity, FunctionWithThrows<ResultData<T>, R> queryHandler) throws DatabaseException {
+    private <T, R> R newQueryUpdate(Connection connection, String sql, EntityData<T> entityData, T entity,
+                                    FunctionWithThrows<ResultData<T>, R> queryHandler) throws DatabaseException {
         try (PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             List<Field> fields = entityData.getFields();
             for (int i = 1; i <= fields.size(); ++i) {
@@ -72,7 +73,8 @@ public record EntityManager(ConnectionPool connectionPool) {
         EntityData<T> entityData = new EntityData<>(entityClass);
 
         entityData.getFields().remove(entityData.getFieldForId());
-        String sqlColumns = entityData.getFields().stream()
+        String sqlColumns = entityData.getFields()
+                .stream()
                 .map(f -> f.getAnnotation(Column.class).value())
                 .collect(Collectors.joining(", "));
         entityData.getFields().add(entityData.getFieldForId());
@@ -129,8 +131,8 @@ public record EntityManager(ConnectionPool connectionPool) {
             return joinedEntityData.getEntityClass()
                     .getConstructor(joinedEntityData.getConstructorEmp())
                     .newInstance(constArgs.toArray());
-        } catch (NoSuchMethodException | InvocationTargetException | InstantiationException |
-                 IllegalAccessException | DatabaseException ex) {
+        } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException |
+                 DatabaseException ex) {
             throw new DatabaseException(ex.getMessage());
         }
     }
@@ -203,7 +205,9 @@ public record EntityManager(ConnectionPool connectionPool) {
                 entityData.getFields().remove(entityData.getFieldForId());
             }
 
-            String sqlColumns = entityData.getFields().stream().map(f -> f.getAnnotation(Column.class).value())
+            String sqlColumns = entityData.getFields()
+                    .stream()
+                    .map(f -> f.getAnnotation(Column.class).value())
                     .collect(Collectors.joining(", "));
             String options = "?".repeat(entityData.getFields().size()).replaceAll(".(?=.)", "$0, ");
 
@@ -285,7 +289,9 @@ public record EntityManager(ConnectionPool connectionPool) {
             entityData.getFields().remove(entityData.getFieldForId());
         }
 
-        String sqlColumns = entityData.getFields().stream().map(f -> f.getAnnotation(Column.class).value())
+        String sqlColumns = entityData.getFields()
+                .stream()
+                .map(f -> f.getAnnotation(Column.class).value())
                 .collect(Collectors.joining(", "));
         String options = "?".repeat(entityData.getFields().size()).replaceAll(".(?=.)", "$0, ");
 
@@ -380,8 +386,7 @@ public record EntityManager(ConnectionPool connectionPool) {
 
         FunctionWithThrows<ResultSet, List<T>> handler = resultSet -> {
             List<T> list = new ArrayList<>();
-            while (resultSet.next())
-                list.add(createJoinedEntity(resultSet, joinedEntityData));
+            while (resultSet.next()) list.add(createJoinedEntity(resultSet, joinedEntityData));
             return list.isEmpty() ? null : list;
         };
         return Optional.ofNullable(makeConnection(connection -> newQuery(connection, sql, handler, properties.values()
@@ -398,8 +403,7 @@ public record EntityManager(ConnectionPool connectionPool) {
 
         FunctionWithThrows<ResultSet, List<T>> handler = resultSet -> {
             List<T> list = new ArrayList<>();
-            while (resultSet.next())
-                list.add(createEntity(resultSet, entityData));
+            while (resultSet.next()) list.add(createEntity(resultSet, entityData));
             return list.isEmpty() ? null : list;
         };
         return Optional.ofNullable(makeConnection(connection -> newQuery(connection, sql, handler, properties.values()
@@ -486,8 +490,8 @@ public record EntityManager(ConnectionPool connectionPool) {
             return joinedEntityData.getEntityClass()
                     .getConstructor(joinedEntityData.getConstructorEmp())
                     .newInstance(constArgs.toArray());
-        } catch (NoSuchMethodException | InvocationTargetException | InstantiationException |
-                 IllegalAccessException | DatabaseException ex) {
+        } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException |
+                 DatabaseException ex) {
             throw new DatabaseException(ex.getMessage());
         }
     }

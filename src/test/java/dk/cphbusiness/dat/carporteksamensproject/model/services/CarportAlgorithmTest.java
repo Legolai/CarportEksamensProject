@@ -28,14 +28,14 @@ class CarportAlgorithmTest {
 
     @Test
     void testFlatRoofItemList() {
-//        Spær, tagplader
+
         List<BillOfMaterialLineItemDTO> expected = new ArrayList<>();
         expected.add(new BillOfMaterialLineItemDTO(
                 new BillOfMaterialLineItem(0, 0, 6, "tagplader monteres på spær", 43),
                 new ProductVariantDTO(
                         new ProductVariant(43, 8, 14, false),
                         new ProductDTO(
-                                new Product(8, "Plastmo Ecolite blåtonet", 10, Unit.METER, AmountUnit.PIECE, 0, false),
+                                new Product(8, "Plastmo Ecolite blåtonet", 0.15, Unit.METER, AmountUnit.PIECE, 0, false),
                                 new ProductType(6, "Tagplade", false)
                         ),
                         new Size (14, 600, SizeType.LENGTH, false)
@@ -123,13 +123,6 @@ class CarportAlgorithmTest {
     }
     @Test
     void testShackItemList() {
-//      Til lås på dør i skur
-//      Til skurdør
-//      Til montering af løsholter i skur
-//      til beklædning af skur 1 på 2
-//      til z på bagside af dør
-//      løsholter til skur gavle
-//      løsholter til skur sider
 
         List<BillOfMaterialLineItemDTO> expected = new ArrayList<>();
         expected.add(new BillOfMaterialLineItemDTO(
@@ -229,12 +222,6 @@ class CarportAlgorithmTest {
 
     @Test
     void testSternsItemList() {
-//      understernbrædder til for & bag ende
-//      understernbrædder til siderne
-//      oversternbrædder til forenden
-//      oversternbrædder til siderne
-//      vandbrædt på stern i sider
-//      vandbrædt på stern i forende
 
         List<BillOfMaterialLineItemDTO> expected = new ArrayList<>();
         expected.add(new BillOfMaterialLineItemDTO(
@@ -257,19 +244,6 @@ class CarportAlgorithmTest {
 
     }
 
-    @Test
-    void testScreewsItemList() {
-//        Skruer til tagplader
-//        Til vindkryds på spær
-//        Til montering af spær på rem
-//        Til montering af spær på rem
-//        Til montering af stern&vandbrædt
-//        Til montering af universalbeslag + hulbånd Til montering af rem på stolper
-//        Til montering af rem på stolper
-//        til montering af yderste beklædning
-//        til montering af inderste beklædning
-
-    }
 
 
 
