@@ -14,6 +14,13 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public record EntityManager(ConnectionPool connectionPool) {
+
+    private static final String INSERT_STATEMENT = "INSERT INTO %s (%s) VALUES (%s)";
+    private static final String BASIC_SELECT_STATEMENT = "SELECT * FROM %s";
+    private static final String SELECT_WHERE_STATEMENT = "SELECT * FROM %s WHERE %s";
+    private static final String DELETE_WHERE_STATEMENT = "DELETE FROM %s WHERE %s";
+    private static final String UPDATE_WHERE_STATEMENT = "UPDATE %s SET %s WHERE %s";
+
     private <R> R makeConnection(FunctionWithThrows<Connection, R> query) throws DatabaseException {
         try (Connection connection = connectionPool.getConnection()) {
             return query.apply(connection);
@@ -22,8 +29,7 @@ public record EntityManager(ConnectionPool connectionPool) {
         }
     }
 
-    private <T, R> R newQueryUpdate(Connection connection, String sql, EntityData<T> entityData, T entity,
-                                    FunctionWithThrows<ResultData<T>, R> queryHandler) throws DatabaseException {
+    private <T, R> R newQueryUpdate(Connection connection, String sql, EntityData<T> entityData, T entity, FunctionWithThrows<ResultData<T>, R> queryHandler) throws DatabaseException {
         try (PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             List<Field> fields = entityData.getFields();
             for (int i = 1; i <= fields.size(); ++i) {
@@ -81,8 +87,10 @@ public record EntityManager(ConnectionPool connectionPool) {
 
         String idColumn = entityData.getFieldForId().getAnnotation(Column.class).value();
         String options = sqlColumns.replaceAll("\\w+", "$0 = ?");
+        String condition = idColumn + " = ?";
 
-        String sql = "UPDATE " + entityData.getTableName() + " SET " + options + " WHERE " + idColumn + " = ?;";
+        String sql = String.format(UPDATE_WHERE_STATEMENT, entityData.getTableName(), options, condition);
+
 
         FunctionWithThrows<ResultData<T>, Boolean> handler = (managerResult -> managerResult.getRowsAffected() == 1);
         return makeConnection(conn -> newQueryUpdate(conn, sql, entityData, entity, handler));
@@ -200,47 +208,48 @@ public record EntityManager(ConnectionPool connectionPool) {
     }
 
     private <T> List<T> insertEntityBatch(EntityData<T> entityData, List<T> batch) throws DatabaseException {
-        FunctionWithThrows<Connection, List<T>> handler = connection -> {
-            if (entityData.getFieldForId().isAnnotationPresent(GeneratedValue.class)) {
-                entityData.getFields().remove(entityData.getFieldForId());
-            }
+        if (entityData.getFieldForId().isAnnotationPresent(GeneratedValue.class)) {
+            entityData.getFields().remove(entityData.getFieldForId());
+        }
 
-            String sqlColumns = entityData.getFields()
-                    .stream()
-                    .map(f -> f.getAnnotation(Column.class).value())
-                    .collect(Collectors.joining(", "));
-            String options = "?".repeat(entityData.getFields().size()).replaceAll(".(?=.)", "$0, ");
+        String sqlColumns = entityData.getFields()
+                .stream()
+                .map(f -> f.getAnnotation(Column.class).value())
+                .collect(Collectors.joining(", "));
+        String options = "?".repeat(entityData.getFields().size()).replaceAll(".(?=.)", "$0, ");
 
-            String sql = "INSERT INTO " + entityData.getTableName() + " (" + sqlColumns + ") VALUES (" + options + ")";
+        String sql = String.format(INSERT_STATEMENT, entityData.getTableName(), sqlColumns, options);
 
-            try (PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-                List<T> list = new ArrayList<>(batch.size());
-                final int batchSize = 1000;
-                int count = 0;
-                for (Object t : batch) {
-                    List<Field> fields = entityData.getFields();
-                    for (int i = 1; i <= fields.size(); ++i) {
-                        String fieldName = fields.get(i - 1).getName();
-                        String methodName = "get" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
-                        Object value = t.getClass().getDeclaredMethod(methodName).invoke(t);
-                        if (fields.get(i - 1).getType().isEnum()) {
-                            value = ((Enum<?>) value).name();
-                        }
-                        ps.setObject(i, value);
+        return makeConnection(connection -> generateBatch(connection, sql, entityData, batch));
+    }
+
+    public <T> List<T> generateBatch(Connection connection, String sql, EntityData<T> entityData, List<T> batch) throws DatabaseException {
+        try (PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            List<T> list = new ArrayList<>(batch.size());
+            final int batchSize = 1000;
+            int count = 0;
+            for (Object t : batch) {
+                List<Field> fields = entityData.getFields();
+                for (int i = 1; i <= fields.size(); ++i) {
+                    String fieldName = fields.get(i - 1).getName();
+                    String methodName = "get" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
+                    Object value = t.getClass().getDeclaredMethod(methodName).invoke(t);
+                    if (fields.get(i - 1).getType().isEnum()) {
+                        value = ((Enum<?>) value).name();
                     }
-                    ps.addBatch();
-                    ++count;
-                    if (count % batchSize == 0) {
-                        list.addAll(sendBatch(ps, entityData, batch, list.size()));
-                    }
+                    ps.setObject(i, value);
                 }
-                list.addAll(sendBatch(ps, entityData, batch, list.size()));
-                return list;
-            } catch (SQLException ex) {
-                throw new DatabaseException(ex.getMessage());
+                ps.addBatch();
+                ++count;
+                if (count % batchSize == 0) {
+                    list.addAll(sendBatch(ps, entityData, batch, list.size()));
+                }
             }
-        };
-        return makeConnection(handler);
+            list.addAll(sendBatch(ps, entityData, batch, list.size()));
+            return list;
+        } catch (SQLException | NoSuchMethodException | IllegalAccessException | InvocationTargetException ex) {
+            throw new DatabaseException(ex.getMessage());
+        }
     }
 
     private <T> List<T> sendBatch(PreparedStatement ps, EntityData<T> entityData, List<T> batch, int currentIndex) throws SQLException, DatabaseException {
@@ -295,7 +304,7 @@ public record EntityManager(ConnectionPool connectionPool) {
                 .collect(Collectors.joining(", "));
         String options = "?".repeat(entityData.getFields().size()).replaceAll(".(?=.)", "$0, ");
 
-        String sql = "INSERT INTO " + entityData.getTableName() + " (" + sqlColumns + ") VALUES (" + options + ")";
+        String sql = String.format(INSERT_STATEMENT, entityData.getTableName(), sqlColumns, options);
 
         FunctionWithThrows<ResultData<T>, T> handler = this::extractIdFromQueryUpdate;
         return makeConnection(conn -> newQueryUpdate(conn, sql, entityData, entity, handler));
@@ -313,7 +322,7 @@ public record EntityManager(ConnectionPool connectionPool) {
     private <T> List<T> getAllJoinedEntities(Class<T> entityClass) throws DatabaseException {
         JoinedEntityData<T> joinedEntityData = new JoinedEntityData<>(entityClass);
 
-        String sql = "SELECT * FROM " + joinedEntityData.getJoinView();
+        String sql = String.format(BASIC_SELECT_STATEMENT, joinedEntityData.getJoinView());
 
         FunctionWithThrows<ResultSet, List<T>> handler = (resultSet -> {
             List<T> list = new ArrayList<>();
@@ -329,7 +338,7 @@ public record EntityManager(ConnectionPool connectionPool) {
     private <T> List<T> getAllEntity(Class<T> entityClass) throws DatabaseException {
         EntityData<T> entityData = new EntityData<>(entityClass);
 
-        String sql = "SELECT * FROM " + entityData.getTableName();
+        String sql = String.format(BASIC_SELECT_STATEMENT, entityData.getTableName());
 
         FunctionWithThrows<ResultSet, List<T>> handler = (resultSet -> {
             List<T> list = new ArrayList<>();
@@ -346,7 +355,8 @@ public record EntityManager(ConnectionPool connectionPool) {
 
         String idColumn = entityData.getFieldForId().getAnnotation(Column.class).value();
 
-        String sql = "SELECT * FROM " + entityData.getTableName() + " WHERE " + idColumn + " = ?";
+        String condition = idColumn + " = ?";
+        String sql = String.format(SELECT_WHERE_STATEMENT, entityData.getTableName(), condition);
 
         FunctionWithThrows<ResultSet, T> handler = resultSet -> {
             if (!resultSet.next()) return null;
@@ -382,14 +392,15 @@ public record EntityManager(ConnectionPool connectionPool) {
         String sqlColumns = String.join(" AND ", properties.keySet());
         String options = sqlColumns.replaceAll("\\b(?!AND\\b)\\w+", "$0 = ?");
 
-        String sql = "SELECT * FROM " + joinedEntityData.getJoinView() + " WHERE " + options + (rowCount != 0 ? " LIMIT " + rowCount : "") + (offset != 0 ? " OFFSET " + rowCount : "");
+        String sql = String.format(SELECT_WHERE_STATEMENT, joinedEntityData.getJoinView(), options);
+        String sqlExtended = sql + (rowCount != 0 ? " LIMIT " + rowCount : "") + (offset != 0 ? " OFFSET " + rowCount : "");
 
         FunctionWithThrows<ResultSet, List<T>> handler = resultSet -> {
             List<T> list = new ArrayList<>();
             while (resultSet.next()) list.add(createJoinedEntity(resultSet, joinedEntityData));
             return list.isEmpty() ? null : list;
         };
-        return Optional.ofNullable(makeConnection(connection -> newQuery(connection, sql, handler, properties.values()
+        return Optional.ofNullable(makeConnection(connection -> newQuery(connection, sqlExtended, handler, properties.values()
                 .toArray())));
     }
 
@@ -399,14 +410,15 @@ public record EntityManager(ConnectionPool connectionPool) {
         String sqlColumns = String.join(" AND ", properties.keySet());
         String options = sqlColumns.replaceAll("\\b(?!AND\\b)\\w+", "$0 = ?");
 
-        String sql = "SELECT * FROM " + entityData.getTableName() + " WHERE " + options + (rowCount != 0 ? " LIMIT " + rowCount : "") + (offset != 0 ? " OFFSET " + rowCount : "");
+        String sql = String.format(SELECT_WHERE_STATEMENT, entityData.getTableName(), options);
+        String sqlExtended = sql + (rowCount != 0 ? " LIMIT " + rowCount : "") + (offset != 0 ? " OFFSET " + rowCount : "");
 
         FunctionWithThrows<ResultSet, List<T>> handler = resultSet -> {
             List<T> list = new ArrayList<>();
             while (resultSet.next()) list.add(createEntity(resultSet, entityData));
             return list.isEmpty() ? null : list;
         };
-        return Optional.ofNullable(makeConnection(connection -> newQuery(connection, sql, handler, properties.values()
+        return Optional.ofNullable(makeConnection(connection -> newQuery(connection, sqlExtended, handler, properties.values()
                 .toArray())));
     }
 
@@ -446,25 +458,24 @@ public record EntityManager(ConnectionPool connectionPool) {
                 if (col != null) {
                     String name = col.value();
                     Object value = rs.getObject(name);
+
                     if (field.getType().isEnum()) {
                         value = Enum.valueOf(field.getType().asSubclass(Enum.class), (String) value);
-                    } else if (field.getType().equals(Boolean.TYPE)) {
+                    } else if (Boolean.TYPE.equals(field.getType())) {
                         if (value != null) {
                             value = value.equals(1);
                         } else {
                             value = false;
                         }
-                    } else if (field.getType().equals(Integer.TYPE) && value == null) {
+                    } else if (Integer.TYPE.equals(field.getType()) && (value == null)) {
                         value = 0;
                     }
                     constArgs.add(value);
                 }
             }
-            if (constArgs.stream().allMatch(arg -> arg.equals(0) || arg.equals(false))) {
-                return null;
-            }
 
-            return entityData.getEntityClass()
+            boolean isNull = constArgs.stream().allMatch(arg -> arg.equals(0) || arg.equals(false));
+            return isNull ? null : entityData.getEntityClass()
                     .getConstructor(entityData.getConstructorEmp())
                     .newInstance(constArgs.toArray());
         } catch (SQLException | NoSuchMethodException | InvocationTargetException | InstantiationException |
@@ -500,9 +511,9 @@ public record EntityManager(ConnectionPool connectionPool) {
         EntityData<T> entityData = new EntityData<>(entityClass);
 
         String sqlColumns = String.join(", ", conditions.keySet());
-        String options = sqlColumns.replaceAll("\\b(?!,\\b)\\w+", "$0 = ?");
+        String condition = sqlColumns.replaceAll("\\b(?!,\\b)\\w+", "$0 = ?");
 
-        String sql = "DELETE FROM " + entityData.getTableName() + " WHERE " + options + ";";
+        String sql = String.format(DELETE_WHERE_STATEMENT, entityData.getTableName(), condition);
 
         FunctionWithThrows<Integer, Integer> handler = rowsAffected -> rowsAffected;
 
@@ -514,10 +525,11 @@ public record EntityManager(ConnectionPool connectionPool) {
 
         String sqlColumns = String.join(", ", properties.keySet());
         String options = sqlColumns.replaceAll("\\b(?!,\\b)\\w+", "$0 = ?");
+        String id = entityData.getFieldForId().getAnnotation(Column.class).value();
+        String condition =  id + " = ?;";
 
-        String sql = "UPDATE " + entityData.getTableName() + " SET " + options + " WHERE " + entityData.getFieldForId()
-                .getAnnotation(Column.class)
-                .value() + " = ?;";
+        String sql = String.format(UPDATE_WHERE_STATEMENT, entityData.getTableName(), options, condition);
+
 
         FunctionWithThrows<Integer, Boolean> handler = rowsAffected -> rowsAffected == 1;
 

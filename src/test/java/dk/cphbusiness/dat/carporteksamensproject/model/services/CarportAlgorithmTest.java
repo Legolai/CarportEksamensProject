@@ -67,7 +67,7 @@ class CarportAlgorithmTest {
 
         CarportAlgorithmFactory factory = new CarportAlgorithmFactory();
         ICarportAlgorithm carportAlgorithm = factory.createCarportAlgorithm(carportDTO);
-        List<BillOfMaterialLineItemDTO> actual = carportAlgorithm.calcRoof(carportDTO);
+        List<BillOfMaterialLineItemDTO> actual = carportAlgorithm.getRoofMaterials(carportDTO);
         assertEquals(expected.size(), actual.size());
         assertEquals(expected.get(0), actual.get(0));
         assertEquals(expected.get(1), actual.get(1));
@@ -116,7 +116,7 @@ class CarportAlgorithmTest {
 
         CarportAlgorithmFactory factory = new CarportAlgorithmFactory();
         ICarportAlgorithm carportAlgorithm = factory.createCarportAlgorithm(carportDTO);
-        List<BillOfMaterialLineItemDTO> actual = carportAlgorithm.calcBase(carportDTO);
+        List<BillOfMaterialLineItemDTO> actual = carportAlgorithm.getCarportBaseMaterials(carportDTO);
         assertEquals(expected.size(), actual.size());
         assertEquals(expected.get(0), actual.get(0));
         assertEquals(expected.get(1), actual.get(1));
@@ -209,7 +209,7 @@ class CarportAlgorithmTest {
 
         CarportAlgorithmFactory factory = new CarportAlgorithmFactory();
         ICarportAlgorithm carportAlgorithm = factory.createCarportAlgorithm(carportDTO);
-        List<BillOfMaterialLineItemDTO> actual = carportAlgorithm.calcBase(carportDTO);
+        List<BillOfMaterialLineItemDTO> actual = carportAlgorithm.getCarportBaseMaterials(carportDTO);
         assertEquals(expected.size(), actual.size());
         assertEquals(expected.get(0), actual.get(0));
         assertEquals(expected.get(1), actual.get(1));
@@ -237,7 +237,7 @@ class CarportAlgorithmTest {
         ));
         CarportAlgorithmFactory factory = new CarportAlgorithmFactory();
         ICarportAlgorithm carportAlgorithm = factory.createCarportAlgorithm(carportDTO);
-        List<BillOfMaterialLineItemDTO> actual = carportAlgorithm.calcBase(carportDTO);
+        List<BillOfMaterialLineItemDTO> actual = carportAlgorithm.getCarportBaseMaterials(carportDTO);
         assertEquals(expected.size(), actual.size());
         assertEquals(expected.get(0), actual.get(0));
         assertEquals(expected.get(1), actual.get(1));

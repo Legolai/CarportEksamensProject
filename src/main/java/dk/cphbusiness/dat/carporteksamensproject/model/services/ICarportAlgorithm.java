@@ -2,19 +2,21 @@ package dk.cphbusiness.dat.carporteksamensproject.model.services;
 
 import dk.cphbusiness.dat.carporteksamensproject.model.dtos.BillOfMaterialLineItemDTO;
 import dk.cphbusiness.dat.carporteksamensproject.model.dtos.CarportDTO;
+import dk.cphbusiness.dat.carporteksamensproject.model.entities.Carport;
+import dk.cphbusiness.dat.carporteksamensproject.model.entities.Shack;
 
 import java.util.List;
 
 public interface ICarportAlgorithm {
     List<BillOfMaterialLineItemDTO> calcCarport(CarportDTO carportDTO);
 
-    List<BillOfMaterialLineItemDTO> calcRoof(CarportDTO carportDTO);
+    List<BillOfMaterialLineItemDTO> getCarportBaseMaterials(CarportDTO carportDTO);
 
-    List<BillOfMaterialLineItemDTO> calcBase(CarportDTO carportDTO);
+    List<BillOfMaterialLineItemDTO> getRoofMaterials(CarportDTO carportDTO);
 
-    List<BillOfMaterialLineItemDTO> calcSterns(CarportDTO carportDTO);
+    List<BillOfMaterialLineItemDTO> getSterns(CarportDTO carportDTO);
 
-    List<BillOfMaterialLineItemDTO> calcShack(CarportDTO carportDTO);
+    List<BillOfMaterialLineItemDTO> getShackMaterials(Carport carport, Shack shack);
 
-    List<BillOfMaterialLineItemDTO> calcFittingsAndScrews(CarportDTO carportDTO);
+    List<BillOfMaterialLineItemDTO> getFittingsAndScrews(CarportDTO carportDTO);
 }
