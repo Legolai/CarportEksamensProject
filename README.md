@@ -1,5 +1,5 @@
 ## Logbog
-Se 'Scrum_Meetings' i 'documentation'.
+Se 'Scrum_Meetings' i 'documentation'..
 
 ## Baggrund
 Semester project for CPH Business Datamatikker linjen, hvor opgaven er at lave en online hjemmeside med databasen for virksomheden Fog.
