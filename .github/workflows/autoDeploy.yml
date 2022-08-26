@@ -4,10 +4,6 @@ name: maven CI
 
 on: [push]
 
-ame: Java CI
-
-on: [push]
-
 jobs:
   build:
     runs-on: ubuntu-latest
